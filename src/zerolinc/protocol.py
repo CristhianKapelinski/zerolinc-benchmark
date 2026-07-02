@@ -14,7 +14,7 @@ import math
 import random
 from pathlib import Path
 
-from .combine import _EPS, argmax_preds
+from .combine import argmax_preds
 from .labels import CODES
 from .metrics import evaluate, mcnemar_vs
 
@@ -83,6 +83,7 @@ def protocol_report(results_dir: str | Path, seed: int = 42) -> dict:
     }
 
     best_by_family: dict[str, dict] = {}
+    best_scored_by_family: dict[str, dict] = {}
     for r in runs:
         fam = r.get("backend", "nli")
         preds = _dedup(r["predictions"])
@@ -91,12 +92,14 @@ def protocol_report(results_dir: str | Path, seed: int = 42) -> dict:
         cur = best_by_family.get(fam)
         if cur is None or dev_acc > cur["dev_acc"]:
             best_by_family[fam] = {"run": r, "dev_acc": dev_acc}
+        if len(preds[0].get("scores", {})) == len(CODES):
+            cur_s = best_scored_by_family.get(fam)
+            if cur_s is None or dev_acc > cur_s["dev_acc"]:
+                best_scored_by_family[fam] = {"run": r, "dev_acc": dev_acc, "preds": preds}
 
-    ensemble_members, member_ids = [], []
     for fam, sel in sorted(best_by_family.items()):
         r = sel["run"]
         preds = _dedup(r["predictions"])
-        test_true, test_pred = _subset(preds, test_ids)
         pred_by_id = {p["incident_id"]: p for p in preds}
         aligned_pred = [pred_by_id[i]["pred"] for i in sorted(test_ids)]
         aligned_true = [pred_by_id[i]["true"] for i in sorted(test_ids)]
@@ -110,14 +113,22 @@ def protocol_report(results_dir: str | Path, seed: int = 42) -> dict:
                 aligned_true, aligned_pred, [majority] * len(aligned_true)
             ),
         }
-        if len(preds[0].get("scores", {})) == len(CODES):
-            ensemble_members.append(preds)
-            member_ids.append(r["run_id"])
+
+    # Ensemble rule, fixed a priori: one member per family (its dev-best run
+    # among those carrying full score vectors), included only if its dev
+    # accuracy is at least the dev majority-class accuracy.
+    dev_majority_acc = sum(1 for i, lab in zip(ids, labels)
+                           if i in dev_ids and lab == majority) / max(len(dev_ids), 1)
+    ensemble_members, member_ids = [], []
+    for fam, sel in sorted(best_scored_by_family.items()):
+        if sel["dev_acc"] >= dev_majority_acc:
+            ensemble_members.append(sel["preds"])
+            member_ids.append(sel["run"]["run_id"])
 
     if len(ensemble_members) >= 2:
-        ens_true, ens_pred = _ensemble_dev_calibrated(ensemble_members, dev_ids, test_ids)
+        ens_true, ens_pred = _rank_ensemble(ensemble_members, test_ids)
         m = evaluate(ens_true, ens_pred)
-        out["ensemble_dev_calibrated"] = {
+        out["ensemble_rank"] = {
             "members": member_ids,
             "test": {k: m[k] for k in
                      ("n", "accuracy", "accuracy_ci95", "macro_f1", "weighted_f1")},
@@ -128,30 +139,27 @@ def protocol_report(results_dir: str | Path, seed: int = 42) -> dict:
     return out
 
 
-def _ensemble_dev_calibrated(
-    members: list[list[dict]], dev_ids: set[str], test_ids: set[str]
+def _rank_ensemble(
+    members: list[list[dict]], test_ids: set[str]
 ) -> tuple[list[str], list[str]]:
-    """Mean of per-member log-scores calibrated with DEV-estimated label stats."""
+    """Scale-free rank ensemble: average within-item score ranks across members.
+
+    Raw scores are kept (no per-label centering): batch calibration assumes a
+    uniform true label distribution, which is false on this skewed corpus and
+    strips the genuine class prior out of every member. Ranks (0..k-1 within
+    each item) equalize members with different score scales; a single-member
+    "ensemble" reproduces that member's argmax exactly.
+    """
     order = sorted(test_ids)
-    acc = [[0.0] * len(CODES) for _ in order]
+    k = len(CODES)
+    acc = [[0.0] * k for _ in order]
     truth: list[str] = []
     for m_i, preds in enumerate(members):
         by_id = {p["incident_id"]: p for p in preds}
-        dev_rows = [
-            [math.log(max(by_id[i]["scores"][c], _EPS)) for c in CODES]
-            for i in sorted(dev_ids)
-        ]
-        n_dev = len(dev_rows)
-        mu = [sum(r[j] for r in dev_rows) / n_dev for j in range(len(CODES))]
-        sd = [
-            math.sqrt(sum((r[j] - mu[j]) ** 2 for r in dev_rows) / n_dev) or 1.0
-            for j in range(len(CODES))
-        ]
         for row_i, ident in enumerate(order):
-            p = by_id[ident]
-            for j, c in enumerate(CODES):
-                v = (math.log(max(p["scores"][c], _EPS)) - mu[j]) / sd[j]
-                acc[row_i][j] += v
+            sc = [by_id[ident]["scores"][c] for c in CODES]
+            for rank, j in enumerate(sorted(range(k), key=lambda j: sc[j])):
+                acc[row_i][j] += rank
         if m_i == 0:
             truth = [by_id[i]["true"] for i in order]
     return truth, argmax_preds(acc)
