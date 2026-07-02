@@ -48,9 +48,15 @@ MODEL_SHORT = {
 
 def load(results_dir: Path, view: str = "full") -> list[dict]:
     runs = [json.loads(p.read_text()) for p in sorted(results_dir.glob("*.json"))]
-    return [r for r in runs
+    runs = [r for r in runs
             if not r["run_id"].startswith("baseline")
             and r.get("text_view", "full") == view]
+    # drop models covering under half the configs in this view (sparse heatmap rows)
+    by_model = {}
+    for r in runs:
+        by_model.setdefault(r["model"], []).append(r)
+    n_cfg = max(len(v) for v in by_model.values())
+    return [r for r in runs if len(by_model[r["model"]]) >= n_cfg / 2]
 
 
 def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str) -> None:
@@ -112,16 +118,18 @@ def fig_cost(runs: list[dict], out: Path) -> None:
                     xytext=(0, 26 if above else -32), ha="center", fontsize=7.5,
                     arrowprops={"arrowstyle": "-", "color": "#c3c2b7", "lw": 0.6})
     ax.set_xscale("log")
-    ax.set_xticks([2, 5, 10, 20, 60])
+    ax.set_xticks([2, 5, 10, 20, 60, 180])
     ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
     ax.minorticks_off()
-    ax.set_xlabel("wall-clock seconds for 185 incidents (log scale)")
+    xs = [r["wall_seconds"] for _, r in items]
+    ax.set_xlim(min(xs) * 0.55, max(xs) * 1.9)
+    ax.set_xlabel("wall-clock seconds for the full corpus (log scale)")
     ax.set_ylabel("accuracy (%)")
     ax.set_ylim(0, 90)
     handles = [matplotlib.lines.Line2D([], [], marker="o", ls="", color=c, label=b)
                for b, c in sorted(seen_backends.items())]
-    ax.legend(handles=handles, frameon=False, fontsize=8, loc="lower right",
-              title="backend", title_fontsize=8)
+    ax.legend(handles=handles, frameon=False, fontsize=8, loc="center left",
+              bbox_to_anchor=(1.01, 0.5), title="backend", title_fontsize=8)
     ax.grid(True, color="#e1e0d9", lw=0.6)
     ax.set_axisbelow(True)
     fig.savefig(out / "fig_cost.pdf")
