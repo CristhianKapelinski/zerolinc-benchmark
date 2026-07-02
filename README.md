@@ -1,6 +1,8 @@
-# ZeroLINC: Training-Free Local Classification of Security Incident Reports
+# ZeroLINC Benchmark: measurement study and artifact
 
-ZeroLINC classifies CSIRT/SOC incident reports into the 12 NIST SP 800-61r3 categories locally, with no model training, no external API, and no LLM-scale hardware. Two engines: a **zero-shot** engine for day-zero deployments (up to **70.9%** accuracy on the evaluation corpus) and an **instance-memory** engine that reuses previously labeled tickets (**90.5%** mean test accuracy with 89 labeled references), at seconds and under **3 Wh** per full corpus pass on a consumer GPU.
+This repository is the **evaluation artifact** behind the ZeroLINC paper: the full measurement study (292 runs), the run of record, the selection protocol, and every script that regenerates the paper's numbers and figures. The end-user **tool** extracted from this study lives in its own lean repository: [zerolinc](https://github.com/CristhianKapelinski/zerolinc).
+
+ZeroLINC classifies CSIRT/SOC incident reports into the 12 NIST SP 800-61r3-derived categories locally, with no model training, no external API, and no LLM-scale hardware. Two engines: a **zero-shot** engine for day-zero deployments (up to **70.9%** accuracy on the evaluation corpus) and an **instance-memory** engine that reuses previously labeled tickets (**90.5%** mean test accuracy with 89 labeled references), at seconds and under **3 Wh** per full corpus pass on a consumer GPU.
 
 > Paper: *ZeroLINC: Training-Free Local Classification of Security Incident Reports* (SBSeg 2026, Salão de Ferramentas — under review). This README is the single self-contained guide for artifact evaluation; the other docs are complementary.
 
