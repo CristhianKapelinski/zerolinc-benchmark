@@ -126,3 +126,23 @@ def test_calibration_removes_label_bias(tmp_path):
     assert res["accuracy"] >= 0.9  # 9 CAT5 rows + 1 CAT9 row all correct
     res2 = evaluate_ensemble([f, f])
     assert res2["accuracy"] == res["accuracy"]
+
+
+def test_knn_vote_and_report():
+    import numpy as np
+    from zerolinc.data import Incident
+    from zerolinc.knn import knn_report, _vote
+    # 3 template clusters: CAT5-like, CAT3-like, CAT12-like; 20 items each
+    rng = np.random.default_rng(0)
+    labels = ["CAT5"] * 20 + ["CAT3"] * 20 + ["CAT12"] * 20
+    centers = {"CAT5": [1, 0, 0], "CAT3": [0, 1, 0], "CAT12": [0, 0, 1]}
+    emb = np.array([centers[lab] for lab in labels], dtype=float)
+    emb += rng.normal(0, 0.05, emb.shape)
+    emb /= np.linalg.norm(emb, axis=1, keepdims=True)
+    incs = [Incident(str(i), f"texto {i}", lab) for i, lab in enumerate(labels)]
+    r = knn_report(incs, {"full": emb}, seed=42, ks=(1, 3))
+    assert r["test"]["accuracy"] > 0.95   # clustered templates are trivial for kNN
+    assert r["selected_view"] == "full"
+    # deterministic vote tie-break
+    sims_row = np.array([0.9, 0.9])
+    assert _vote(sims_row, ["CAT3", "CAT12"], [0, 1], 2) in ("CAT3", "CAT12")

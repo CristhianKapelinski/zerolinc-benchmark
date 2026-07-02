@@ -50,11 +50,30 @@ def main(argv: list[str] | None = None) -> int:
     p_proto.add_argument("--seed", type=int, default=42)
     p_proto.add_argument("--out", type=Path, default=DEFAULT_REPORT)
 
+    p_knn = sub.add_parser(
+        "knn", help="instance-memory k-NN (dev half as reference), protocol-reported")
+    p_knn.add_argument("--model", default="Qwen/Qwen3-Embedding-0.6B")
+    p_knn.add_argument("--views", nargs="*", default=["full", "subject"])
+    p_knn.add_argument("--seeds", nargs="*", type=int, default=[42, 7, 123, 2024, 99])
+    p_knn.add_argument("--out", type=Path, default=DEFAULT_REPORT)
+
     args = parser.parse_args(argv)
 
     if args.command == "report":
         path = write_report(args.results, args.out)
         print(f"report written to {path}")
+        return 0
+
+    if args.command == "knn":
+        from .knn import run_knn
+        reports = run_knn(args.data, args.model, tuple(args.views),
+                          tuple(args.seeds), args.out)
+        for r in reports:
+            t = r["test"]
+            print(f"seed {r['seed']}: view={r['selected_view']} k={r['selected_k']} "
+                  f"dev_loo={r['dev_loo_accuracy']} test_acc={t['accuracy']} "
+                  f"mF1={t['macro_f1']} mcnemar_p="
+                  f"{r['mcnemar_vs_majority_on_test']['p_value']}")
         return 0
 
     if args.command == "protocol":
