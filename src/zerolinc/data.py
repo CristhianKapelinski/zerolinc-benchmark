@@ -82,10 +82,46 @@ def load_incidents(path: str | Path, normalize: bool = True) -> list[Incident]:
     return out
 
 
+def boilerplate_lines(texts: list[str], threshold: float = 0.15, min_len: int = 16) -> set[str]:
+    """Corpus-level template detection: lines occurring in >= threshold of docs.
+
+    A purely statistical rule (line document frequency), no hand-written
+    keyword lists: coordination disclaimers, header labels, and signatures
+    shared across tickets are identified by their repetition across the
+    corpus, whatever their language or wording.
+    """
+    from collections import Counter
+
+    df: Counter[str] = Counter()
+    for t in texts:
+        df.update({ln.strip() for ln in t.splitlines() if len(ln.strip()) >= min_len})
+    cut = max(2, int(threshold * len(texts)))
+    return {ln for ln, c in df.items() if c >= cut}
+
+
+def deboiler_view(incidents: list[Incident]) -> list[Incident]:
+    boiler = boilerplate_lines([i.text for i in incidents])
+    out = []
+    for i in incidents:
+        kept = "\n".join(
+            ln for ln in i.text.splitlines() if ln.strip() not in boiler
+        ).strip()
+        out.append(Incident(i.incident_id, kept or i.text, i.label))
+    return out
+
+
+VIEWS = ("full", "subject", "deboiler", "subject-deboiler")
+
+
 def apply_view(incidents: list[Incident], view: str) -> list[Incident]:
-    """Apply a text view: 'full' (as loaded) or 'subject' (subject-first)."""
+    """Apply a text view; see VIEWS. Views are corpus-level, deterministic."""
     if view == "full":
         return incidents
     if view == "subject":
         return [Incident(i.incident_id, subject_view(i.text), i.label) for i in incidents]
+    if view == "deboiler":
+        return deboiler_view(incidents)
+    if view == "subject-deboiler":
+        cleaned = deboiler_view(incidents)
+        return [Incident(i.incident_id, subject_view(i.text), i.label) for i in cleaned]
     raise ValueError(f"unknown text view: {view}")

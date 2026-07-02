@@ -19,8 +19,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data", type=Path, default=DEFAULT_DATA, help="incident CSV path")
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS, help="run output dir")
     parser.add_argument("--batch-size", type=int, default=8)
-    parser.add_argument("--view", choices=("full", "subject"), default="full",
-                        help="text view fed to the models")
+    parser.add_argument("--view", choices=("full", "subject", "deboiler", "subject-deboiler"),
+                        default="full", help="text view fed to the models")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="run one model x prompt-config pass")

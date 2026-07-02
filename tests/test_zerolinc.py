@@ -85,3 +85,15 @@ def test_event_config_present():
     assert cfg.template == "{}"
     assert sorted(cfg.labels.values()) == sorted(CODES)
     assert all(lbl.endswith(".") for lbl in cfg.labels)
+
+
+def test_deboiler_removes_corpus_templates():
+    from zerolinc.data import Incident, apply_view
+    boiler = "CERT.br works as a coordinating team for incidents"
+    incs = [Incident(str(k), f"{boiler}\nconteudo unico {k}", "CAT5") for k in range(10)]
+    out = apply_view(incs, "deboiler")
+    assert all(boiler not in i.text for i in out)
+    assert all(f"conteudo unico {k}" in out[k].text for k in range(10))
+    # a text that would become empty falls back to the original
+    incs2 = [Incident(str(k), boiler, "CAT5") for k in range(10)]
+    assert all(i.text for i in apply_view(incs2, "deboiler"))
