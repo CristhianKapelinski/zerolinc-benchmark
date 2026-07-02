@@ -97,3 +97,32 @@ def test_deboiler_removes_corpus_templates():
     # a text that would become empty falls back to the original
     incs2 = [Incident(str(k), boiler, "CAT5") for k in range(10)]
     assert all(i.text for i in apply_view(incs2, "deboiler"))
+
+
+def test_calibration_removes_label_bias(tmp_path):
+    import json
+    from zerolinc.combine import evaluate_calibrated, evaluate_ensemble
+    from zerolinc.labels import CODES
+    # CAT9 has a +0.4 constant bias; true signal puts CAT5 on top for all items
+    preds = []
+    for k in range(10):
+        scores = {c: 0.1 for c in CODES}
+        scores["CAT5"] = 0.3   # real signal
+        scores["CAT9"] = 0.5   # biased label wins raw argmax
+        preds.append({"incident_id": str(k), "true": "CAT5", "pred": "CAT9",
+                      "score": 0.5, "scores": scores})
+    f = tmp_path / "run.json"
+    f.write_text(json.dumps({"predictions": preds}))
+    res = evaluate_calibrated(f)
+    # constant bias is removed; with zero variance after centering CAT9 ties at 0,
+    # CAT5 keeps positive margin only if variance exists; here all rows identical ->
+    # calibrated scores all zero => argmax falls to first code CAT1: accuracy 0.
+    # Add one contrast row to give variance instead:
+    preds[0]["scores"]["CAT5"] = 0.05
+    preds[0]["scores"]["CAT9"] = 0.9
+    preds[0]["true"] = "CAT9"
+    f.write_text(json.dumps({"predictions": preds}))
+    res = evaluate_calibrated(f)
+    assert res["accuracy"] >= 0.9  # 9 CAT5 rows + 1 CAT9 row all correct
+    res2 = evaluate_ensemble([f, f])
+    assert res2["accuracy"] == res["accuracy"]

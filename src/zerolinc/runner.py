@@ -84,8 +84,13 @@ def run_one(
         **power.report(),
         "metrics": evaluate(y_true, result.predictions),
         "predictions": [
-            {"incident_id": i.incident_id, "true": i.label, "pred": p, "score": round(s, 4)}
-            for i, p, s in zip(incidents, result.predictions, result.top_scores)
+            {
+                "incident_id": i.incident_id, "true": i.label, "pred": p,
+                "score": round(s, 4),
+                **({"scores": result.all_scores[k]} if result.all_scores else {}),
+            }
+            for k, (i, p, s) in enumerate(
+                zip(incidents, result.predictions, result.top_scores))
         ],
     }
     out = Path(results_dir) / f"{record['run_id']}.json"

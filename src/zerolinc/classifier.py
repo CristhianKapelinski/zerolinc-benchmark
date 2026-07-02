@@ -23,6 +23,7 @@ class RunResult:
     peak_vram_mb: float
     device: str
     max_length: int | None = None  # model context limit actually in effect
+    all_scores: list[dict[str, float]] | None = None  # per item: category -> score
 
 
 def classify(
@@ -65,6 +66,10 @@ def classify(
         outputs = [outputs]
     predictions = [config.labels[o["labels"][0]] for o in outputs]
     top_scores = [float(o["scores"][0]) for o in outputs]
+    all_scores = [
+        {config.labels[lab]: round(float(s), 5) for lab, s in zip(o["labels"], o["scores"])}
+        for o in outputs
+    ]
     peak = torch.cuda.max_memory_allocated(device) / 2**20 if device >= 0 else 0.0
 
     del clf
@@ -78,4 +83,5 @@ def classify(
         peak_vram_mb=round(peak, 1),
         device=torch.cuda.get_device_name(device) if device >= 0 else "cpu",
         max_length=max_length,
+        all_scores=all_scores,
     )
