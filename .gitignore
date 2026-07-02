@@ -1,0 +1,10 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.venv/
+*.log
+.ruff_cache/
+# model caches never belong in the repo
+hf_cache/
+# results/runs (run of record) IS committed deliberately; report is regenerable
+results/report/

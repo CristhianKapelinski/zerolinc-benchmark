@@ -1,0 +1,61 @@
+"""Unit tests for the non-neural logic: labels, normalization, metrics, baselines.
+
+These run offline (no network, no models).
+"""
+
+from zerolinc.baselines import keyword_baseline, majority_baseline
+from zerolinc.data import normalize_text
+from zerolinc.labels import CATEGORIES, CODES, PROMPT_CONFIGS
+from zerolinc.metrics import evaluate, wilson_ci
+
+
+def test_twelve_categories_and_codes():
+    assert len(CATEGORIES) == 12
+    assert CODES[0] == "CAT1" and CODES[-1] == "CAT12"
+    assert len(set(CODES)) == 12
+
+
+def test_prompt_configs_cover_all_categories():
+    for name, cfg in PROMPT_CONFIGS.items():
+        assert "{}" in cfg.template, name
+        assert sorted(cfg.labels.values()) == sorted(CODES), name
+        assert all(label.strip() for label in cfg.labels), name
+
+
+def test_normalize_compresses_tags():
+    raw = "De [EMAIL_ADDRESS_f6f7086365] host [IP_ADDRESS_907d29be4d]  em [DATE_TIME_1fe1abe111]"
+    out = normalize_text(raw)
+    assert out == "De <EMAIL> host <IP> em <DATE>"
+
+
+def test_normalize_keeps_unknown_tag_safe():
+    assert normalize_text("[FOO_BAR_abcdef1234]") == "<REDACTED>"
+
+
+def test_wilson_ci_known_value():
+    lo, hi = wilson_ci(50, 100)
+    assert 0.40 < lo < 0.41 and 0.59 < hi < 0.60
+
+
+def test_evaluate_counts_and_perfect_run():
+    y = ["CAT1", "CAT2", "CAT2"]
+    res = evaluate(y, y)
+    assert res["accuracy"] == 1.0 and res["correct"] == 3
+    res2 = evaluate(y, ["CAT2", "CAT2", "CAT2"])
+    assert res2["correct"] == 2
+    assert res2["per_class"]["CAT1"]["support"] == 1
+
+
+def test_majority_baseline():
+    y = ["CAT5", "CAT5", "CAT3"]
+    assert majority_baseline(y, ["a", "b", "c"]) == ["CAT5", "CAT5", "CAT5"]
+
+
+def test_keyword_baseline_matches_and_fallback():
+    y = ["CAT3", "CAT5", "CAT5"]
+    texts = [
+        "massive ddos with syn flood from a botnet",  # clear CAT3
+        "exploit for cve-2023-1234 remote execution",  # clear CAT5
+        "nothing relevant here",  # no match -> majority (CAT5)
+    ]
+    assert keyword_baseline(y, texts) == ["CAT3", "CAT5", "CAT5"]

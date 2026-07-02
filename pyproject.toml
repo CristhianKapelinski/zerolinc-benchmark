@@ -1,0 +1,41 @@
+[project]
+name = "zerolinc"
+version = "0.1.0"
+description = "Zero-shot NLI classification of security incident reports into NIST SP 800-61r3 categories"
+readme = "README.md"
+license = { text = "AGPL-3.0-or-later" }
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.7",
+    "transformers>=4.44",
+    "pandas>=2.2",
+    "scikit-learn>=1.4",
+    "sentencepiece>=0.2",
+    "protobuf>=4.25",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.scripts]
+zerolinc = "zerolinc.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zerolinc"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu128" }]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
