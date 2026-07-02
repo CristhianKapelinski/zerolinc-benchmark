@@ -22,6 +22,7 @@ class RunResult:
     wall_seconds: float
     peak_vram_mb: float
     device: str
+    max_length: int | None = None  # model context limit actually in effect
 
 
 def classify(
@@ -45,6 +46,9 @@ def classify(
         torch_dtype=torch.float16 if device >= 0 else None,
     )
     candidate_labels = list(config.labels.keys())
+    max_length = getattr(clf.tokenizer, "model_max_length", None)
+    if max_length and max_length > 100_000:  # sentinel for "unset"
+        max_length = None
 
     start = time.perf_counter()
     outputs = clf(
@@ -73,4 +77,5 @@ def classify(
         wall_seconds=round(wall, 2),
         peak_vram_mb=round(peak, 1),
         device=torch.cuda.get_device_name(device) if device >= 0 else "cpu",
+        max_length=max_length,
     )

@@ -14,6 +14,7 @@ import torch
 
 from . import baselines
 from .backends import classify_any, parse_spec
+from .power import PowerSampler
 from .data import Incident
 from .labels import PROMPT_CONFIGS
 from .metrics import evaluate
@@ -63,7 +64,8 @@ def run_one(
     y_true = [i.label for i in incidents]
 
     backend, _ = parse_spec(model_id)
-    result = classify_any(model_id, texts, config, batch_size=batch_size)
+    with PowerSampler() as power:
+        result = classify_any(model_id, texts, config, batch_size=batch_size)
     record = {
         "run_id": run_id(model_id, config_name, tag),
         "model": model_id,
@@ -78,6 +80,8 @@ def run_one(
         "incidents_per_second": round(len(incidents) / result.wall_seconds, 2),
         "peak_vram_mb": result.peak_vram_mb,
         "device": result.device,
+        "max_length": result.max_length,
+        **power.report(),
         "metrics": evaluate(y_true, result.predictions),
         "predictions": [
             {"incident_id": i.incident_id, "true": i.label, "pred": p, "score": round(s, 4)}

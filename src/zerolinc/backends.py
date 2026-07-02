@@ -62,10 +62,13 @@ def classify_gliclass(
         top_scores.append(float(best["score"]))
     peak = torch.cuda.max_memory_allocated(0) / 2**20 if device != "cpu" else 0.0
     name = torch.cuda.get_device_name(0) if device != "cpu" else "cpu"
+    max_length = getattr(tokenizer, "model_max_length", None)
+    if max_length and max_length > 100_000:
+        max_length = None
     del pipe, model
     if device != "cpu":
         torch.cuda.empty_cache()
-    return RunResult(predictions, top_scores, round(wall, 2), round(peak, 1), name)
+    return RunResult(predictions, top_scores, round(wall, 2), round(peak, 1), name, max_length)
 
 
 def classify_embed(
@@ -96,10 +99,11 @@ def classify_embed(
     top_scores = [float(sims[r, i]) for r, i in enumerate(best_idx)]
     peak = torch.cuda.max_memory_allocated(0) / 2**20 if device == "cuda" else 0.0
     name = torch.cuda.get_device_name(0) if device == "cuda" else "cpu"
+    max_length = getattr(model, "max_seq_length", None)
     del model
     if device == "cuda":
         torch.cuda.empty_cache()
-    return RunResult(predictions, top_scores, round(wall, 2), round(peak, 1), name)
+    return RunResult(predictions, top_scores, round(wall, 2), round(peak, 1), name, max_length)
 
 
 def classify_any(
