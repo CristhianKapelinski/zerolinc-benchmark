@@ -35,17 +35,17 @@
  "gpu_power_max_w": 150.1,
  "gpu_energy_wh": 0.882,
  "metrics": {
-  "n": 185,
-  "correct": 115,
-  "accuracy": 0.6216,
+  "n": 182,
+  "correct": 113,
+  "accuracy": 0.6209,
   "accuracy_ci95": [
-   0.5499,
-   0.6884
+   0.5486,
+   0.6882
   ],
-  "macro_precision": 0.1067,
-  "macro_recall": 0.1267,
-  "macro_f1": 0.1098,
-  "weighted_f1": 0.5499,
+  "macro_precision": 0.1202,
+  "macro_recall": 0.1428,
+  "macro_f1": 0.1241,
+  "weighted_f1": 0.5501,
   "per_class": {
    "CAT1": {
     "precision": 0.0,
@@ -61,27 +61,21 @@
    },
    "CAT3": {
     "precision": 0.1667,
-    "recall": 0.0556,
-    "f1": 0.0833,
-    "support": 18
+    "recall": 0.0588,
+    "f1": 0.087,
+    "support": 17
    },
    "CAT5": {
-    "precision": 0.7434,
-    "recall": 0.9417,
-    "f1": 0.8309,
-    "support": 120
+    "precision": 0.745,
+    "recall": 0.9407,
+    "f1": 0.8315,
+    "support": 118
    },
    "CAT7": {
     "precision": 0.0,
     "recall": 0.0,
     "f1": 0.0,
     "support": 4
-   },
-   "CAT8": {
-    "precision": 0.0,
-    "recall": 0.0,
-    "f1": 0.0,
-    "support": 0
    },
    "CAT9": {
     "precision": 0.05,
@@ -109,7 +103,6 @@
     "CAT3",
     "CAT5",
     "CAT7",
-    "CAT8",
     "CAT9",
     "CAT10",
     "CAT12"
@@ -123,7 +116,6 @@
      0,
      0,
      0,
-     0,
      0
     ],
     [
@@ -132,7 +124,6 @@
      0,
      3,
      0,
-     1,
      0,
      0,
      0
@@ -141,8 +132,7 @@
      0,
      0,
      1,
-     17,
-     0,
+     16,
      0,
      0,
      0,
@@ -152,8 +142,7 @@
      0,
      0,
      5,
-     113,
-     0,
+     111,
      0,
      2,
      0,
@@ -167,18 +156,6 @@
      0,
      0,
      0,
-     0,
-     0
-    ],
-    [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
      0
     ],
     [
@@ -187,7 +164,6 @@
      0,
      6,
      0,
-     0,
      1,
      0,
      0
@@ -197,7 +173,6 @@
      0,
      0,
      1,
-     0,
      0,
      0,
      0,
@@ -209,7 +184,6 @@
      0,
      6,
      0,
-     5,
      17,
      0,
      0
@@ -218,7 +192,7 @@
   },
   "pred_distribution": {
    "CAT9": 20,
-   "CAT5": 152,
+   "CAT5": 149,
    "CAT3": 6,
    "CAT8": 6,
    "CAT1": 1
@@ -1316,24 +1290,6 @@
    "true": "CAT5",
    "pred": "CAT5",
    "score": 0.6587
-  },
-  {
-   "incident_id": "INC-0048",
-   "true": "CAT5",
-   "pred": "CAT5",
-   "score": 0.7384
-  },
-  {
-   "incident_id": "INC-0049",
-   "true": "CAT3",
-   "pred": "CAT5",
-   "score": 0.5474
-  },
-  {
-   "incident_id": "INC-0052",
-   "true": "CAT5",
-   "pred": "CAT5",
-   "score": 0.6175
   }
  ]
 }

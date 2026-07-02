@@ -84,25 +84,44 @@ def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str)
     plt.close(fig)
 
 
+BACKEND_COLOR = {"nli": CAT[0], "gliclass": CAT[1], "embed": CAT[2], "rerank": CAT[4]}
+
+
 def fig_cost(runs: list[dict], out: Path) -> None:
-    """Cost x quality: best run per model, wall-clock seconds vs accuracy."""
+    """Cost x quality: best run per model; color = backend family, direct labels."""
     best = {}
     for r in runs:
         key = r["model"].split("/")[-1]
         if key not in best or r["metrics"]["accuracy"] > best[key]["metrics"]["accuracy"]:
             best[key] = r
-    fig, ax = plt.subplots(figsize=(5.5, 3.2))
-    for k, (name, r) in enumerate(sorted(best.items())):
+    fig, ax = plt.subplots(figsize=(7.5, 3.6))
+    items = sorted(best.items(), key=lambda kv: kv[1]["wall_seconds"])
+    seen_backends = {}
+    for k, (name, r) in enumerate(items):
         x = r["wall_seconds"]
         y = r["metrics"]["accuracy"] * 100
         lo, hi = (v * 100 for v in r["metrics"]["accuracy_ci95"])
-        ax.errorbar(x, y, yerr=[[y - lo], [hi - y]], fmt="o", color=CAT[k % len(CAT)],
+        backend = r.get("backend", "nli")
+        color = BACKEND_COLOR.get(backend, CAT[5])
+        seen_backends[backend] = color
+        ax.errorbar(x, y, yerr=[[y - lo], [hi - y]], fmt="o", color=color,
                     markersize=7, capsize=3, lw=1)
-        ax.annotate(f"{MODEL_SHORT.get(name, name)}\n({r['prompt_config']})",
-                    (x, y), textcoords="offset points", xytext=(8, -4), fontsize=7.5)
+        above = k % 2 == 0
+        ax.annotate(f"{MODEL_SHORT.get(name, name)} ({r['prompt_config']})",
+                    (x, y), textcoords="offset points",
+                    xytext=(0, 26 if above else -32), ha="center", fontsize=7.5,
+                    arrowprops={"arrowstyle": "-", "color": "#c3c2b7", "lw": 0.6})
     ax.set_xscale("log")
-    ax.set_xlabel("wall-clock seconds for 185 incidents (log)")
+    ax.set_xticks([2, 5, 10, 20, 60])
+    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+    ax.minorticks_off()
+    ax.set_xlabel("wall-clock seconds for 185 incidents (log scale)")
     ax.set_ylabel("accuracy (%)")
+    ax.set_ylim(0, 90)
+    handles = [matplotlib.lines.Line2D([], [], marker="o", ls="", color=c, label=b)
+               for b, c in sorted(seen_backends.items())]
+    ax.legend(handles=handles, frameon=False, fontsize=8, loc="lower right",
+              title="backend", title_fontsize=8)
     ax.grid(True, color="#e1e0d9", lw=0.6)
     ax.set_axisbelow(True)
     fig.savefig(out / "fig_cost.pdf")
@@ -127,7 +146,7 @@ def fig_perclass(runs: list[dict], out: Path) -> None:
     ax.set_ylim(0, 1.12)
     ax.set_ylabel("score")
     ax.set_title(f"Per-class metrics, best run ({best['run_id']})", fontsize=9, loc="left")
-    ax.legend(frameon=False, fontsize=8, loc="upper right")
+    ax.legend(frameon=False, fontsize=8, loc="center left", bbox_to_anchor=(1.01, 0.5))
     ax.grid(True, axis="y", color="#e1e0d9", lw=0.6)
     ax.set_axisbelow(True)
     fig.savefig(out / "fig_perclass.pdf")

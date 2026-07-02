@@ -35,17 +35,17 @@
  "gpu_power_max_w": 180.6,
  "gpu_energy_wh": 0.145,
  "metrics": {
-  "n": 185,
-  "correct": 23,
-  "accuracy": 0.1243,
+  "n": 182,
+  "correct": 22,
+  "accuracy": 0.1209,
   "accuracy_ci95": [
-   0.0843,
-   0.1796
+   0.0812,
+   0.1762
   ],
-  "macro_precision": 0.1634,
-  "macro_recall": 0.3076,
-  "macro_f1": 0.0694,
-  "weighted_f1": 0.0551,
+  "macro_precision": 0.1628,
+  "macro_recall": 0.3073,
+  "macro_f1": 0.0686,
+  "weighted_f1": 0.0537,
   "per_class": {
    "CAT1": {
     "precision": 0.029,
@@ -60,16 +60,16 @@
     "support": 4
    },
    "CAT3": {
-    "precision": 0.1828,
-    "recall": 0.9444,
-    "f1": 0.3063,
-    "support": 18
+    "precision": 0.1778,
+    "recall": 0.9412,
+    "f1": 0.2991,
+    "support": 17
    },
    "CAT5": {
     "precision": 1.0,
-    "recall": 0.0167,
-    "f1": 0.0328,
-    "support": 120
+    "recall": 0.0169,
+    "f1": 0.0333,
+    "support": 118
    },
    "CAT7": {
     "precision": 0.0,
@@ -131,7 +131,7 @@
     [
      0,
      1,
-     17,
+     16,
      0,
      0,
      0,
@@ -141,7 +141,7 @@
     [
      42,
      3,
-     73,
+     71,
      2,
      0,
      0,
@@ -192,7 +192,7 @@
   },
   "pred_distribution": {
    "CAT1": 69,
-   "CAT3": 93,
+   "CAT3": 90,
    "CAT2": 21,
    "CAT5": 2
   }
@@ -1289,24 +1289,6 @@
    "true": "CAT5",
    "pred": "CAT2",
    "score": 0.8857
-  },
-  {
-   "incident_id": "INC-0048",
-   "true": "CAT5",
-   "pred": "CAT3",
-   "score": 0.8799
-  },
-  {
-   "incident_id": "INC-0049",
-   "true": "CAT3",
-   "pred": "CAT3",
-   "score": 0.9067
-  },
-  {
-   "incident_id": "INC-0052",
-   "true": "CAT5",
-   "pred": "CAT3",
-   "score": 0.8745
   }
  ]
 }

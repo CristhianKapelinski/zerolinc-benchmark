@@ -77,7 +77,7 @@ def run_one(
         "machine": _machine(),
         "n": len(incidents),
         "wall_seconds": result.wall_seconds,
-        "incidents_per_second": round(len(incidents) / result.wall_seconds, 2),
+        "incidents_per_second": round(len(incidents) / max(result.wall_seconds, 0.01), 2),
         "peak_vram_mb": result.peak_vram_mb,
         "device": result.device,
         "max_length": result.max_length,
@@ -93,13 +93,22 @@ def run_one(
                 zip(incidents, result.predictions, result.top_scores))
         ],
     }
-    out = Path(results_dir) / f"{record['run_id']}.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(record, ensure_ascii=False, indent=1))
+    _write_record(Path(results_dir), record)
     return record
 
 
-def run_baselines(incidents: list[Incident], results_dir: str | Path) -> list[dict]:
+def _write_record(results_dir: Path, record: dict) -> None:
+    """Atomic write: a crash mid-write must not leave a truncated run file."""
+    results_dir.mkdir(parents=True, exist_ok=True)
+    out = results_dir / f"{record['run_id']}.json"
+    tmp = out.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(record, ensure_ascii=False, indent=1))
+    tmp.replace(out)
+
+
+def run_baselines(
+    incidents: list[Incident], results_dir: str | Path, tag: str = ""
+) -> list[dict]:
     texts = [i.text for i in incidents]
     y_true = [i.label for i in incidents]
     records = []
@@ -107,9 +116,11 @@ def run_baselines(incidents: list[Incident], results_dir: str | Path) -> list[di
                      ("keyword", baselines.keyword_baseline)):
         preds = fn(y_true, texts)
         record = {
-            "run_id": f"baseline__{name}",
+            "run_id": f"baseline__{name}" + (f"__{tag}" if tag else ""),
             "model": f"baseline/{name}",
+            "backend": "baseline",
             "prompt_config": name,
+            "text_view": tag or "full",
             "n": len(incidents),
             "wall_seconds": 0.0,
             "metrics": evaluate(y_true, preds),
@@ -118,8 +129,6 @@ def run_baselines(incidents: list[Incident], results_dir: str | Path) -> list[di
                 for i, p in zip(incidents, preds)
             ],
         }
-        out = Path(results_dir) / f"{record['run_id']}.json"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps(record, ensure_ascii=False, indent=1))
+        _write_record(Path(results_dir), record)
         records.append(record)
     return records

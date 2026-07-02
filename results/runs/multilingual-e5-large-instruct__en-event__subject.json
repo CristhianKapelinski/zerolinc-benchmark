@@ -35,17 +35,17 @@
  "gpu_power_max_w": 183.1,
  "gpu_energy_wh": 0.146,
  "metrics": {
-  "n": 185,
+  "n": 182,
   "correct": 18,
-  "accuracy": 0.0973,
+  "accuracy": 0.0989,
   "accuracy_ci95": [
-   0.0624,
-   0.1485
+   0.0635,
+   0.1509
   ],
-  "macro_precision": 0.0409,
-  "macro_recall": 0.2292,
-  "macro_f1": 0.0642,
-  "weighted_f1": 0.0415,
+  "macro_precision": 0.0416,
+  "macro_recall": 0.2353,
+  "macro_f1": 0.0657,
+  "weighted_f1": 0.041,
   "per_class": {
    "CAT1": {
     "precision": 0.0345,
@@ -54,22 +54,22 @@
     "support": 2
    },
    "CAT2": {
-    "precision": 0.0198,
+    "precision": 0.0202,
     "recall": 0.5,
-    "f1": 0.0381,
+    "f1": 0.0388,
     "support": 4
    },
    "CAT3": {
-    "precision": 0.2727,
-    "recall": 0.8333,
-    "f1": 0.411,
-    "support": 18
+    "precision": 0.2778,
+    "recall": 0.8824,
+    "f1": 0.4225,
+    "support": 17
    },
    "CAT5": {
     "precision": 0.0,
     "recall": 0.0,
     "f1": 0.0,
-    "support": 120
+    "support": 118
    },
    "CAT7": {
     "precision": 0.0,
@@ -130,7 +130,7 @@
     ],
     [
      0,
-     3,
+     2,
      15,
      0,
      0,
@@ -140,8 +140,8 @@
     ],
     [
      2,
-     79,
-     39,
+     78,
+     38,
      0,
      0,
      0,
@@ -192,8 +192,8 @@
   },
   "pred_distribution": {
    "CAT1": 29,
-   "CAT2": 101,
-   "CAT3": 55
+   "CAT2": 99,
+   "CAT3": 54
   }
  },
  "predictions": [
@@ -1288,24 +1288,6 @@
    "true": "CAT5",
    "pred": "CAT2",
    "score": 0.8496
-  },
-  {
-   "incident_id": "INC-0048",
-   "true": "CAT5",
-   "pred": "CAT3",
-   "score": 0.8159
-  },
-  {
-   "incident_id": "INC-0049",
-   "true": "CAT3",
-   "pred": "CAT2",
-   "score": 0.8584
-  },
-  {
-   "incident_id": "INC-0052",
-   "true": "CAT5",
-   "pred": "CAT2",
-   "score": 0.8125
   }
  ]
 }

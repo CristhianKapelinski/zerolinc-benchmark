@@ -50,8 +50,9 @@ def subject_view(text: str) -> str:
     The corpus items are e-mail threads; Subject is a structural RFC 5322
     field (rendered "Assunto:" in this corpus). Encoders truncate at 512
     tokens, and the subject, the most condensed statement of what the ticket
-    is, can sit past the truncation point. This view only reorders: subjects
-    first, then the unmodified text.
+    is, can be diluted by boilerplate inside the window. This view prepends a
+    copy of the subject line(s) to the unmodified text (the subject therefore
+    appears twice: emphasis by position, with nothing removed).
     """
     subjects = [s.strip() for s in _SUBJECT.findall(text)]
     seen: set[str] = set()
@@ -67,18 +68,21 @@ def load_incidents(path: str | Path, normalize: bool = True) -> list[Incident]:
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"dataset at {path} is missing columns: {sorted(missing)}")
-    out = []
+    from .labels import CODES
+
+    out, seen = [], set()
     for _, row in df.iterrows():
-        text = str(row["conteudo"])
-        if normalize:
-            text = normalize_text(text)
-        out.append(
-            Incident(
-                incident_id=str(row["incidente_id"]),
-                text=text,
-                label=str(row["categoria"]).strip().upper(),
-            )
-        )
+        incident_id = str(row["incidente_id"])
+        if incident_id in seen:  # exact duplicate tickets exist in the source CSV
+            continue
+        label = str(row["categoria"]).strip().upper()
+        if label not in CODES:
+            raise ValueError(f"invalid category {label!r} for incident {incident_id}")
+        if not isinstance(row["conteudo"], str) or not row["conteudo"].strip():
+            raise ValueError(f"empty content for incident {incident_id}")
+        seen.add(incident_id)
+        text = normalize_text(row["conteudo"]) if normalize else row["conteudo"]
+        out.append(Incident(incident_id=incident_id, text=text, label=label))
     return out
 
 

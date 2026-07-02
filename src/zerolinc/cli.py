@@ -18,7 +18,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="zerolinc", description=__doc__)
     parser.add_argument("--data", type=Path, default=DEFAULT_DATA, help="incident CSV path")
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS, help="run output dir")
-    parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--batch-size", dest="batch_size", type=int, default=8)
     parser.add_argument("--view", choices=("full", "subject", "deboiler", "subject-deboiler"),
                         default="full", help="text view fed to the models")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -27,6 +27,8 @@ def main(argv: list[str] | None = None) -> int:
     p_run.add_argument("--model", required=True)
     p_run.add_argument("--config", required=True, choices=sorted(PROMPT_CONFIGS))
     p_run.add_argument("--limit", type=int, default=0, help="use only the first N incidents")
+    p_run.add_argument("--batch-size", dest="batch_size", type=int,
+                       default=argparse.SUPPRESS)
 
     p_grid = sub.add_parser("grid", help="run all models x all prompt configs")
     p_grid.add_argument("--models", nargs="*", default=list(DEFAULT_MODELS))
@@ -43,11 +45,28 @@ def main(argv: list[str] | None = None) -> int:
     p_rep = sub.add_parser("report", help="aggregate stored runs into summary tables")
     p_rep.add_argument("--out", type=Path, default=DEFAULT_REPORT)
 
+    p_proto = sub.add_parser(
+        "protocol", help="dev/test selection protocol + McNemar, from stored runs")
+    p_proto.add_argument("--seed", type=int, default=42)
+    p_proto.add_argument("--out", type=Path, default=DEFAULT_REPORT)
+
     args = parser.parse_args(argv)
 
     if args.command == "report":
         path = write_report(args.results, args.out)
         print(f"report written to {path}")
+        return 0
+
+    if args.command == "protocol":
+        import json as _json
+
+        from .protocol import protocol_report
+        result = protocol_report(args.results, seed=args.seed)
+        args.out.mkdir(parents=True, exist_ok=True)
+        out_file = args.out / f"protocol_seed{args.seed}.json"
+        out_file.write_text(_json.dumps(result, ensure_ascii=False, indent=1))
+        print(_json.dumps(result, ensure_ascii=False, indent=1))
+        print(f"\nprotocol written to {out_file}")
         return 0
 
     incidents = apply_view(load_incidents(args.data), args.view)
@@ -56,7 +75,7 @@ def main(argv: list[str] | None = None) -> int:
     tag = args.view if args.view != "full" else ""
 
     if args.command == "baselines":
-        for record in run_baselines(incidents, args.results):
+        for record in run_baselines(incidents, args.results, tag):
             m = record["metrics"]
             print(f"{record['run_id']}: acc={m['accuracy']} macro_f1={m['macro_f1']}")
         return 0

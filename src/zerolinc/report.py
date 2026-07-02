@@ -43,8 +43,8 @@ def write_report(results_dir: str | Path, out_dir: str | Path) -> Path:
     df.to_csv(out / "summary.csv", index=False)
 
     lines = ["# ZeroLINC results", "", df.to_markdown(index=False), ""]
-    best = next((r for r in runs if f"{r['model'].split('/')[-1]}__{r['prompt_config']}"
-                 == f"{df.iloc[0]['model']}__{df.iloc[0]['prompt_config']}"), None)
+    best = max((r for r in runs if not r["run_id"].startswith("baseline")),
+               key=lambda r: r["metrics"]["accuracy"], default=None)
     if best:
         lines.append(f"## Per-class metrics of the best run ({best['run_id']})")
         per = pd.DataFrame(best["metrics"]["per_class"]).T

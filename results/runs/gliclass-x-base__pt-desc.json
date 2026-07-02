@@ -26,26 +26,26 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 10.96,
- "incidents_per_second": 16.88,
- "peak_vram_mb": 3784.1,
+ "wall_seconds": 11.26,
+ "incidents_per_second": 16.43,
+ "peak_vram_mb": 3783.5,
  "device": "NVIDIA GeForce RTX 5060 Ti",
  "max_length": null,
- "gpu_power_mean_w": 136.1,
- "gpu_power_max_w": 163.1,
- "gpu_energy_wh": 0.507,
+ "gpu_power_mean_w": 118.8,
+ "gpu_power_max_w": 161.2,
+ "gpu_energy_wh": 0.466,
  "metrics": {
-  "n": 185,
-  "correct": 122,
-  "accuracy": 0.6595,
+  "n": 182,
+  "correct": 120,
+  "accuracy": 0.6593,
   "accuracy_ci95": [
-   0.5885,
-   0.7239
+   0.5878,
+   0.7243
   ],
   "macro_precision": 0.2074,
   "macro_recall": 0.1875,
   "macro_f1": 0.1827,
-  "weighted_f1": 0.5299,
+  "weighted_f1": 0.5298,
   "per_class": {
    "CAT1": {
     "precision": 0.0,
@@ -63,13 +63,13 @@
     "precision": 0.0,
     "recall": 0.0,
     "f1": 0.0,
-    "support": 18
+    "support": 17
    },
    "CAT5": {
-    "precision": 0.6593,
+    "precision": 0.6592,
     "recall": 1.0,
-    "f1": 0.7947,
-    "support": 120
+    "f1": 0.7946,
+    "support": 118
    },
    "CAT7": {
     "precision": 0.0,
@@ -132,7 +132,7 @@
      0,
      0,
      0,
-     18,
+     17,
      0,
      0,
      0,
@@ -142,7 +142,7 @@
      0,
      0,
      0,
-     120,
+     118,
      0,
      0,
      0,
@@ -191,7 +191,7 @@
    ]
   },
   "pred_distribution": {
-   "CAT5": 182,
+   "CAT5": 179,
    "CAT2": 2,
    "CAT1": 1
   }
@@ -201,1111 +201,1639 @@
    "incident_id": "INC-0078",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5069
+   "score": 0.5069,
+   "scores": {
+    "CAT5": 0.50695
+   }
   },
   {
    "incident_id": "INC-0079",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5322
+   "score": 0.5322,
+   "scores": {
+    "CAT5": 0.53222
+   }
   },
   {
    "incident_id": "INC-0080",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4324
+   "score": 0.4324,
+   "scores": {
+    "CAT5": 0.43244
+   }
   },
   {
    "incident_id": "INC-0081",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2765
+   "score": 0.2765,
+   "scores": {
+    "CAT5": 0.27648
+   }
   },
   {
    "incident_id": "INC-0082",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.482
+   "score": 0.482,
+   "scores": {
+    "CAT5": 0.48197
+   }
   },
   {
    "incident_id": "INC-0083",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4757
+   "score": 0.4757,
+   "scores": {
+    "CAT5": 0.47572
+   }
   },
   {
    "incident_id": "INC-0084",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4319
+   "score": 0.4319,
+   "scores": {
+    "CAT5": 0.43186
+   }
   },
   {
    "incident_id": "INC-0085",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4356
+   "score": 0.4356,
+   "scores": {
+    "CAT5": 0.43561
+   }
   },
   {
    "incident_id": "INC-0087",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4796
+   "score": 0.4796,
+   "scores": {
+    "CAT5": 0.47962
+   }
   },
   {
    "incident_id": "INC-0096",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4317
+   "score": 0.4317,
+   "scores": {
+    "CAT5": 0.43168
+   }
   },
   {
    "incident_id": "INC-0097",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2747
+   "score": 0.2747,
+   "scores": {
+    "CAT5": 0.27467
+   }
   },
   {
    "incident_id": "INC-0098",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.427
+   "score": 0.427,
+   "scores": {
+    "CAT5": 0.42697
+   }
   },
   {
    "incident_id": "INC-0099",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4355
+   "score": 0.4355,
+   "scores": {
+    "CAT5": 0.43548
+   }
   },
   {
    "incident_id": "INC-0100",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4367
+   "score": 0.4367,
+   "scores": {
+    "CAT5": 0.43667
+   }
   },
   {
    "incident_id": "INC-0101",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4367
+   "score": 0.4367,
+   "scores": {
+    "CAT5": 0.43667
+   }
   },
   {
    "incident_id": "INC-0106",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.4656
+   "score": 0.4656,
+   "scores": {
+    "CAT5": 0.46559
+   }
   },
   {
    "incident_id": "INC-0107",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4557
+   "score": 0.4557,
+   "scores": {
+    "CAT5": 0.45574
+   }
   },
   {
    "incident_id": "INC-0108",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2693
+   "score": 0.2693,
+   "scores": {
+    "CAT5": 0.26932
+   }
   },
   {
    "incident_id": "INC-0109",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.474
+   "score": 0.474,
+   "scores": {
+    "CAT5": 0.47397
+   }
   },
   {
    "incident_id": "INC-0111",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4288
+   "score": 0.4288,
+   "scores": {
+    "CAT5": 0.42876
+   }
   },
   {
    "incident_id": "INC-0112",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4331
+   "score": 0.4331,
+   "scores": {
+    "CAT5": 0.43306
+   }
   },
   {
    "incident_id": "INC-0113",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.8333
+   "score": 0.8333,
+   "scores": {
+    "CAT5": 0.8333
+   }
   },
   {
    "incident_id": "INC-0114",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5878
+   "score": 0.5878,
+   "scores": {
+    "CAT5": 0.58777
+   }
   },
   {
    "incident_id": "INC-0115",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5851
+   "score": 0.5851,
+   "scores": {
+    "CAT5": 0.58513
+   }
   },
   {
    "incident_id": "INC-0116",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5927
+   "score": 0.5927,
+   "scores": {
+    "CAT5": 0.59266
+   }
   },
   {
    "incident_id": "INC-0118",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4747
+   "score": 0.4747,
+   "scores": {
+    "CAT5": 0.47469
+   }
   },
   {
    "incident_id": "INC-0119",
    "true": "CAT1",
    "pred": "CAT5",
-   "score": 0.6197
+   "score": 0.6197,
+   "scores": {
+    "CAT5": 0.6197
+   }
   },
   {
    "incident_id": "INC-0121",
    "true": "CAT1",
    "pred": "CAT5",
-   "score": 0.3512
+   "score": 0.3512,
+   "scores": {
+    "CAT5": 0.35118
+   }
   },
   {
    "incident_id": "INC-0122",
    "true": "CAT2",
    "pred": "CAT2",
-   "score": 0.4919
+   "score": 0.4919,
+   "scores": {
+    "CAT2": 0.49191
+   }
   },
   {
    "incident_id": "INC-0124",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.544
+   "score": 0.544,
+   "scores": {
+    "CAT5": 0.54399
+   }
   },
   {
    "incident_id": "INC-0125",
    "true": "CAT2",
    "pred": "CAT2",
-   "score": 0.4701
+   "score": 0.4701,
+   "scores": {
+    "CAT2": 0.47008
+   }
   },
   {
    "incident_id": "INC-0127",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.7196
+   "score": 0.7196,
+   "scores": {
+    "CAT5": 0.71961
+   }
   },
   {
    "incident_id": "INC-0131",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2586
+   "score": 0.2586,
+   "scores": {
+    "CAT5": 0.25858
+   }
   },
   {
    "incident_id": "INC-0132",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5902
+   "score": 0.5902,
+   "scores": {
+    "CAT5": 0.59017
+   }
   },
   {
    "incident_id": "INC-0133",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5826
+   "score": 0.5826,
+   "scores": {
+    "CAT5": 0.58263
+   }
   },
   {
    "incident_id": "INC-0134",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5933
+   "score": 0.5933,
+   "scores": {
+    "CAT5": 0.59331
+   }
   },
   {
    "incident_id": "INC-0144",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6262
+   "score": 0.6262,
+   "scores": {
+    "CAT5": 0.62619
+   }
   },
   {
    "incident_id": "INC-0145",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.676
+   "score": 0.676,
+   "scores": {
+    "CAT5": 0.67598
+   }
   },
   {
    "incident_id": "INC-0146",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5987
+   "score": 0.5987,
+   "scores": {
+    "CAT5": 0.59873
+   }
   },
   {
    "incident_id": "INC-0150",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6752
+   "score": 0.6752,
+   "scores": {
+    "CAT5": 0.67516
+   }
   },
   {
    "incident_id": "INC-0151",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5755
+   "score": 0.5755,
+   "scores": {
+    "CAT5": 0.5755
+   }
   },
   {
    "incident_id": "INC-0152",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3119
+   "score": 0.3119,
+   "scores": {
+    "CAT5": 0.31189
+   }
   },
   {
    "incident_id": "INC-0155",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.8237
+   "score": 0.8237,
+   "scores": {
+    "CAT5": 0.82366
+   }
   },
   {
    "incident_id": "INC-0157",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5398
+   "score": 0.5398,
+   "scores": {
+    "CAT5": 0.53978
+   }
   },
   {
    "incident_id": "INC-0158",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4456
+   "score": 0.4456,
+   "scores": {
+    "CAT5": 0.44558
+   }
   },
   {
    "incident_id": "INC-0160",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5925
+   "score": 0.5925,
+   "scores": {
+    "CAT5": 0.59253
+   }
   },
   {
    "incident_id": "INC-0161",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.679
+   "score": 0.679,
+   "scores": {
+    "CAT5": 0.67895
+   }
   },
   {
    "incident_id": "INC-0162",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6839
+   "score": 0.6839,
+   "scores": {
+    "CAT5": 0.68388
+   }
   },
   {
    "incident_id": "INC-0163",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6251
+   "score": 0.6251,
+   "scores": {
+    "CAT5": 0.6251
+   }
   },
   {
    "incident_id": "INC-0164",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3825
+   "score": 0.3825,
+   "scores": {
+    "CAT5": 0.38252
+   }
   },
   {
    "incident_id": "INC-0166",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4439
+   "score": 0.4439,
+   "scores": {
+    "CAT5": 0.44385
+   }
   },
   {
    "incident_id": "INC-0167",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3814
+   "score": 0.3814,
+   "scores": {
+    "CAT5": 0.3814
+   }
   },
   {
    "incident_id": "INC-0171",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2739
+   "score": 0.2739,
+   "scores": {
+    "CAT5": 0.27393
+   }
   },
   {
    "incident_id": "INC-0172",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.427
+   "score": 0.427,
+   "scores": {
+    "CAT5": 0.42698
+   }
   },
   {
    "incident_id": "INC-0175",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4241
+   "score": 0.4241,
+   "scores": {
+    "CAT5": 0.42408
+   }
   },
   {
    "incident_id": "INC-0008",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4205
+   "score": 0.4205,
+   "scores": {
+    "CAT5": 0.42049
+   }
   },
   {
    "incident_id": "INC-0010",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.6055
+   "score": 0.6055,
+   "scores": {
+    "CAT5": 0.60548
+   }
   },
   {
    "incident_id": "INC-0012",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.6055
+   "score": 0.6055,
+   "scores": {
+    "CAT5": 0.60548
+   }
   },
   {
    "incident_id": "INC-0015",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2801
+   "score": 0.2801,
+   "scores": {
+    "CAT5": 0.28014
+   }
   },
   {
    "incident_id": "INC-0016",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5265
+   "score": 0.5265,
+   "scores": {
+    "CAT5": 0.52653
+   }
   },
   {
    "incident_id": "INC-0019",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6093
+   "score": 0.6093,
+   "scores": {
+    "CAT5": 0.60925
+   }
   },
   {
    "incident_id": "INC-0027",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4995
+   "score": 0.4995,
+   "scores": {
+    "CAT5": 0.4995
+   }
   },
   {
    "incident_id": "INC-0028",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.507
+   "score": 0.507,
+   "scores": {
+    "CAT5": 0.50701
+   }
   },
   {
    "incident_id": "INC-0029",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5005
+   "score": 0.5005,
+   "scores": {
+    "CAT5": 0.50048
+   }
   },
   {
    "incident_id": "INC-0030",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.498
+   "score": 0.498,
+   "scores": {
+    "CAT5": 0.49799
+   }
   },
   {
    "incident_id": "INC-0031",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5104
+   "score": 0.5104,
+   "scores": {
+    "CAT5": 0.51044
+   }
   },
   {
    "incident_id": "INC-0032",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5037
+   "score": 0.5037,
+   "scores": {
+    "CAT5": 0.50367
+   }
   },
   {
    "incident_id": "INC-0033",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5023
+   "score": 0.5023,
+   "scores": {
+    "CAT5": 0.50233
+   }
   },
   {
    "incident_id": "INC-0034",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2722
+   "score": 0.2722,
+   "scores": {
+    "CAT5": 0.27217
+   }
   },
   {
    "incident_id": "INC-0035",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2722
+   "score": 0.2722,
+   "scores": {
+    "CAT5": 0.27217
+   }
   },
   {
    "incident_id": "INC-0036",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5609
+   "score": 0.5609,
+   "scores": {
+    "CAT5": 0.56094
+   }
   },
   {
    "incident_id": "INC-0038",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4386
+   "score": 0.4386,
+   "scores": {
+    "CAT5": 0.43859
+   }
   },
   {
    "incident_id": "INC-0039",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4386
+   "score": 0.4386,
+   "scores": {
+    "CAT5": 0.43859
+   }
   },
   {
    "incident_id": "INC-0040",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.3995
+   "score": 0.3995,
+   "scores": {
+    "CAT5": 0.39954
+   }
   },
   {
    "incident_id": "INC-0042",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4131
+   "score": 0.4131,
+   "scores": {
+    "CAT5": 0.41312
+   }
   },
   {
    "incident_id": "INC-0043",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4122
+   "score": 0.4122,
+   "scores": {
+    "CAT5": 0.41225
+   }
   },
   {
    "incident_id": "INC-0044",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4065
+   "score": 0.4065,
+   "scores": {
+    "CAT5": 0.40647
+   }
   },
   {
    "incident_id": "INC-0050",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2711
+   "score": 0.2711,
+   "scores": {
+    "CAT5": 0.27112
+   }
   },
   {
    "incident_id": "INC-0051",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5063
+   "score": 0.5063,
+   "scores": {
+    "CAT5": 0.50629
+   }
   },
   {
    "incident_id": "INC-0057",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.258
+   "score": 0.258,
+   "scores": {
+    "CAT5": 0.25798
+   }
   },
   {
    "incident_id": "INC-0058",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5466
+   "score": 0.5466,
+   "scores": {
+    "CAT5": 0.54655
+   }
   },
   {
    "incident_id": "INC-0064",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2844
+   "score": 0.2844,
+   "scores": {
+    "CAT5": 0.2844
+   }
   },
   {
    "incident_id": "INC-0066",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5391
+   "score": 0.5391,
+   "scores": {
+    "CAT5": 0.53908
+   }
   },
   {
    "incident_id": "INC-0068",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6639
+   "score": 0.6639,
+   "scores": {
+    "CAT5": 0.66388
+   }
   },
   {
    "incident_id": "INC-0075",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2751
+   "score": 0.2751,
+   "scores": {
+    "CAT5": 0.27512
+   }
   },
   {
    "incident_id": "INC-0077",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5055
+   "score": 0.5055,
+   "scores": {
+    "CAT5": 0.5055
+   }
   },
   {
    "incident_id": "INC-0059",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.7361
+   "score": 0.7361,
+   "scores": {
+    "CAT5": 0.7361
+   }
   },
   {
    "incident_id": "INC-0002",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5078
+   "score": 0.5078,
+   "scores": {
+    "CAT5": 0.50783
+   }
   },
   {
    "incident_id": "INC-0003",
    "true": "CAT7",
    "pred": "CAT5",
-   "score": 0.6287
+   "score": 0.6287,
+   "scores": {
+    "CAT5": 0.62874
+   }
   },
   {
    "incident_id": "INC-0004",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3097
+   "score": 0.3097,
+   "scores": {
+    "CAT5": 0.30971
+   }
   },
   {
    "incident_id": "INC-0005",
    "true": "CAT7",
    "pred": "CAT5",
-   "score": 0.6991
+   "score": 0.6991,
+   "scores": {
+    "CAT5": 0.69909
+   }
   },
   {
    "incident_id": "INC-0006",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5071
+   "score": 0.5071,
+   "scores": {
+    "CAT5": 0.50706
+   }
   },
   {
    "incident_id": "INC-0007",
    "true": "CAT9",
    "pred": "CAT1",
-   "score": 0.4515
+   "score": 0.4515,
+   "scores": {
+    "CAT1": 0.45155
+   }
   },
   {
    "incident_id": "INC-0009",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.907
+   "score": 0.907,
+   "scores": {
+    "CAT5": 0.90699
+   }
   },
   {
    "incident_id": "INC-0179",
    "true": "CAT10",
    "pred": "CAT5",
-   "score": 0.7162
+   "score": 0.7162,
+   "scores": {
+    "CAT5": 0.7162
+   }
   },
   {
    "incident_id": "INC-0011",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.5555
+   "score": 0.5555,
+   "scores": {
+    "CAT5": 0.55551
+   }
   },
   {
    "incident_id": "INC-0013",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.4808
+   "score": 0.4808,
+   "scores": {
+    "CAT5": 0.48078
+   }
   },
   {
    "incident_id": "INC-0014",
    "true": "CAT9",
    "pred": "CAT5",
-   "score": 0.4948
+   "score": 0.4948,
+   "scores": {
+    "CAT5": 0.49476
+   }
   },
   {
    "incident_id": "INC-0017",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5265
+   "score": 0.5265,
+   "scores": {
+    "CAT5": 0.52653
+   }
   },
   {
    "incident_id": "INC-0018",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.51
+   "score": 0.51,
+   "scores": {
+    "CAT5": 0.50998
+   }
   },
   {
    "incident_id": "INC-0020",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3876
+   "score": 0.3876,
+   "scores": {
+    "CAT5": 0.38762
+   }
   },
   {
    "incident_id": "INC-0021",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5293
+   "score": 0.5293,
+   "scores": {
+    "CAT5": 0.52935
+   }
   },
   {
    "incident_id": "INC-0022",
    "true": "CAT2",
    "pred": "CAT5",
-   "score": 0.4075
+   "score": 0.4075,
+   "scores": {
+    "CAT5": 0.40752
+   }
   },
   {
    "incident_id": "INC-0023",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5561
+   "score": 0.5561,
+   "scores": {
+    "CAT5": 0.55612
+   }
   },
   {
    "incident_id": "INC-0024",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6429
+   "score": 0.6429,
+   "scores": {
+    "CAT5": 0.64289
+   }
   },
   {
    "incident_id": "INC-0025",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6644
+   "score": 0.6644,
+   "scores": {
+    "CAT5": 0.66436
+   }
   },
   {
    "incident_id": "INC-0026",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3865
+   "score": 0.3865,
+   "scores": {
+    "CAT5": 0.38654
+   }
   },
   {
    "incident_id": "INC-0037",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5269
+   "score": 0.5269,
+   "scores": {
+    "CAT5": 0.52691
+   }
   },
   {
    "incident_id": "INC-0041",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.404
+   "score": 0.404,
+   "scores": {
+    "CAT5": 0.40396
+   }
   },
   {
    "incident_id": "INC-0045",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5822
+   "score": 0.5822,
+   "scores": {
+    "CAT5": 0.58221
+   }
   },
   {
    "incident_id": "INC-0046",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4973
+   "score": 0.4973,
+   "scores": {
+    "CAT5": 0.49733
+   }
   },
   {
    "incident_id": "INC-0047",
    "true": "CAT2",
    "pred": "CAT5",
-   "score": 0.4047
+   "score": 0.4047,
+   "scores": {
+    "CAT5": 0.40465
+   }
   },
   {
    "incident_id": "INC-0048",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2714
+   "score": 0.2714,
+   "scores": {
+    "CAT5": 0.27142
+   }
   },
   {
    "incident_id": "INC-0049",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5207
+   "score": 0.5207,
+   "scores": {
+    "CAT5": 0.52065
+   }
   },
   {
    "incident_id": "INC-0052",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4624
+   "score": 0.4624,
+   "scores": {
+    "CAT5": 0.46238
+   }
   },
   {
    "incident_id": "INC-0053",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.439
+   "score": 0.439,
+   "scores": {
+    "CAT5": 0.43902
+   }
   },
   {
    "incident_id": "INC-0054",
    "true": "CAT7",
    "pred": "CAT5",
-   "score": 0.6149
+   "score": 0.6149,
+   "scores": {
+    "CAT5": 0.61494
+   }
   },
   {
    "incident_id": "INC-0055",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2719
+   "score": 0.2719,
+   "scores": {
+    "CAT5": 0.27185
+   }
   },
   {
    "incident_id": "INC-0056",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5067
+   "score": 0.5067,
+   "scores": {
+    "CAT5": 0.50672
+   }
   },
   {
    "incident_id": "INC-0060",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5076
+   "score": 0.5076,
+   "scores": {
+    "CAT5": 0.50762
+   }
   },
   {
    "incident_id": "INC-0061",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5377
+   "score": 0.5377,
+   "scores": {
+    "CAT5": 0.53768
+   }
   },
   {
    "incident_id": "INC-0062",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5374
+   "score": 0.5374,
+   "scores": {
+    "CAT5": 0.53736
+   }
   },
   {
    "incident_id": "INC-0063",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5332
+   "score": 0.5332,
+   "scores": {
+    "CAT5": 0.53321
+   }
   },
   {
    "incident_id": "INC-0065",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.537
+   "score": 0.537,
+   "scores": {
+    "CAT5": 0.53696
+   }
   },
   {
    "incident_id": "INC-0067",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5357
+   "score": 0.5357,
+   "scores": {
+    "CAT5": 0.53567
+   }
   },
   {
    "incident_id": "INC-0069",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.5045
+   "score": 0.5045,
+   "scores": {
+    "CAT5": 0.50449
+   }
   },
   {
    "incident_id": "INC-0070",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5341
+   "score": 0.5341,
+   "scores": {
+    "CAT5": 0.53407
+   }
   },
   {
    "incident_id": "INC-0071",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.52
+   "score": 0.52,
+   "scores": {
+    "CAT5": 0.51999
+   }
   },
   {
    "incident_id": "INC-0072",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5332
+   "score": 0.5332,
+   "scores": {
+    "CAT5": 0.53322
+   }
   },
   {
    "incident_id": "INC-0073",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5289
+   "score": 0.5289,
+   "scores": {
+    "CAT5": 0.52891
+   }
   },
   {
    "incident_id": "INC-0074",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5336
+   "score": 0.5336,
+   "scores": {
+    "CAT5": 0.53359
+   }
   },
   {
    "incident_id": "INC-0076",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4788
+   "score": 0.4788,
+   "scores": {
+    "CAT5": 0.47884
+   }
   },
   {
    "incident_id": "INC-0086",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2715
+   "score": 0.2715,
+   "scores": {
+    "CAT5": 0.27145
+   }
   },
   {
    "incident_id": "INC-0088",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4293
+   "score": 0.4293,
+   "scores": {
+    "CAT5": 0.42931
+   }
   },
   {
    "incident_id": "INC-0089",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2659
+   "score": 0.2659,
+   "scores": {
+    "CAT5": 0.26586
+   }
   },
   {
    "incident_id": "INC-0090",
    "true": "CAT3",
    "pred": "CAT5",
-   "score": 0.5341
+   "score": 0.5341,
+   "scores": {
+    "CAT5": 0.53405
+   }
   },
   {
    "incident_id": "INC-0091",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.9133
+   "score": 0.9133,
+   "scores": {
+    "CAT5": 0.91327
+   }
   },
   {
    "incident_id": "INC-0092",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.9131
+   "score": 0.9131,
+   "scores": {
+    "CAT5": 0.91307
+   }
   },
   {
    "incident_id": "INC-0093",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4716
+   "score": 0.4716,
+   "scores": {
+    "CAT5": 0.4716
+   }
   },
   {
    "incident_id": "INC-0094",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.432
+   "score": 0.432,
+   "scores": {
+    "CAT5": 0.43202
+   }
   },
   {
    "incident_id": "INC-0095",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.4931
+   "score": 0.4931,
+   "scores": {
+    "CAT5": 0.49308
+   }
   },
   {
    "incident_id": "INC-0102",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6836
+   "score": 0.6836,
+   "scores": {
+    "CAT5": 0.68356
+   }
   },
   {
    "incident_id": "INC-0103",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5347
+   "score": 0.5347,
+   "scores": {
+    "CAT5": 0.53473
+   }
   },
   {
    "incident_id": "INC-0104",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5957
+   "score": 0.5957,
+   "scores": {
+    "CAT5": 0.59571
+   }
   },
   {
    "incident_id": "INC-0105",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5855
+   "score": 0.5855,
+   "scores": {
+    "CAT5": 0.58549
+   }
   },
   {
    "incident_id": "INC-0110",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4262
+   "score": 0.4262,
+   "scores": {
+    "CAT5": 0.42618
+   }
   },
   {
    "incident_id": "INC-0117",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5007
+   "score": 0.5007,
+   "scores": {
+    "CAT5": 0.50071
+   }
   },
   {
    "incident_id": "INC-0120",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4435
+   "score": 0.4435,
+   "scores": {
+    "CAT5": 0.44353
+   }
   },
   {
    "incident_id": "INC-0123",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2688
+   "score": 0.2688,
+   "scores": {
+    "CAT5": 0.26876
+   }
   },
   {
    "incident_id": "INC-0126",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4466
+   "score": 0.4466,
+   "scores": {
+    "CAT5": 0.44656
+   }
   },
   {
    "incident_id": "INC-0128",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2687
+   "score": 0.2687,
+   "scores": {
+    "CAT5": 0.26873
+   }
   },
   {
    "incident_id": "INC-0129",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5421
+   "score": 0.5421,
+   "scores": {
+    "CAT5": 0.54205
+   }
   },
   {
    "incident_id": "INC-0130",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4475
+   "score": 0.4475,
+   "scores": {
+    "CAT5": 0.44754
+   }
   },
   {
    "incident_id": "INC-0135",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6283
+   "score": 0.6283,
+   "scores": {
+    "CAT5": 0.62831
+   }
   },
   {
    "incident_id": "INC-0136",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6297
+   "score": 0.6297,
+   "scores": {
+    "CAT5": 0.62971
+   }
   },
   {
    "incident_id": "INC-0137",
    "true": "CAT12",
    "pred": "CAT5",
-   "score": 0.6735
+   "score": 0.6735,
+   "scores": {
+    "CAT5": 0.67345
+   }
   },
   {
    "incident_id": "INC-0138",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2674
+   "score": 0.2674,
+   "scores": {
+    "CAT5": 0.26738
+   }
   },
   {
    "incident_id": "INC-0139",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5445
+   "score": 0.5445,
+   "scores": {
+    "CAT5": 0.54452
+   }
   },
   {
    "incident_id": "INC-0140",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4476
+   "score": 0.4476,
+   "scores": {
+    "CAT5": 0.44759
+   }
   },
   {
    "incident_id": "INC-0141",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6256
+   "score": 0.6256,
+   "scores": {
+    "CAT5": 0.62558
+   }
   },
   {
    "incident_id": "INC-0142",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.561
+   "score": 0.561,
+   "scores": {
+    "CAT5": 0.56104
+   }
   },
   {
    "incident_id": "INC-0143",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4308
+   "score": 0.4308,
+   "scores": {
+    "CAT5": 0.43076
+   }
   },
   {
    "incident_id": "INC-0147",
    "true": "CAT7",
    "pred": "CAT5",
-   "score": 0.276
+   "score": 0.276,
+   "scores": {
+    "CAT5": 0.27596
+   }
   },
   {
    "incident_id": "INC-0148",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5644
+   "score": 0.5644,
+   "scores": {
+    "CAT5": 0.56441
+   }
   },
   {
    "incident_id": "INC-0149",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4253
+   "score": 0.4253,
+   "scores": {
+    "CAT5": 0.42529
+   }
   },
   {
    "incident_id": "INC-0153",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4645
+   "score": 0.4645,
+   "scores": {
+    "CAT5": 0.4645
+   }
   },
   {
    "incident_id": "INC-0154",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2303
+   "score": 0.2303,
+   "scores": {
+    "CAT5": 0.23025
+   }
   },
   {
    "incident_id": "INC-0156",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.331
+   "score": 0.331,
+   "scores": {
+    "CAT5": 0.33102
+   }
   },
   {
    "incident_id": "INC-0159",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2472
+   "score": 0.2472,
+   "scores": {
+    "CAT5": 0.24717
+   }
   },
   {
    "incident_id": "INC-0165",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2712
+   "score": 0.2712,
+   "scores": {
+    "CAT5": 0.2712
+   }
   },
   {
    "incident_id": "INC-0168",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5948
+   "score": 0.5948,
+   "scores": {
+    "CAT5": 0.59479
+   }
   },
   {
    "incident_id": "INC-0169",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5956
+   "score": 0.5956,
+   "scores": {
+    "CAT5": 0.59562
+   }
   },
   {
    "incident_id": "INC-0170",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.9303
+   "score": 0.9303,
+   "scores": {
+    "CAT5": 0.93031
+   }
   },
   {
    "incident_id": "INC-0173",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.6029
+   "score": 0.6029,
+   "scores": {
+    "CAT5": 0.60292
+   }
   },
   {
    "incident_id": "INC-0174",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.572
+   "score": 0.572,
+   "scores": {
+    "CAT5": 0.57202
+   }
   },
   {
    "incident_id": "INC-0176",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.3941
+   "score": 0.3941,
+   "scores": {
+    "CAT5": 0.39409
+   }
   },
   {
    "incident_id": "INC-0177",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.5425
+   "score": 0.5425,
+   "scores": {
+    "CAT5": 0.54249
+   }
   },
   {
    "incident_id": "INC-0178",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2799
+   "score": 0.2799,
+   "scores": {
+    "CAT5": 0.27986
+   }
   },
   {
    "incident_id": "INC-0180",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.2798
+   "score": 0.2798,
+   "scores": {
+    "CAT5": 0.27982
+   }
   },
   {
    "incident_id": "INC-0181",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.8965
+   "score": 0.8965,
+   "scores": {
+    "CAT5": 0.89651
+   }
   },
   {
    "incident_id": "INC-0182",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.8705
+   "score": 0.8705,
+   "scores": {
+    "CAT5": 0.87052
+   }
   },
   {
    "incident_id": "INC-0001",
    "true": "CAT5",
    "pred": "CAT5",
-   "score": 0.4816
-  },
-  {
-   "incident_id": "INC-0048",
-   "true": "CAT5",
-   "pred": "CAT5",
-   "score": 0.2714
-  },
-  {
-   "incident_id": "INC-0049",
-   "true": "CAT3",
-   "pred": "CAT5",
-   "score": 0.5207
-  },
-  {
-   "incident_id": "INC-0052",
-   "true": "CAT5",
-   "pred": "CAT5",
-   "score": 0.4624
+   "score": 0.4816,
+   "scores": {
+    "CAT5": 0.48164
+   }
   }
  ]
 }

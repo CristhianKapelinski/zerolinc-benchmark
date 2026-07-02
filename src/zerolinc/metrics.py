@@ -2,6 +2,7 @@
 
 import math
 from collections import Counter
+from statistics import NormalDist
 
 from sklearn.metrics import (
     accuracy_score,
@@ -23,13 +24,33 @@ def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, centre - half), min(1.0, centre + half))
 
 
+def mcnemar_vs(y_true: list[str], y_pred_a: list[str], y_pred_b: list[str]) -> dict:
+    """Paired McNemar test (normal approx. with continuity correction).
+
+    b = items A got right and B got wrong; c = the reverse. Two-sided p.
+    """
+    b = sum(1 for t, a, bb in zip(y_true, y_pred_a, y_pred_b) if a == t and bb != t)
+    c = sum(1 for t, a, bb in zip(y_true, y_pred_a, y_pred_b) if a != t and bb == t)
+    if b + c == 0:
+        return {"b": 0, "c": 0, "p_value": 1.0}
+    z = (abs(b - c) - 1) / math.sqrt(b + c)
+    p = 2 * (1 - NormalDist().cdf(max(z, 0.0)))
+    return {"b": b, "c": c, "p_value": round(min(p, 1.0), 4)}
+
+
 def evaluate(y_true: list[str], y_pred: list[str]) -> dict:
-    """Full evaluation dict for one run. Unknown predictions count as wrong."""
+    """Full evaluation dict for one run. Unknown predictions count as wrong.
+
+    Macro/per-class metrics are computed over the FIXED set of classes present
+    in the gold labels (identical for every run on the same corpus), so macro
+    averages are comparable across runs; predictions into absent classes still
+    penalize the true class's recall.
+    """
     n = len(y_true)
     correct = sum(t == p for t, p in zip(y_true, y_pred))
     acc = accuracy_score(y_true, y_pred)
     lo, hi = wilson_ci(correct, n)
-    labels = [c for c in CODES if c in set(y_true) | set(y_pred)]
+    labels = [c for c in CODES if c in set(y_true)]
     prec, rec, f1, support = precision_recall_fscore_support(
         y_true, y_pred, labels=labels, average=None, zero_division=0.0
     )

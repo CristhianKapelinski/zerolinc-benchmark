@@ -48,8 +48,10 @@ def classify_gliclass(
         torch.cuda.reset_peak_memory_stats(0)
     model = GLiClassModel.from_pretrained(model_id)
     tokenizer = AutoTokenizer.from_pretrained(model_id, add_prefix_space=True)
+    # multi-label + threshold 0 returns a score for EVERY candidate label; the
+    # argmax is identical to single-label mode (same logits, monotonic activation)
     pipe = ZeroShotClassificationPipeline(
-        model, tokenizer, classification_type="single-label", device=device
+        model, tokenizer, classification_type="multi-label", device=device
     )
     candidate_labels = list(config.labels.keys())
 
