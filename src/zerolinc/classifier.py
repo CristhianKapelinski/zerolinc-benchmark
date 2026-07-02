@@ -35,6 +35,7 @@ def classify(
     if device is None:
         device = 0 if torch.cuda.is_available() else -1
     if device >= 0:
+        torch.cuda.init()
         torch.cuda.reset_peak_memory_stats(device)
 
     clf = pipeline(
