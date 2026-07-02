@@ -2,7 +2,7 @@
 
 This repository is the **evaluation artifact** behind the ZeroLINC paper: the full measurement study (292 runs), the run of record, the selection protocol, and every script that regenerates the paper's numbers and figures. The end-user **tool** extracted from this study lives in its own lean repository: [zerolinc](https://github.com/CristhianKapelinski/zerolinc).
 
-ZeroLINC classifies CSIRT/SOC incident reports into the 12 NIST SP 800-61r3-derived categories locally, with no model training, no external API, and no LLM-scale hardware. Two engines: a **zero-shot** engine for day-zero deployments (up to **70.9%** accuracy on the evaluation corpus) and an **instance-memory** engine that reuses previously labeled tickets (**90.5%** mean test accuracy with 89 labeled references), at seconds and under **3 Wh** per full corpus pass on a consumer GPU.
+ZeroLINC classifies CSIRT/SOC incident reports into the 12 NIST SP 800-61r3-derived categories locally, with no model training, no external API, and no LLM-scale hardware. Two engines: a **zero-shot** engine for day-zero deployments (up to **70.9%** accuracy on the evaluation corpus) and an **instance-memory** engine that reuses previously labeled tickets (**90.5%** mean test accuracy with 89 labeled references), at seconds and under **3 Wh** per full corpus pass on a single GPU.
 
 > Paper: *ZeroLINC: Training-Free Local Classification of Security Incident Reports* (SBSeg 2026, Salão de Ferramentas — under review). This README is the single self-contained guide for artifact evaluation; the other docs are complementary.
 
@@ -38,7 +38,7 @@ The tool runs entirely locally: no telemetry, no external API calls (only Huggin
 ## Installation
 
 ```bash
-git clone <repository-url> zerolinc && cd zerolinc
+git clone https://github.com/CristhianKapelinski/zerolinc-benchmark && cd zerolinc-benchmark
 curl -LsSf https://astral.sh/uv/install.sh | sh   # if uv is not installed
 uv sync --extra dev                                # (~3 min)
 ```
@@ -55,7 +55,15 @@ Expected output ends with a line like `mDeBERTa-...__en-name: acc=... wall=...s`
 
 ## Experiments
 
-**Main claim (instance-memory engine reaches ~90%):** (~3 min)
+**Main claim (all paper numbers, from the committed run of record):** one command, no GPU, no network (~1 min). Recomputes every metric from the stored per-ticket predictions, rebuilds the report and the selection protocol, and asserts the three headline numbers (70.9% best zero-shot, 90.5% instance-memory mean, 69.0% ensemble mean):
+
+```bash
+./scripts/reproduce.sh
+```
+
+Expected final line: `REPRODUCE OK`.
+
+**Claim 2 (instance-memory engine, live re-run):** GPU, ~3 min (first run downloads the embedding model):
 
 ```bash
 uv run zerolinc knn
@@ -63,21 +71,17 @@ uv run zerolinc knn
 
 Expected: five `seed N: ... test_acc=0.88-0.93 ... mcnemar_p=0.0` lines (mean 0.905).
 
-**Claim 2 (zero-shot protocol estimates):** recomputed offline from the committed run of record, no GPU (~5 s):
+**Claim 3 (figures):** regenerated offline from the run records (~10 s):
 
 ```bash
-uv run zerolinc protocol --seed 42
+uv run python scripts/make_figures.py results/runs figures/subject subject
 ```
 
-Expected: JSON with `families.nli.test.accuracy = 0.6989` and `ensemble_rank` ≈ 0.699.
-
-**Claim 3 (cost figures and the full grid):** the committed run records already contain every timing/energy figure; regenerate the tables and figures offline (~10 s):
+**Optional from-scratch path** (GPU, ~4-5 h): reruns the full grid live and then validates it against the run of record:
 
 ```bash
-uv run zerolinc report && uv run python scripts/make_figures.py results/runs figures/subject subject
+./scripts/reproduce_full.sh
 ```
-
-Optional full re-run of the 290-run grid (GPU, ~4 h): `./scripts/run_all.sh`.
 
 **End-user tool demo:** classify a CSV (`conteudo` column) with or without a labeled memory:
 
