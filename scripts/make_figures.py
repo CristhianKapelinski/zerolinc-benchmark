@@ -46,9 +46,11 @@ MODEL_SHORT = {
 }
 
 
-def load(results_dir: Path) -> list[dict]:
+def load(results_dir: Path, view: str = "full") -> list[dict]:
     runs = [json.loads(p.read_text()) for p in sorted(results_dir.glob("*.json"))]
-    return [r for r in runs if not r["run_id"].startswith("baseline")]
+    return [r for r in runs
+            if not r["run_id"].startswith("baseline")
+            and r.get("text_view", "full") == view]
 
 
 def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str) -> None:
@@ -136,8 +138,9 @@ def fig_perclass(runs: list[dict], out: Path) -> None:
 def main() -> int:
     results_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("results/runs")
     out = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("figures")
+    view = sys.argv[3] if len(sys.argv) > 3 else "full"
     out.mkdir(parents=True, exist_ok=True)
-    runs = load(results_dir)
+    runs = load(results_dir, view)
     if not runs:
         print("no model runs found", file=sys.stderr)
         return 1

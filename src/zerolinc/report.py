@@ -17,7 +17,9 @@ def summary_frame(runs: list[dict]) -> pd.DataFrame:
         rows.append(
             {
                 "model": r["model"].split("/")[-1],
+                "backend": r.get("backend", "nli"),
                 "prompt_config": r["prompt_config"],
+                "text_view": r.get("text_view", "full"),
                 "accuracy": m["accuracy"],
                 "ci95_low": m["accuracy_ci95"][0],
                 "ci95_high": m["accuracy_ci95"][1],
@@ -27,6 +29,7 @@ def summary_frame(runs: list[dict]) -> pd.DataFrame:
                 "wall_s": r.get("wall_seconds", 0.0),
                 "inc_per_s": r.get("incidents_per_second"),
                 "peak_vram_mb": r.get("peak_vram_mb"),
+                "gpu_energy_wh": r.get("gpu_energy_wh"),
             }
         )
     return pd.DataFrame(rows).sort_values("accuracy", ascending=False).reset_index(drop=True)
