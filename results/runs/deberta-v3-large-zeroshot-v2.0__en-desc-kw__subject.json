@@ -1,0 +1,1343 @@
+{
+ "run_id": "deberta-v3-large-zeroshot-v2.0__en-desc-kw__subject",
+ "model": "nli:MoritzLaurer/deberta-v3-large-zeroshot-v2.0",
+ "backend": "nli",
+ "prompt_config": "en-desc-kw",
+ "text_view": "subject",
+ "hypothesis_template": "This security incident report describes {}.",
+ "candidate_labels": {
+  "account compromise: unauthorized access to user or administrator accounts (related terms: phishing, brute force, unauthorized access, compromised password, credential theft, account compromise, token, oauth, ssh, suspicious login)": "CAT1",
+  "malware: infection by malicious code (related terms: malware, ransomware, trojan, virus, spyware, rootkit, infection, malicious code)": "CAT2",
+  "denial of service attack: making systems or networks unavailable (related terms: ddos, dos, denial of service, flood, syn flood, udp flood, botnet, api outage, site down)": "CAT3",
+  "data leak: unauthorized disclosure of sensitive data (related terms: data leak, exposed data, leaked credentials, sensitive information, data exfiltration, unauthorized disclosure)": "CAT4",
+  "vulnerability exploitation: use of known or unknown technical flaws to compromise assets (related terms: exploit, vulnerability, cve, remote execution, sql injection, injection, rce, security flaw)": "CAT5",
+  "insider abuse: malicious or negligent actions by internal users (related terms: insider, internal abuse, employee, internal leak, sabotage, intentional action, staff)": "CAT6",
+  "social engineering: deceiving people to obtain access or information (related terms: social engineering, phishing, vishing, fraud, deception, spoofing, manipulation, scam, ceo fraud)": "CAT7",
+  "physical incident: physical breach impacting computational assets (related terms: physical access, equipment theft, burglary, unauthorized entry, broken door, physical breach)": "CAT8",
+  "unauthorized modification: unauthorized changes to systems, data, or configurations (related terms: modification, defacement, unauthorized change, erased, altered record, tampering)": "CAT9",
+  "misuse of resources: unauthorized use of systems for other purposes (related terms: misuse, resource abuse, crypto mining, compromised server, malware hosting, unauthorized use)": "CAT10",
+  "third-party incident: incident originating from a third-party security failure (related terms: third party, supplier, partner, vendor, supply chain, external breach, saas issue)": "CAT11",
+  "intrusion attempt: hostile attempts to break in, not yet confirmed as successful (related terms: intrusion attempt, scan, reconnaissance, probing, port scan, blocked exploit, failed attempt)": "CAT12"
+ },
+ "machine": {
+  "cpu": "x86_64",
+  "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "vram_gb": 15.5
+ },
+ "n": 185,
+ "wall_seconds": 54.92,
+ "incidents_per_second": 3.37,
+ "peak_vram_mb": 1414.0,
+ "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 512,
+ "gpu_power_mean_w": 165.9,
+ "gpu_power_max_w": 174.6,
+ "gpu_energy_wh": 2.619,
+ "metrics": {
+  "n": 185,
+  "correct": 132,
+  "accuracy": 0.7135,
+  "accuracy_ci95": [
+   0.6445,
+   0.7738
+  ],
+  "macro_precision": 0.5852,
+  "macro_recall": 0.4876,
+  "macro_f1": 0.4862,
+  "weighted_f1": 0.7445,
+  "per_class": {
+   "CAT1": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "support": 2
+   },
+   "CAT2": {
+    "precision": 0.4,
+    "recall": 0.5,
+    "f1": 0.4444,
+    "support": 4
+   },
+   "CAT3": {
+    "precision": 0.4722,
+    "recall": 0.9444,
+    "f1": 0.6296,
+    "support": 18
+   },
+   "CAT5": {
+    "precision": 0.9902,
+    "recall": 0.8417,
+    "f1": 0.9099,
+    "support": 120
+   },
+   "CAT7": {
+    "precision": 1.0,
+    "recall": 0.25,
+    "f1": 0.4,
+    "support": 4
+   },
+   "CAT9": {
+    "precision": 0.8333,
+    "recall": 0.7143,
+    "f1": 0.7692,
+    "support": 7
+   },
+   "CAT10": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 1
+   },
+   "CAT11": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 0
+   },
+   "CAT12": {
+    "precision": 0.5714,
+    "recall": 0.1379,
+    "f1": 0.2222,
+    "support": 29
+   }
+  },
+  "confusion": {
+   "labels": [
+    "CAT1",
+    "CAT2",
+    "CAT3",
+    "CAT5",
+    "CAT7",
+    "CAT9",
+    "CAT10",
+    "CAT11",
+    "CAT12"
+   ],
+   "matrix": [
+    [
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     2,
+     1,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     17,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     13,
+     101,
+     0,
+     0,
+     0,
+     3,
+     2
+    ],
+    [
+     0,
+     0,
+     0,
+     1,
+     1,
+     1,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     5,
+     0,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     2,
+     5,
+     0,
+     0,
+     0,
+     14,
+     4,
+     4
+    ]
+   ]
+  },
+  "pred_distribution": {
+   "CAT10": 15,
+   "CAT2": 5,
+   "CAT5": 102,
+   "CAT3": 36,
+   "CAT12": 7,
+   "CAT1": 2,
+   "CAT11": 11,
+   "CAT9": 6,
+   "CAT7": 1
+  }
+ },
+ "predictions": [
+  {
+   "incident_id": "INC-0078",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3344
+  },
+  {
+   "incident_id": "INC-0079",
+   "true": "CAT12",
+   "pred": "CAT2",
+   "score": 0.4702
+  },
+  {
+   "incident_id": "INC-0080",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3031
+  },
+  {
+   "incident_id": "INC-0081",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2912
+  },
+  {
+   "incident_id": "INC-0082",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3114
+  },
+  {
+   "incident_id": "INC-0083",
+   "true": "CAT12",
+   "pred": "CAT12",
+   "score": 0.3171
+  },
+  {
+   "incident_id": "INC-0084",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3086
+  },
+  {
+   "incident_id": "INC-0085",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2619
+  },
+  {
+   "incident_id": "INC-0087",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3157
+  },
+  {
+   "incident_id": "INC-0096",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2997
+  },
+  {
+   "incident_id": "INC-0097",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.28
+  },
+  {
+   "incident_id": "INC-0098",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2753
+  },
+  {
+   "incident_id": "INC-0099",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2968
+  },
+  {
+   "incident_id": "INC-0100",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2585
+  },
+  {
+   "incident_id": "INC-0101",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2585
+  },
+  {
+   "incident_id": "INC-0106",
+   "true": "CAT3",
+   "pred": "CAT12",
+   "score": 0.3159
+  },
+  {
+   "incident_id": "INC-0107",
+   "true": "CAT12",
+   "pred": "CAT12",
+   "score": 0.3159
+  },
+  {
+   "incident_id": "INC-0108",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2917
+  },
+  {
+   "incident_id": "INC-0109",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3099
+  },
+  {
+   "incident_id": "INC-0111",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3031
+  },
+  {
+   "incident_id": "INC-0112",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2632
+  },
+  {
+   "incident_id": "INC-0113",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.755
+  },
+  {
+   "incident_id": "INC-0114",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5457
+  },
+  {
+   "incident_id": "INC-0115",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5457
+  },
+  {
+   "incident_id": "INC-0116",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5545
+  },
+  {
+   "incident_id": "INC-0118",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3068
+  },
+  {
+   "incident_id": "INC-0119",
+   "true": "CAT1",
+   "pred": "CAT1",
+   "score": 0.4374
+  },
+  {
+   "incident_id": "INC-0121",
+   "true": "CAT1",
+   "pred": "CAT1",
+   "score": 0.2433
+  },
+  {
+   "incident_id": "INC-0122",
+   "true": "CAT2",
+   "pred": "CAT2",
+   "score": 0.9199
+  },
+  {
+   "incident_id": "INC-0124",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2563
+  },
+  {
+   "incident_id": "INC-0125",
+   "true": "CAT2",
+   "pred": "CAT2",
+   "score": 0.9202
+  },
+  {
+   "incident_id": "INC-0127",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.8493
+  },
+  {
+   "incident_id": "INC-0131",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.268
+  },
+  {
+   "incident_id": "INC-0132",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5466
+  },
+  {
+   "incident_id": "INC-0133",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5466
+  },
+  {
+   "incident_id": "INC-0134",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5556
+  },
+  {
+   "incident_id": "INC-0144",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5469
+  },
+  {
+   "incident_id": "INC-0145",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5469
+  },
+  {
+   "incident_id": "INC-0146",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.556
+  },
+  {
+   "incident_id": "INC-0150",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5451
+  },
+  {
+   "incident_id": "INC-0151",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2536
+  },
+  {
+   "incident_id": "INC-0152",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2981
+  },
+  {
+   "incident_id": "INC-0155",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3844
+  },
+  {
+   "incident_id": "INC-0157",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2559
+  },
+  {
+   "incident_id": "INC-0158",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2784
+  },
+  {
+   "incident_id": "INC-0160",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5624
+  },
+  {
+   "incident_id": "INC-0161",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5436
+  },
+  {
+   "incident_id": "INC-0162",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5526
+  },
+  {
+   "incident_id": "INC-0163",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5436
+  },
+  {
+   "incident_id": "INC-0164",
+   "true": "CAT5",
+   "pred": "CAT11",
+   "score": 0.2485
+  },
+  {
+   "incident_id": "INC-0166",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2848
+  },
+  {
+   "incident_id": "INC-0167",
+   "true": "CAT5",
+   "pred": "CAT11",
+   "score": 0.2465
+  },
+  {
+   "incident_id": "INC-0171",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.299
+  },
+  {
+   "incident_id": "INC-0172",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2833
+  },
+  {
+   "incident_id": "INC-0175",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2818
+  },
+  {
+   "incident_id": "INC-0008",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2767
+  },
+  {
+   "incident_id": "INC-0010",
+   "true": "CAT9",
+   "pred": "CAT9",
+   "score": 0.4566
+  },
+  {
+   "incident_id": "INC-0012",
+   "true": "CAT9",
+   "pred": "CAT9",
+   "score": 0.457
+  },
+  {
+   "incident_id": "INC-0015",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3528
+  },
+  {
+   "incident_id": "INC-0016",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7494
+  },
+  {
+   "incident_id": "INC-0019",
+   "true": "CAT12",
+   "pred": "CAT11",
+   "score": 0.2895
+  },
+  {
+   "incident_id": "INC-0027",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3506
+  },
+  {
+   "incident_id": "INC-0028",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3508
+  },
+  {
+   "incident_id": "INC-0029",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3515
+  },
+  {
+   "incident_id": "INC-0030",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3496
+  },
+  {
+   "incident_id": "INC-0031",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3534
+  },
+  {
+   "incident_id": "INC-0032",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3537
+  },
+  {
+   "incident_id": "INC-0033",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3557
+  },
+  {
+   "incident_id": "INC-0034",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2863
+  },
+  {
+   "incident_id": "INC-0035",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2863
+  },
+  {
+   "incident_id": "INC-0036",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2524
+  },
+  {
+   "incident_id": "INC-0038",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2608
+  },
+  {
+   "incident_id": "INC-0039",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2608
+  },
+  {
+   "incident_id": "INC-0040",
+   "true": "CAT12",
+   "pred": "CAT3",
+   "score": 0.2455
+  },
+  {
+   "incident_id": "INC-0042",
+   "true": "CAT12",
+   "pred": "CAT3",
+   "score": 0.2527
+  },
+  {
+   "incident_id": "INC-0043",
+   "true": "CAT12",
+   "pred": "CAT3",
+   "score": 0.2461
+  },
+  {
+   "incident_id": "INC-0044",
+   "true": "CAT12",
+   "pred": "CAT3",
+   "score": 0.2517
+  },
+  {
+   "incident_id": "INC-0050",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2901
+  },
+  {
+   "incident_id": "INC-0051",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2557
+  },
+  {
+   "incident_id": "INC-0057",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.2526
+  },
+  {
+   "incident_id": "INC-0058",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3219
+  },
+  {
+   "incident_id": "INC-0064",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.4769
+  },
+  {
+   "incident_id": "INC-0066",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7593
+  },
+  {
+   "incident_id": "INC-0068",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3549
+  },
+  {
+   "incident_id": "INC-0075",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2847
+  },
+  {
+   "incident_id": "INC-0077",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3142
+  },
+  {
+   "incident_id": "INC-0059",
+   "true": "CAT9",
+   "pred": "CAT11",
+   "score": 0.2574
+  },
+  {
+   "incident_id": "INC-0002",
+   "true": "CAT5",
+   "pred": "CAT12",
+   "score": 0.3042
+  },
+  {
+   "incident_id": "INC-0003",
+   "true": "CAT7",
+   "pred": "CAT7",
+   "score": 0.4104
+  },
+  {
+   "incident_id": "INC-0004",
+   "true": "CAT5",
+   "pred": "CAT2",
+   "score": 0.3625
+  },
+  {
+   "incident_id": "INC-0005",
+   "true": "CAT7",
+   "pred": "CAT11",
+   "score": 0.5481
+  },
+  {
+   "incident_id": "INC-0006",
+   "true": "CAT12",
+   "pred": "CAT2",
+   "score": 0.2769
+  },
+  {
+   "incident_id": "INC-0007",
+   "true": "CAT9",
+   "pred": "CAT11",
+   "score": 0.3393
+  },
+  {
+   "incident_id": "INC-0009",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.7658
+  },
+  {
+   "incident_id": "INC-0179",
+   "true": "CAT10",
+   "pred": "CAT11",
+   "score": 0.6477
+  },
+  {
+   "incident_id": "INC-0011",
+   "true": "CAT9",
+   "pred": "CAT9",
+   "score": 0.381
+  },
+  {
+   "incident_id": "INC-0013",
+   "true": "CAT9",
+   "pred": "CAT9",
+   "score": 0.4526
+  },
+  {
+   "incident_id": "INC-0014",
+   "true": "CAT9",
+   "pred": "CAT9",
+   "score": 0.3637
+  },
+  {
+   "incident_id": "INC-0017",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7494
+  },
+  {
+   "incident_id": "INC-0018",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3411
+  },
+  {
+   "incident_id": "INC-0020",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2735
+  },
+  {
+   "incident_id": "INC-0021",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.7596
+  },
+  {
+   "incident_id": "INC-0022",
+   "true": "CAT2",
+   "pred": "CAT3",
+   "score": 0.2534
+  },
+  {
+   "incident_id": "INC-0023",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3306
+  },
+  {
+   "incident_id": "INC-0024",
+   "true": "CAT12",
+   "pred": "CAT11",
+   "score": 0.4246
+  },
+  {
+   "incident_id": "INC-0025",
+   "true": "CAT12",
+   "pred": "CAT11",
+   "score": 0.5032
+  },
+  {
+   "incident_id": "INC-0026",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3174
+  },
+  {
+   "incident_id": "INC-0037",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3165
+  },
+  {
+   "incident_id": "INC-0041",
+   "true": "CAT12",
+   "pred": "CAT3",
+   "score": 0.2486
+  },
+  {
+   "incident_id": "INC-0045",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2538
+  },
+  {
+   "incident_id": "INC-0046",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3345
+  },
+  {
+   "incident_id": "INC-0047",
+   "true": "CAT2",
+   "pred": "CAT10",
+   "score": 0.355
+  },
+  {
+   "incident_id": "INC-0048",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2914
+  },
+  {
+   "incident_id": "INC-0049",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.8286
+  },
+  {
+   "incident_id": "INC-0052",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3938
+  },
+  {
+   "incident_id": "INC-0053",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2638
+  },
+  {
+   "incident_id": "INC-0054",
+   "true": "CAT7",
+   "pred": "CAT9",
+   "score": 0.493
+  },
+  {
+   "incident_id": "INC-0055",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.294
+  },
+  {
+   "incident_id": "INC-0056",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2563
+  },
+  {
+   "incident_id": "INC-0060",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3289
+  },
+  {
+   "incident_id": "INC-0061",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7405
+  },
+  {
+   "incident_id": "INC-0062",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7422
+  },
+  {
+   "incident_id": "INC-0063",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7509
+  },
+  {
+   "incident_id": "INC-0065",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.757
+  },
+  {
+   "incident_id": "INC-0067",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7625
+  },
+  {
+   "incident_id": "INC-0069",
+   "true": "CAT12",
+   "pred": "CAT12",
+   "score": 0.2953
+  },
+  {
+   "incident_id": "INC-0070",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7553
+  },
+  {
+   "incident_id": "INC-0071",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7585
+  },
+  {
+   "incident_id": "INC-0072",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.754
+  },
+  {
+   "incident_id": "INC-0073",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7568
+  },
+  {
+   "incident_id": "INC-0074",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7518
+  },
+  {
+   "incident_id": "INC-0076",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3083
+  },
+  {
+   "incident_id": "INC-0086",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2839
+  },
+  {
+   "incident_id": "INC-0088",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2727
+  },
+  {
+   "incident_id": "INC-0089",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2974
+  },
+  {
+   "incident_id": "INC-0090",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.7497
+  },
+  {
+   "incident_id": "INC-0091",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.8577
+  },
+  {
+   "incident_id": "INC-0092",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.8218
+  },
+  {
+   "incident_id": "INC-0093",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3083
+  },
+  {
+   "incident_id": "INC-0094",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2747
+  },
+  {
+   "incident_id": "INC-0095",
+   "true": "CAT12",
+   "pred": "CAT12",
+   "score": 0.3145
+  },
+  {
+   "incident_id": "INC-0102",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.544
+  },
+  {
+   "incident_id": "INC-0103",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.544
+  },
+  {
+   "incident_id": "INC-0104",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5521
+  },
+  {
+   "incident_id": "INC-0105",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.544
+  },
+  {
+   "incident_id": "INC-0110",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2758
+  },
+  {
+   "incident_id": "INC-0117",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2562
+  },
+  {
+   "incident_id": "INC-0120",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.278
+  },
+  {
+   "incident_id": "INC-0123",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2991
+  },
+  {
+   "incident_id": "INC-0126",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2785
+  },
+  {
+   "incident_id": "INC-0128",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2932
+  },
+  {
+   "incident_id": "INC-0129",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2573
+  },
+  {
+   "incident_id": "INC-0130",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2794
+  },
+  {
+   "incident_id": "INC-0135",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.313
+  },
+  {
+   "incident_id": "INC-0136",
+   "true": "CAT12",
+   "pred": "CAT10",
+   "score": 0.3113
+  },
+  {
+   "incident_id": "INC-0137",
+   "true": "CAT12",
+   "pred": "CAT11",
+   "score": 0.3058
+  },
+  {
+   "incident_id": "INC-0138",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2921
+  },
+  {
+   "incident_id": "INC-0139",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2559
+  },
+  {
+   "incident_id": "INC-0140",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2771
+  },
+  {
+   "incident_id": "INC-0141",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5553
+  },
+  {
+   "incident_id": "INC-0142",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5467
+  },
+  {
+   "incident_id": "INC-0143",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2794
+  },
+  {
+   "incident_id": "INC-0147",
+   "true": "CAT7",
+   "pred": "CAT5",
+   "score": 0.2885
+  },
+  {
+   "incident_id": "INC-0148",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2507
+  },
+  {
+   "incident_id": "INC-0149",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2766
+  },
+  {
+   "incident_id": "INC-0153",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2787
+  },
+  {
+   "incident_id": "INC-0154",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.287
+  },
+  {
+   "incident_id": "INC-0156",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2913
+  },
+  {
+   "incident_id": "INC-0159",
+   "true": "CAT5",
+   "pred": "CAT3",
+   "score": 0.3052
+  },
+  {
+   "incident_id": "INC-0165",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2989
+  },
+  {
+   "incident_id": "INC-0168",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5428
+  },
+  {
+   "incident_id": "INC-0169",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5523
+  },
+  {
+   "incident_id": "INC-0170",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.8184
+  },
+  {
+   "incident_id": "INC-0173",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5592
+  },
+  {
+   "incident_id": "INC-0174",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5492
+  },
+  {
+   "incident_id": "INC-0176",
+   "true": "CAT5",
+   "pred": "CAT11",
+   "score": 0.2467
+  },
+  {
+   "incident_id": "INC-0177",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.5506
+  },
+  {
+   "incident_id": "INC-0178",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.269
+  },
+  {
+   "incident_id": "INC-0180",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2683
+  },
+  {
+   "incident_id": "INC-0181",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.7645
+  },
+  {
+   "incident_id": "INC-0182",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.7711
+  },
+  {
+   "incident_id": "INC-0001",
+   "true": "CAT5",
+   "pred": "CAT12",
+   "score": 0.2914
+  },
+  {
+   "incident_id": "INC-0048",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.2914
+  },
+  {
+   "incident_id": "INC-0049",
+   "true": "CAT3",
+   "pred": "CAT3",
+   "score": 0.8286
+  },
+  {
+   "incident_id": "INC-0052",
+   "true": "CAT5",
+   "pred": "CAT5",
+   "score": 0.3938
+  }
+ ]
+}

@@ -307,6 +307,22 @@ wheels = [
 ]
 
 [[package]]
+name = "gliclass"
+version = "0.1.18"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "scikit-learn" },
+    { name = "torch" },
+    { name = "transformers" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/66/a7/f8884c265d1b0e25b88dcae0db0bf40b9e799936791351259d709e63f5db/gliclass-0.1.18.tar.gz", hash = "sha256:5ca6bc9a333a6d0ce1b02294d3d572328fd691d161265b944bf4d3d94988c7e8", size = 47729, upload-time = "2026-05-09T09:47:47.117Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c5/36/852c01fcab39ed5a850616cfd2687394d4e1da0f4fe595634e8d4e149267/gliclass-0.1.18-py3-none-any.whl", hash = "sha256:1ef951b90532116cc5c51ec9e0e99c3608d26942e1843c70e1d8ef973c4db143", size = 49088, upload-time = "2026-05-09T09:47:45.555Z" },
+]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1661,6 +1677,27 @@ wheels = [
 ]
 
 [[package]]
+name = "sentence-transformers"
+version = "5.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "huggingface-hub" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "scikit-learn" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "scipy", version = "1.18.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "torch" },
+    { name = "tqdm" },
+    { name = "transformers" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f9/56/d2cb00765a6b15c994a7fccf20f9032f16e8193ca49147cb5155166ad744/sentence_transformers-5.6.0.tar.gz", hash = "sha256:0e7164d051e416c1853ade7c274ff52af3f9da0f4be7f0b83d734c27699e1057", size = 453194, upload-time = "2026-06-16T14:01:56.42Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/76/c1/dc1582b79e9a2eb0cddf9559cd9bcdff084f541d6fe881fdd9d98630dba7/sentence_transformers-5.6.0-py3-none-any.whl", hash = "sha256:d2075b5e687a1611005e20ab04a6846994d51adfcf39610aed066af3c0c0b81f", size = 596411, upload-time = "2026-06-16T14:01:55.103Z" },
+]
+
+[[package]]
 name = "sentencepiece"
 version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1930,10 +1967,12 @@ name = "zerolinc"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "gliclass" },
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "protobuf" },
     { name = "scikit-learn" },
+    { name = "sentence-transformers" },
     { name = "sentencepiece" },
     { name = "torch" },
     { name = "transformers" },
@@ -1949,6 +1988,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "gliclass", specifier = ">=0.1.10" },
     { name = "matplotlib", marker = "extra == 'dev'", specifier = ">=3.9" },
     { name = "openpyxl", specifier = ">=3.1" },
     { name = "pandas", specifier = ">=2.2" },
@@ -1956,6 +1996,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.4" },
     { name = "scikit-learn", specifier = ">=1.4" },
+    { name = "sentence-transformers", specifier = ">=3.0" },
     { name = "sentencepiece", specifier = ">=0.2" },
     { name = "tabulate", marker = "extra == 'dev'", specifier = ">=0.9" },
     { name = "torch", specifier = ">=2.7", index = "https://download.pytorch.org/whl/cu128" },

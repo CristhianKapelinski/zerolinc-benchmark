@@ -1,7 +1,9 @@
 {
  "run_id": "mDeBERTa-v3-base-xnli-multilingual-nli-2mil7__pt-desc",
- "model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "model": "nli:MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "backend": "nli",
  "prompt_config": "pt-desc",
+ "text_view": "full",
  "hypothesis_template": "Este relato de incidente de segurança descreve {}.",
  "candidate_labels": {
   "comprometimento de conta, ou seja, acesso não autorizado a contas de usuários ou administradores": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 21.92,
- "incidents_per_second": 8.44,
+ "wall_seconds": 21.21,
+ "incidents_per_second": 8.72,
  "peak_vram_mb": 912.8,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 512,
+ "gpu_power_mean_w": 134.9,
+ "gpu_power_max_w": 150.0,
+ "gpu_energy_wh": 0.885,
  "metrics": {
   "n": 185,
   "correct": 117,

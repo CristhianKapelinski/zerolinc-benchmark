@@ -1,7 +1,9 @@
 {
  "run_id": "mDeBERTa-v3-base-xnli-multilingual-nli-2mil7__en-desc-domain",
- "model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "model": "nli:MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "backend": "nli",
  "prompt_config": "en-desc-domain",
+ "text_view": "full",
  "hypothesis_template": "This security incident report describes {}.",
  "candidate_labels": {
   "account compromise, that is, unauthorized access to user or administrator accounts": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 22.25,
- "incidents_per_second": 8.31,
+ "wall_seconds": 21.18,
+ "incidents_per_second": 8.73,
  "peak_vram_mb": 912.8,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 512,
+ "gpu_power_mean_w": 134.2,
+ "gpu_power_max_w": 150.1,
+ "gpu_energy_wh": 0.882,
  "metrics": {
   "n": 185,
   "correct": 115,

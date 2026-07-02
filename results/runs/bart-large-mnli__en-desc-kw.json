@@ -1,7 +1,9 @@
 {
  "run_id": "bart-large-mnli__en-desc-kw",
- "model": "facebook/bart-large-mnli",
+ "model": "nli:facebook/bart-large-mnli",
+ "backend": "nli",
  "prompt_config": "en-desc-kw",
+ "text_view": "full",
  "hypothesis_template": "This security incident report describes {}.",
  "candidate_labels": {
   "account compromise: unauthorized access to user or administrator accounts (related terms: phishing, brute force, unauthorized access, compromised password, credential theft, account compromise, token, oauth, ssh, suspicious login)": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 54.49,
- "incidents_per_second": 3.4,
+ "wall_seconds": 50.86,
+ "incidents_per_second": 3.64,
  "peak_vram_mb": 988.3,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 1024,
+ "gpu_power_mean_w": 175.0,
+ "gpu_power_max_w": 182.6,
+ "gpu_energy_wh": 2.544,
  "metrics": {
   "n": 185,
   "correct": 14,

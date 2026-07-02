@@ -1,7 +1,9 @@
 {
  "run_id": "bart-large-mnli__pt-desc",
- "model": "facebook/bart-large-mnli",
+ "model": "nli:facebook/bart-large-mnli",
+ "backend": "nli",
  "prompt_config": "pt-desc",
+ "text_view": "full",
  "hypothesis_template": "Este relato de incidente de segurança descreve {}.",
  "candidate_labels": {
   "comprometimento de conta, ou seja, acesso não autorizado a contas de usuários ou administradores": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 52.52,
- "incidents_per_second": 3.52,
+ "wall_seconds": 50.93,
+ "incidents_per_second": 3.63,
  "peak_vram_mb": 988.3,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 1024,
+ "gpu_power_mean_w": 175.5,
+ "gpu_power_max_w": 182.9,
+ "gpu_energy_wh": 2.555,
  "metrics": {
   "n": 185,
   "correct": 87,

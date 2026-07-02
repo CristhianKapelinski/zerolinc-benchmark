@@ -1,7 +1,9 @@
 {
  "run_id": "mDeBERTa-v3-base-xnli-multilingual-nli-2mil7__en-desc-kw",
- "model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "model": "nli:MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "backend": "nli",
  "prompt_config": "en-desc-kw",
+ "text_view": "full",
  "hypothesis_template": "This security incident report describes {}.",
  "candidate_labels": {
   "account compromise: unauthorized access to user or administrator accounts (related terms: phishing, brute force, unauthorized access, compromised password, credential theft, account compromise, token, oauth, ssh, suspicious login)": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 22.23,
- "incidents_per_second": 8.32,
+ "wall_seconds": 21.41,
+ "incidents_per_second": 8.64,
  "peak_vram_mb": 912.9,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 512,
+ "gpu_power_mean_w": 132.4,
+ "gpu_power_max_w": 147.5,
+ "gpu_energy_wh": 0.878,
  "metrics": {
   "n": 185,
   "correct": 96,

@@ -1,7 +1,9 @@
 {
  "run_id": "mDeBERTa-v3-base-xnli-multilingual-nli-2mil7__pt-name",
- "model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "model": "nli:MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+ "backend": "nli",
  "prompt_config": "pt-name",
+ "text_view": "full",
  "hypothesis_template": "Este texto é sobre {}.",
  "candidate_labels": {
   "comprometimento de conta": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 22.0,
- "incidents_per_second": 8.41,
+ "wall_seconds": 21.06,
+ "incidents_per_second": 8.78,
  "peak_vram_mb": 912.8,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 512,
+ "gpu_power_mean_w": 136.7,
+ "gpu_power_max_w": 149.4,
+ "gpu_energy_wh": 0.892,
  "metrics": {
   "n": 185,
   "correct": 35,

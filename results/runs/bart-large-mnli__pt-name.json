@@ -1,7 +1,9 @@
 {
  "run_id": "bart-large-mnli__pt-name",
- "model": "facebook/bart-large-mnli",
+ "model": "nli:facebook/bart-large-mnli",
+ "backend": "nli",
  "prompt_config": "pt-name",
+ "text_view": "full",
  "hypothesis_template": "Este texto é sobre {}.",
  "candidate_labels": {
   "comprometimento de conta": "CAT1",
@@ -24,10 +26,14 @@
   "vram_gb": 15.5
  },
  "n": 185,
- "wall_seconds": 51.74,
- "incidents_per_second": 3.58,
+ "wall_seconds": 50.36,
+ "incidents_per_second": 3.67,
  "peak_vram_mb": 988.3,
  "device": "NVIDIA GeForce RTX 5060 Ti",
+ "max_length": 1024,
+ "gpu_power_mean_w": 175.7,
+ "gpu_power_max_w": 182.8,
+ "gpu_energy_wh": 2.528,
  "metrics": {
   "n": 185,
   "correct": 45,
