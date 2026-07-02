@@ -1,60 +1,89 @@
-# ZeroLINC: Zero-shot NLI classification of security incidents
+# ZeroLINC: Training-Free Local Classification of Security Incident Reports
 
-Zero-shot classification of CSIRT incident reports into the 12 NIST SP 800-61r3
-categories using off-the-shelf encoder classifiers (no fine-tuning, no API, no GPU
-cloud). Counterpart to the LLM prompt-engineering studies on the same corpus
-lineage: four backend families score each incident against natural-language
-category verbalizations and the best-scored category wins.
+ZeroLINC classifies CSIRT/SOC incident reports into the 12 NIST SP 800-61r3 categories locally, with no model training, no external API, and no LLM-scale hardware. Two engines: a **zero-shot** engine for day-zero deployments (up to **70.9%** accuracy on the evaluation corpus) and an **instance-memory** engine that reuses previously labeled tickets (**90.5%** mean test accuracy with 89 labeled references), at seconds and under **3 Wh** per full corpus pass on a consumer GPU.
 
-**Cost model:** everything runs locally on a consumer GPU (reference machine:
-NVIDIA RTX 5060 Ti 16 GB, 30 GB RAM); the marginal cost per classification is
-wall-clock seconds and watt-hours, not API dollars. Every run records time,
-throughput, peak VRAM, GPU power, and integrated energy.
+> Paper: *ZeroLINC: Training-Free Local Classification of Security Incident Reports* (SBSeg 2026, Salão de Ferramentas — under review). This README is the single self-contained guide for artifact evaluation; the other docs are complementary.
 
-## Layout
+## README structure
 
-- `src/zerolinc/` - the tool: dataset loading/normalization and text views
-  (`data.py`), NIST label sets and verbalizations (`labels.py`), four zero-shot
-  backends (`classifier.py` NLI; `backends.py` GLiClass, instruction embeddings,
-  generative reranker), non-neural baselines, metrics (accuracy + Wilson 95% CI,
-  fixed-label macro-F1, per-class PRF, McNemar), grid runner, report generator,
-  score post-processing (`combine.py`), and the dev/test selection protocol
-  (`protocol.py`).
-- `data/185_incidentes_anon.csv` - anonymized, expert-labeled CSIRT tickets
-  (182 unique after in-loader deduplication).
-- `results/runs/` - the run of record: one JSON per run with full config,
-  per-incident predictions (and score vectors where captured), metrics, and cost.
-- `results/report/` - regenerable summary tables and protocol results.
-- `scripts/` - one-command entry points (see below).
-- `tests/` - offline unit tests (no network, no models).
+1. [Considered badges](#considered-badges) 2. [Basic information](#basic-information) 3. [Dependencies](#dependencies) 4. [Security concerns](#security-concerns) 5. [Installation](#installation) 6. [Minimal test](#minimal-test) 7. [Experiments](#experiments) 8. [LICENSE](#license)
 
-## Quickstart
+## Considered badges
+
+- **Disponível (SeloD):** the repository is publicly archived with an open license (AGPL).
+- **Funcional (SeloF):** the minimal test below exercises the full pipeline end to end in ~2 minutes.
+- **Sustentável (SeloS):** small typed modules (one responsibility each), offline unit tests (`uv run pytest`, ~6 s), no hardcoded paths; all behavior via CLI flags and environment variables.
+- **Reprodutível (SeloR):** every number in the paper regenerates offline from the committed run of record (`results/runs/`) with one command per claim; live re-runs are deterministic (argmax inference, seeded splits).
+
+## Basic information
+
+| Component | Requirement |
+|---|---|
+| OS | Linux x86-64 |
+| Runtime | Python ≥ 3.11, managed by `uv` |
+| RAM | 16 GB |
+| Disk | 15 GB free (model downloads) |
+| GPU | one NVIDIA GPU with ≥ 6 GB VRAM (reference machine: RTX 5060 Ti 16 GB; CPU-only also works, slower) |
+
+## Dependencies
+
+Pinned via `pyproject.toml` + committed `uv.lock` (`torch` CUDA 12.8 wheels, `transformers`, `sentence-transformers`, `gliclass`, `scikit-learn`, `pandas`). Models are fetched automatically from Hugging Face on first use; override the cache location with `HF_HUB_CACHE` if the default disk is small.
+
+## Security concerns
+
+The tool runs entirely locally: no telemetry, no external API calls (only Hugging Face model downloads on first run), no credentials required. The bundled corpus is anonymized (all sensitive spans replaced by placeholder tags) and contains no personal data.
+
+## Installation
 
 ```bash
-uv sync --extra dev              # install (pinned, CUDA 12.8 wheels)
-uv run pytest -q                 # offline unit tests (~6 s)
-./scripts/smoke.sh               # baselines + 1 small model on 20 incidents (~2 min)
-./scripts/run_all.sh             # full grid: 10 models x 8 configs x 4 views (~4 h)
-uv run zerolinc report           # summary tables -> results/report/summary.md
-uv run zerolinc protocol         # dev/test selection + McNemar -> protocol_seed42.json
-uv run python scripts/make_figures.py results/runs figures/subject subject
-uv run python scripts/regen_metrics.py   # recompute all metrics from stored predictions
+git clone <repository-url> zerolinc && cd zerolinc
+curl -LsSf https://astral.sh/uv/install.sh | sh   # if uv is not installed
+uv sync --extra dev                                # (~3 min)
 ```
 
-Model downloads default to the Hugging Face cache; override with
-`HF_HOME`/`HF_HUB_CACHE` if the default disk is small.
+## Minimal test
 
-## Experimental axes
+One command; expected: 8+ baseline/model lines and a written run record (~2 min on GPU, first run downloads ~1 GB):
 
-- **Backends** (`backend:model` specs): `nli:` entailment cross-encoders,
-  `gliclass:` GLiClass, `embed:` instruction bi-encoders, `rerank:` generative
-  rerankers. Defaults in `runner.py` (`DEFAULT_MODELS`, `V2_MODELS`).
-- **Verbalizations** (8, `labels.py`): the zero-shot analogue of prompt
-  engineering; names, NIST descriptions, domain templates, the reference LLM
-  prompts' search terms and examples, event-style hypotheses, PT variants.
-- **Text views** (4, `--view`): `full`, `subject` (subject-first), `deboiler`
-  (corpus-statistical boilerplate removal), `subject-deboiler`.
-- **Protocol**: configurations are selected on a seeded stratified dev half and
-  reported on the untouched test half, with a paired McNemar test against the
-  majority baseline; a cross-family rank ensemble combines one dev-best
-  score-carrying run per family.
+```bash
+./scripts/smoke.sh
+```
+
+Expected output ends with a line like `mDeBERTa-...__en-name: acc=... wall=...s`.
+
+## Experiments
+
+**Main claim (instance-memory engine reaches ~90%):** (~3 min)
+
+```bash
+uv run zerolinc knn
+```
+
+Expected: five `seed N: ... test_acc=0.88-0.93 ... mcnemar_p=0.0` lines (mean 0.905).
+
+**Claim 2 (zero-shot protocol estimates):** recomputed offline from the committed run of record, no GPU (~5 s):
+
+```bash
+uv run zerolinc protocol --seed 42
+```
+
+Expected: JSON with `families.nli.test.accuracy = 0.6989` and `ensemble_rank` ≈ 0.699.
+
+**Claim 3 (cost figures and the full grid):** the committed run records already contain every timing/energy figure; regenerate the tables and figures offline (~10 s):
+
+```bash
+uv run zerolinc report && uv run python scripts/make_figures.py results/runs figures/subject subject
+```
+
+Optional full re-run of the 290-run grid (GPU, ~4 h): `./scripts/run_all.sh`.
+
+**End-user tool demo:** classify a CSV (`conteudo` column) with or without a labeled memory:
+
+```bash
+uv run zerolinc classify --input data/185_incidentes_anon.csv --engine zeroshot --output predictions.csv
+uv run zerolinc classify --input tickets.csv --memory labeled.csv --output predictions.csv
+```
+
+## LICENSE
+
+[GNU AGPL-3.0-or-later](LICENSE).

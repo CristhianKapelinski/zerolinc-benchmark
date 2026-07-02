@@ -23,12 +23,19 @@ from .protocol import stratified_split
 DEFAULT_KS = (1, 3, 5, 7)
 
 
-def embed_texts(model_id: str, texts: list[str], batch_size: int = 16):
+def embed_texts(model_id: str, texts: list[str], batch_size: int = 8,
+                max_seq_length: int = 2048):
     import torch
     from sentence_transformers import SentenceTransformer
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = SentenceTransformer(model_id, device=device)
+    model = SentenceTransformer(
+        model_id, device=device,
+        model_kwargs={"torch_dtype": torch.float16} if device == "cuda" else None,
+    )
+    # corpus tickets are ~1k tokens; capping the window bounds activation memory
+    model.max_seq_length = min(getattr(model, "max_seq_length", max_seq_length),
+                               max_seq_length)
     emb = model.encode(texts, normalize_embeddings=True, batch_size=batch_size,
                        show_progress_bar=False)
     del model
