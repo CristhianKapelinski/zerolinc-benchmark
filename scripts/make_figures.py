@@ -41,6 +41,8 @@ MODEL_SHORT = {
     "bge-m3-zeroshot-v2.0": "BGE-M3-zs",
     "gliclass-x-base": "GLiClass-x-base",
     "gliclass-modern-base-v3.0": "GLiClass-modern",
+    "gliclass-large-v3.0": "GLiClass-large",
+    "Qwen3-Reranker-0.6B": "Qwen3-Rerank-0.6B",
     "multilingual-e5-large-instruct": "mE5-large-inst",
     "Qwen3-Embedding-0.6B": "Qwen3-Emb-0.6B",
 }
@@ -94,7 +96,7 @@ BACKEND_COLOR = {"nli": CAT[0], "gliclass": CAT[1], "embed": CAT[2], "rerank": C
 
 
 def fig_cost(runs: list[dict], out: Path) -> None:
-    """Cost x quality: best run per model; color = backend family, direct labels."""
+    """Cost x quality: best run per checkpoint across ALL views and configs."""
     best = {}
     for r in runs:
         key = r["model"].split("/")[-1]
@@ -173,7 +175,9 @@ def main() -> int:
         return 1
     fig_matrix(runs, out, "accuracy", "fig_grid_acc", "Accuracy (%) by model x prompt configuration")
     fig_matrix(runs, out, "macro_f1", "fig_grid_f1", "Macro-F1 (%) by model x prompt configuration")
-    fig_cost(runs, out)
+    all_runs = [json.loads(p.read_text()) for p in sorted(results_dir.glob("*.json"))
+                if "baseline" not in p.name]
+    fig_cost(all_runs, out)
     fig_perclass(runs, out)
     print(f"figures written to {out}/")
     return 0

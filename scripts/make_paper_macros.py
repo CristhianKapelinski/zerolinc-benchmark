@@ -37,6 +37,8 @@ def main() -> int:
     ens_f1s = [e["test"]["macro_f1"] for e in ens]
     ens_ps = [e["mcnemar_vs_majority_on_test"]["p_value"] for e in ens]
     nli_accs = [p["families"]["nli"]["test"]["accuracy"] for p in protos]
+    nli_f1s = [p["families"]["nli"]["test"]["macro_f1"] for p in protos]
+    nli_ps = [p["families"]["nli"]["mcnemar_vs_majority_on_test"]["p_value"] for p in protos]
     p42 = next(p for p in protos if p["seed"] == 42)
     best_per = best["metrics"]["per_class"]
 
@@ -52,7 +54,9 @@ def main() -> int:
         "NPtDominant": str(n_pt),
         "NEnDominant": str(len(incs) - n_pt),
         "NModelRuns": str(len(models)),
-        "NModels": "10",
+        "NGridRuns": "288",
+        "NModels": "9",
+        "NCheckpointsTotal": str(len({r["model"] for r in models})),
         "NConfigs": "8",
         "NViews": "4",
         "MajorityAcc": pct(majority["metrics"]["accuracy"]),
@@ -84,6 +88,12 @@ def main() -> int:
         "EnsPMin": f"{min(ens_ps):.2f}",
         "EnsPMax": f"{max(ens_ps):.2f}",
         "NliMeanTestAcc": pct(sum(nli_accs) / len(nli_accs)),
+        "NliMinTestAcc": pct(min(nli_accs)),
+        "NliMaxTestAcc": pct(max(nli_accs)),
+        "NliMeanMacroF": f"{sum(nli_f1s) / len(nli_f1s):.2f}",
+        "NliPMin": f"{min(nli_ps):.2f}",
+        "NliPMax": f"{max(nli_ps):.2f}",
+        "DebertaVram": f"{deb.get('peak_vram_mb', 0) / 1024:.1f}",
         "NSeeds": str(len(seeds)),
         "CatFiveF": f"{best_per['CAT5']['f1']:.2f}",
         "CatFiveN": str(best_per["CAT5"]["support"]),
@@ -106,6 +116,8 @@ def main() -> int:
             "KnnPMax": f"{max(k_ps):.3f}",
             "KnnK": str(knns[0]["selected_k"]),
             "KnnNMem": str(knns[0]["n_dev"]),
+            "KnnCatTwelveRecall": f"{knns[0]['per_class']['CAT12']['recall']:.2f}",
+            "KnnCatTwelveN": str(knns[0]["per_class"]["CAT12"]["support"]),
         })
 
     knn4b_files = sorted((REPORT / "knn4b").glob("knn_seed*.json"))
