@@ -126,21 +126,65 @@ def protocol_report(results_dir: str | Path, seed: int = 42) -> dict:
             member_ids.append(sel["run"]["run_id"])
 
     if len(ensemble_members) >= 2:
-        ens_true, ens_pred = _rank_ensemble(ensemble_members, test_ids)
-        m = evaluate(ens_true, ens_pred)
-        out["ensemble_rank"] = {
-            "members": member_ids,
+        weights = [sel["dev_acc"] for sel in
+                   (best_scored_by_family[f] for f in sorted(best_scored_by_family))
+                   if sel["run"]["run_id"] in member_ids]
+        for name, w in (("ensemble_rank", None), ("ensemble_rank_devweighted", weights)):
+            ens_true, ens_pred = _rank_ensemble(ensemble_members, test_ids, w)
+            m = evaluate(ens_true, ens_pred)
+            out[name] = {
+                "members": member_ids,
+                "weights": None if w is None else [round(x, 3) for x in w],
+                "test": {k: m[k] for k in
+                         ("n", "accuracy", "accuracy_ci95", "macro_f1", "weighted_f1")},
+                "mcnemar_vs_majority_on_test": mcnemar_vs(
+                    ens_true, ens_pred, [majority] * len(ens_true)
+                ),
+            }
+
+    # Dev-prior calibration of the reranker family: per-label multiplicative
+    # correction toward the label prior ESTIMATED ON DEV (unlike uniform-prior
+    # batch calibration, this keeps the genuine class skew).
+    if "rerank" in best_scored_by_family:
+        sel = best_scored_by_family["rerank"]
+        cal_true, cal_pred = _devprior_calibrated(sel["preds"], ids, labels,
+                                                  dev_ids, test_ids)
+        m = evaluate(cal_true, cal_pred)
+        out["rerank_devprior_calibrated"] = {
+            "run": sel["run"]["run_id"],
             "test": {k: m[k] for k in
                      ("n", "accuracy", "accuracy_ci95", "macro_f1", "weighted_f1")},
-            "mcnemar_vs_majority_on_test": mcnemar_vs(
-                ens_true, ens_pred, [majority] * len(ens_true)
-            ),
         }
     return out
 
 
+def _devprior_calibrated(
+    preds: list[dict], ids: list[str], labels: list[str],
+    dev_ids: set[str], test_ids: set[str],
+) -> tuple[list[str], list[str]]:
+    """Argmax of log-score + log(dev prior) - log(mean dev score) per label."""
+    by_id = {p["incident_id"]: p for p in preds}
+    k = len(CODES)
+    dev_list = sorted(dev_ids)
+    prior = {c: max(sum(1 for i, lab in zip(ids, labels)
+                        if i in dev_ids and lab == c), 0.5) / len(dev_ids)
+             for c in CODES}
+    mean = {}
+    for j, c in enumerate(CODES):
+        mean[c] = sum(max(by_id[i]["scores"][c], 1e-6) for i in dev_list) / len(dev_list)
+    order = sorted(test_ids)
+    truth = [by_id[i]["true"] for i in order]
+    out_pred = []
+    for i in order:
+        adj = [math.log(max(by_id[i]["scores"][c], 1e-6))
+               + math.log(prior[c]) - math.log(mean[c]) for c in CODES]
+        out_pred.append(CODES[max(range(k), key=lambda j: adj[j])])
+    return truth, out_pred
+
+
 def _rank_ensemble(
-    members: list[list[dict]], test_ids: set[str]
+    members: list[list[dict]], test_ids: set[str],
+    weights: list[float] | None = None,
 ) -> tuple[list[str], list[str]]:
     """Scale-free rank ensemble: average within-item score ranks across members.
 
@@ -155,11 +199,12 @@ def _rank_ensemble(
     acc = [[0.0] * k for _ in order]
     truth: list[str] = []
     for m_i, preds in enumerate(members):
+        w = 1.0 if weights is None else weights[m_i]
         by_id = {p["incident_id"]: p for p in preds}
         for row_i, ident in enumerate(order):
             sc = [by_id[ident]["scores"][c] for c in CODES]
             for rank, j in enumerate(sorted(range(k), key=lambda j: sc[j])):
-                acc[row_i][j] += rank
+                acc[row_i][j] += w * rank
         if m_i == 0:
             truth = [by_id[i]["true"] for i in order]
     return truth, argmax_preds(acc)

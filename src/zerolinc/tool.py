@@ -1,0 +1,109 @@
+"""The end-user classification command: CSV of tickets in, categories out.
+
+Two engines, selected by what the user has:
+
+- ``zeroshot`` (day zero, no labeled data): GLiClass scores the ticket against
+  the NIST category event hypotheses; fast default. ``zeroshot-max`` swaps in
+  the stronger but slower NLI cross-encoder configuration.
+- ``knn`` (a labeled reference file exists): similarity-weighted vote of the
+  k nearest labeled tickets in embedding space; no training.
+- ``auto``: knn when a memory file is given, with per-ticket fallback to the
+  zero-shot engine whenever the nearest neighbor is farther than a similarity
+  threshold (novel ticket types are not forced onto the memory).
+"""
+
+from dataclasses import dataclass
+from pathlib import Path
+
+import pandas as pd
+
+from .data import Incident, load_incidents, normalize_text
+from .knn import _vote, embed_texts
+from .labels import PROMPT_CONFIGS
+
+ZEROSHOT_FAST = ("gliclass:knowledgator/gliclass-modern-base-v3.0", "en-event")
+ZEROSHOT_MAX = ("nli:MoritzLaurer/deberta-v3-large-zeroshot-v2.0", "en-desc-kw")
+EMBED_MODEL = "Qwen/Qwen3-Embedding-0.6B"
+DEFAULT_K = 3
+DEFAULT_SIM_THRESHOLD = 0.75
+
+
+@dataclass(frozen=True)
+class ToolPrediction:
+    incident_id: str
+    category: str
+    confidence: float
+    engine: str
+
+
+def _load_texts(path: str | Path, text_column: str = "conteudo") -> list[Incident]:
+    df = pd.read_csv(path)
+    if text_column not in df.columns:
+        raise ValueError(f"{path} has no column {text_column!r}")
+    id_col = next((c for c in ("incidente_id", "id") if c in df.columns), None)
+    return [
+        Incident(
+            incident_id=str(row[id_col]) if id_col else str(i),
+            text=normalize_text(str(row[text_column])),
+            label="",
+        )
+        for i, row in df.iterrows()
+    ]
+
+
+def _zeroshot(items: list[Incident], engine: str, batch_size: int) -> list[ToolPrediction]:
+    from .backends import classify_any
+
+    spec, config_name = ZEROSHOT_MAX if engine == "zeroshot-max" else ZEROSHOT_FAST
+    config = PROMPT_CONFIGS[config_name]
+    result = classify_any(spec, [i.text for i in items], config, batch_size=batch_size)
+    return [
+        ToolPrediction(i.incident_id, p, round(s, 4), engine)
+        for i, p, s in zip(items, result.predictions, result.top_scores)
+    ]
+
+
+def classify_tickets(
+    input_path: str | Path,
+    memory_path: str | Path | None = None,
+    engine: str = "auto",
+    k: int = DEFAULT_K,
+    sim_threshold: float = DEFAULT_SIM_THRESHOLD,
+    text_column: str = "conteudo",
+    batch_size: int = 8,
+) -> list[ToolPrediction]:
+    items = _load_texts(input_path, text_column)
+
+    if engine in ("zeroshot", "zeroshot-max") or (engine == "auto" and not memory_path):
+        return _zeroshot(items, engine if engine.startswith("zeroshot") else "zeroshot", batch_size)
+
+    if not memory_path:
+        raise ValueError("engine 'knn' requires --memory with labeled tickets")
+    memory = load_incidents(memory_path)
+    mem_labels = [m.label for m in memory]
+
+    emb_all = embed_texts(EMBED_MODEL, [m.text for m in memory] + [i.text for i in items])
+    mem_emb, item_emb = emb_all[: len(memory)], emb_all[len(memory):]
+    sims = item_emb @ mem_emb.T
+
+    preds: list[ToolPrediction] = []
+    fallback: list[int] = []
+    for row_i, item in enumerate(items):
+        top_sim = float(sims[row_i].max())
+        if engine == "auto" and top_sim < sim_threshold:
+            fallback.append(row_i)
+            preds.append(None)  # type: ignore[arg-type]
+            continue
+        label = _vote(sims[row_i], mem_labels, list(range(len(memory))), k)
+        preds.append(ToolPrediction(item.incident_id, label, round(top_sim, 4), "knn"))
+
+    if fallback:
+        zs = _zeroshot([items[j] for j in fallback], "zeroshot", batch_size)
+        for j, p in zip(fallback, zs):
+            preds[j] = ToolPrediction(p.incident_id, p.category, p.confidence,
+                                      "zeroshot-fallback")
+    return preds
+
+
+def write_predictions(preds: list[ToolPrediction], out_path: str | Path) -> None:
+    pd.DataFrame([p.__dict__ for p in preds]).to_csv(out_path, index=False)

@@ -146,3 +146,14 @@ def test_knn_vote_and_report():
     # deterministic vote tie-break
     sims_row = np.array([0.9, 0.9])
     assert _vote(sims_row, ["CAT3", "CAT12"], [0, 1], 2) in ("CAT3", "CAT12")
+
+
+def test_tool_load_texts(tmp_path):
+    import pandas as pd
+    from zerolinc.tool import _load_texts
+    f = tmp_path / "in.csv"
+    pd.DataFrame({"incidente_id": ["A1", "A2"],
+                  "conteudo": ["texto [IP_ADDRESS_aabbccdd11] um", "texto dois"]}).to_csv(f, index=False)
+    items = _load_texts(f)
+    assert [i.incident_id for i in items] == ["A1", "A2"]
+    assert "<IP>" in items[0].text

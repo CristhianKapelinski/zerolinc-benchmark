@@ -50,6 +50,18 @@ def main(argv: list[str] | None = None) -> int:
     p_proto.add_argument("--seed", type=int, default=42)
     p_proto.add_argument("--out", type=Path, default=DEFAULT_REPORT)
 
+    p_cls = sub.add_parser(
+        "classify", help="classify a CSV of tickets into NIST categories (the tool)")
+    p_cls.add_argument("--input", type=Path, required=True, help="CSV with ticket texts")
+    p_cls.add_argument("--memory", type=Path, default=None,
+                       help="labeled CSV used as k-NN reference memory")
+    p_cls.add_argument("--engine", choices=("auto", "zeroshot", "zeroshot-max", "knn"),
+                       default="auto")
+    p_cls.add_argument("--k", type=int, default=3)
+    p_cls.add_argument("--sim-threshold", type=float, default=0.75)
+    p_cls.add_argument("--text-column", default="conteudo")
+    p_cls.add_argument("--output", type=Path, default=Path("predictions.csv"))
+
     p_knn = sub.add_parser(
         "knn", help="instance-memory k-NN (dev half as reference), protocol-reported")
     p_knn.add_argument("--model", default="Qwen/Qwen3-Embedding-0.6B")
@@ -62,6 +74,19 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "report":
         path = write_report(args.results, args.out)
         print(f"report written to {path}")
+        return 0
+
+    if args.command == "classify":
+        from .tool import classify_tickets, write_predictions
+        preds = classify_tickets(args.input, args.memory, args.engine, args.k,
+                                 args.sim_threshold, args.text_column, args.batch_size)
+        write_predictions(preds, args.output)
+        from collections import Counter
+        engines = Counter(p.engine for p in preds)
+        cats = Counter(p.category for p in preds)
+        print(f"{len(preds)} tickets classified -> {args.output}")
+        print(f"engines: {dict(engines)}")
+        print(f"categories: {dict(sorted(cats.items()))}")
         return 0
 
     if args.command == "knn":
