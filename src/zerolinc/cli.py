@@ -4,9 +4,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from .data import load_incidents
+from .data import apply_view, load_incidents
 from .labels import PROMPT_CONFIGS
-from .runner import DEFAULT_MODELS, run_baselines, run_one
+from .runner import DEFAULT_MODELS, run_baselines, run_one  # noqa: F401 (V2_MODELS lazy)
 from .report import write_report
 
 DEFAULT_DATA = Path("data/185_incidentes_anon.csv")
@@ -19,6 +19,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data", type=Path, default=DEFAULT_DATA, help="incident CSV path")
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS, help="run output dir")
     parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--view", choices=("full", "subject"), default="full",
+                        help="text view fed to the models")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="run one model x prompt-config pass")
@@ -28,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
 
     p_grid = sub.add_parser("grid", help="run all models x all prompt configs")
     p_grid.add_argument("--models", nargs="*", default=list(DEFAULT_MODELS))
+    p_grid.add_argument("--v2", action="store_true",
+                        help="use the v2 model set (GLiClass + embedding backends)")
     p_grid.add_argument("--configs", nargs="*", default=sorted(PROMPT_CONFIGS),
                         choices=sorted(PROMPT_CONFIGS))
     p_grid.add_argument("--limit", type=int, default=0)
@@ -46,9 +50,10 @@ def main(argv: list[str] | None = None) -> int:
         print(f"report written to {path}")
         return 0
 
-    incidents = load_incidents(args.data)
+    incidents = apply_view(load_incidents(args.data), args.view)
     if args.command in ("run", "grid") and args.limit:
         incidents = incidents[: args.limit]
+    tag = args.view if args.view != "full" else ""
 
     if args.command == "baselines":
         for record in run_baselines(incidents, args.results):
@@ -57,26 +62,28 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "run":
-        record = run_one(args.model, args.config, incidents, args.results, args.batch_size)
+        record = run_one(args.model, args.config, incidents, args.results, args.batch_size, tag)
         m = record["metrics"]
         print(f"{record['run_id']}: acc={m['accuracy']} ci95={m['accuracy_ci95']} "
               f"macro_f1={m['macro_f1']} wall={record['wall_seconds']}s")
         return 0
 
     if args.command == "grid":
-        from .runner import run_id as rid
+        from .runner import V2_MODELS, run_id as rid
+        if args.v2:
+            args.models = list(V2_MODELS)
         total = len(args.models) * len(args.configs)
         done = 0
         for model in args.models:
             for config in args.configs:
                 done += 1
-                out_file = args.results / f"{rid(model, config)}.json"
+                out_file = args.results / f"{rid(model, config, tag)}.json"
                 if args.skip_existing and out_file.exists():
                     print(f"[{done}/{total}] skip {out_file.name}")
                     continue
                 print(f"[{done}/{total}] {model} x {config} ...", flush=True)
                 try:
-                    record = run_one(model, config, incidents, args.results, args.batch_size)
+                    record = run_one(model, config, incidents, args.results, args.batch_size, tag)
                 except Exception as exc:  # keep the grid going; a failed run is reported
                     print(f"  FAILED: {exc}", file=sys.stderr)
                     continue

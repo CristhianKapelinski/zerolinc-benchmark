@@ -59,3 +59,29 @@ def test_keyword_baseline_matches_and_fallback():
         "nothing relevant here",  # no match -> majority (CAT5)
     ]
     assert keyword_baseline(y, texts) == ["CAT3", "CAT5", "CAT5"]
+
+
+def test_parse_spec():
+    from zerolinc.backends import parse_spec
+    assert parse_spec("facebook/bart-large-mnli") == ("nli", "facebook/bart-large-mnli")
+    assert parse_spec("nli:a/b") == ("nli", "a/b")
+    assert parse_spec("gliclass:knowledgator/gliclass-x-base") == (
+        "gliclass", "knowledgator/gliclass-x-base")
+    assert parse_spec("embed:Qwen/Qwen3-Embedding-0.6B") == ("embed", "Qwen/Qwen3-Embedding-0.6B")
+
+
+def test_subject_view_reorders_only():
+    from zerolinc.data import subject_view
+    text = "Pedido: <DATE> CERT.br: Assunto: maquina comprometida\ncorpo do relato"
+    out = subject_view(text)
+    assert out.startswith("Assunto: maquina comprometida.")
+    assert "corpo do relato" in out and "Pedido:" in out
+    assert subject_view("sem cabecalho") == "sem cabecalho"
+
+
+def test_event_config_present():
+    from zerolinc.labels import PROMPT_CONFIGS, CODES
+    cfg = PROMPT_CONFIGS["en-event"]
+    assert cfg.template == "{}"
+    assert sorted(cfg.labels.values()) == sorted(CODES)
+    assert all(lbl.endswith(".") for lbl in cfg.labels)

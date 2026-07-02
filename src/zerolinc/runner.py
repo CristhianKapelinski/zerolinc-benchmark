@@ -13,17 +13,24 @@ from pathlib import Path
 import torch
 
 from . import baselines
-from .classifier import classify
+from .backends import classify_any, parse_spec
 from .data import Incident
 from .labels import PROMPT_CONFIGS
 from .metrics import evaluate
 
 DEFAULT_MODELS: tuple[str, ...] = (
-    "facebook/bart-large-mnli",
-    "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
-    "joeddav/xlm-roberta-large-xnli",
-    "MoritzLaurer/deberta-v3-large-zeroshot-v2.0",
-    "MoritzLaurer/bge-m3-zeroshot-v2.0",
+    "nli:facebook/bart-large-mnli",
+    "nli:MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+    "nli:joeddav/xlm-roberta-large-xnli",
+    "nli:MoritzLaurer/deberta-v3-large-zeroshot-v2.0",
+    "nli:MoritzLaurer/bge-m3-zeroshot-v2.0",
+)
+
+V2_MODELS: tuple[str, ...] = (
+    "gliclass:knowledgator/gliclass-x-base",
+    "gliclass:knowledgator/gliclass-modern-base-v3.0",
+    "embed:intfloat/multilingual-e5-large-instruct",
+    "embed:Qwen/Qwen3-Embedding-0.6B",
 )
 
 
@@ -38,8 +45,9 @@ def _machine() -> dict:
     return info
 
 
-def run_id(model_id: str, config_name: str) -> str:
-    return f"{model_id.split('/')[-1]}__{config_name}"
+def run_id(model_id: str, config_name: str, tag: str = "") -> str:
+    base = f"{model_id.split('/')[-1]}__{config_name}"
+    return f"{base}__{tag}" if tag else base
 
 
 def run_one(
@@ -48,16 +56,20 @@ def run_one(
     incidents: list[Incident],
     results_dir: str | Path,
     batch_size: int = 8,
+    tag: str = "",
 ) -> dict:
     config = PROMPT_CONFIGS[config_name]
     texts = [i.text for i in incidents]
     y_true = [i.label for i in incidents]
 
-    result = classify(model_id, texts, config, batch_size=batch_size)
+    backend, _ = parse_spec(model_id)
+    result = classify_any(model_id, texts, config, batch_size=batch_size)
     record = {
-        "run_id": run_id(model_id, config_name),
+        "run_id": run_id(model_id, config_name, tag),
         "model": model_id,
+        "backend": backend,
         "prompt_config": config_name,
+        "text_view": tag or "full",
         "hypothesis_template": config.template,
         "candidate_labels": config.labels,
         "machine": _machine(),

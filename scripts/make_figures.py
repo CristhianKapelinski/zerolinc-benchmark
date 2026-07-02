@@ -39,6 +39,10 @@ MODEL_SHORT = {
     "xlm-roberta-large-xnli": "XLM-R-large",
     "deberta-v3-large-zeroshot-v2.0": "DeBERTa-large-zs",
     "bge-m3-zeroshot-v2.0": "BGE-M3-zs",
+    "gliclass-x-base": "GLiClass-x-base",
+    "gliclass-modern-base-v3.0": "GLiClass-modern",
+    "multilingual-e5-large-instruct": "mE5-large-inst",
+    "Qwen3-Embedding-0.6B": "Qwen3-Emb-0.6B",
 }
 
 

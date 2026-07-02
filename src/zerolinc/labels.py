@@ -113,6 +113,44 @@ CATEGORIES: tuple[Category, ...] = (
 
 CODES: tuple[str, ...] = tuple(c.code for c in CATEGORIES)
 
+# Event-style hypotheses: each category verbalized as a declarative statement of
+# the incident event, the genuine NLI formulation (the model judges whether the
+# report entails the event, not whether it is "about a topic").
+EVENTS_EN: dict[str, str] = {
+    "CAT1": "An attacker gained unauthorized access to a user or administrator account.",
+    "CAT2": "A machine was infected by malicious code such as ransomware or a trojan.",
+    "CAT3": "A denial-of-service attack made systems or networks unavailable.",
+    "CAT4": "Sensitive data was disclosed, copied, or exfiltrated without authorization.",
+    "CAT5": "A technical vulnerability or insecurely exposed service was used to compromise assets.",
+    "CAT6": "An internal user intentionally or negligently abused their access.",
+    "CAT7": "People were deceived into giving away access or information.",
+    "CAT8": "A physical breach or physical access impacted computational assets.",
+    "CAT9": "Systems, records, or configurations were modified without authorization.",
+    "CAT10": "Systems were used without authorization for other purposes, such as "
+             "cryptocurrency mining or sending spam.",
+    "CAT11": "The incident originated from a security failure at a third party or supplier.",
+    "CAT12": "A hostile intrusion attempt such as scanning or probing was observed, "
+             "not confirmed as successful.",
+}
+
+# Verbatim example lists from the reference zero-shot LLM prompt, per category.
+EXAMPLES_EN: dict[str, str] = {
+    "CAT1": "credential phishing, SSH brute force, OAuth token theft",
+    "CAT2": "ransomware, Trojan horse, macro virus",
+    "CAT3": "volumetric DoS or DDoS (UDP flood, SYN flood, HTTP flood), attacks on APIs "
+            "or websites, Mirai botnet",
+    "CAT4": "database theft, leaked credentials",
+    "CAT5": "exploitation of CVE, RCE, SQL injection, or insecure service exposure "
+            "(NTP monlist, DNS ANY, open Memcached)",
+    "CAT6": "copying confidential data, sabotage, misuse of access",
+    "CAT7": "phishing, vishing, CEO fraud, pretexting",
+    "CAT8": "equipment theft, data center break-in",
+    "CAT9": "website defacement, alteration of records or logs",
+    "CAT10": "cryptocurrency mining, spam campaigns, malware hosting",
+    "CAT11": "SaaS breach, supply-chain compromise",
+    "CAT12": "network scans, brute force attempts, blocked exploit attempts",
+}
+
 
 @dataclass(frozen=True)
 class PromptConfig:
@@ -138,6 +176,10 @@ PROMPT_CONFIGS: dict[str, PromptConfig] = {
              lambda c: f"{c.name_en}, that is, {c.desc_en}"),
         _cfg("en-desc-kw", "This security incident report describes {}.",
              lambda c: f"{c.name_en}: {c.desc_en} (related terms: {', '.join(c.keywords)})"),
+        _cfg("en-desc-ex", "This security incident report describes {}.",
+             lambda c: f"{c.name_en}: {c.desc_en}, for example {EXAMPLES_EN[c.code]}"),
+        _cfg("en-event", "{}",
+             lambda c: EVENTS_EN[c.code]),
         _cfg("pt-name", "Este texto é sobre {}.",
              lambda c: c.name_pt),
         _cfg("pt-desc", "Este relato de incidente de segurança descreve {}.",
