@@ -96,44 +96,52 @@ BACKEND_COLOR = {"nli": CAT[0], "gliclass": CAT[1], "embed": CAT[2], "rerank": C
 
 
 def fig_cost(runs: list[dict], out: Path) -> None:
-    """Cost x quality: best run per checkpoint across ALL views and configs."""
+    """Cost x quality as a two-panel dot plot: no in-plot label collisions.
+
+    One row per checkpoint (best run across all views/configs), sorted by
+    accuracy; panel (a) accuracy with Wilson CI, panel (b) wall-clock (log).
+    """
     best = {}
     for r in runs:
         key = r["model"].split("/")[-1]
         if key not in best or r["metrics"]["accuracy"] > best[key]["metrics"]["accuracy"]:
             best[key] = r
-    fig, ax = plt.subplots(figsize=(7.5, 3.6))
-    items = sorted(best.items(), key=lambda kv: kv[1]["wall_seconds"])
-    seen_backends = {}
-    for k, (name, r) in enumerate(items):
-        x = r["wall_seconds"]
-        y = r["metrics"]["accuracy"] * 100
+    items = sorted(best.items(), key=lambda kv: kv[1]["metrics"]["accuracy"])
+    names = [f"{MODEL_SHORT.get(k, k)} ({r['prompt_config']})" for k, r in items]
+    ys = np.arange(len(items))
+    colors = [BACKEND_COLOR.get(r.get("backend", "nli"), CAT[5]) for _, r in items]
+
+    fig, (ax1, ax2) = plt.subplots(
+        1, 2, figsize=(9, 3.4), sharey=True,
+        gridspec_kw={"width_ratios": [1.35, 1], "wspace": 0.06})
+    for y, (k, r), c in zip(ys, items, colors):
+        acc = r["metrics"]["accuracy"] * 100
         lo, hi = (v * 100 for v in r["metrics"]["accuracy_ci95"])
-        backend = r.get("backend", "nli")
-        color = BACKEND_COLOR.get(backend, CAT[5])
-        seen_backends[backend] = color
-        ax.errorbar(x, y, yerr=[[y - lo], [hi - y]], fmt="o", color=color,
-                    markersize=7, capsize=3, lw=1)
-        above = k % 2 == 0
-        ax.annotate(f"{MODEL_SHORT.get(name, name)} ({r['prompt_config']})",
-                    (x, y), textcoords="offset points",
-                    xytext=(0, 26 if above else -32), ha="center", fontsize=7.5,
-                    arrowprops={"arrowstyle": "-", "color": "#c3c2b7", "lw": 0.6})
-    ax.set_xscale("log")
-    ax.set_xticks([2, 5, 10, 20, 60, 180])
-    ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-    ax.minorticks_off()
-    xs = [r["wall_seconds"] for _, r in items]
-    ax.set_xlim(min(xs) * 0.55, max(xs) * 1.9)
-    ax.set_xlabel("wall-clock seconds for the full corpus (log scale)")
-    ax.set_ylabel("accuracy (%)")
-    ax.set_ylim(0, 90)
+        ax1.errorbar(acc, y, xerr=[[acc - lo], [hi - acc]], fmt="o", color=c,
+                     markersize=6, capsize=2.5, lw=1)
+        ax2.plot([r["wall_seconds"]], [y], "o", color=c, markersize=6)
+        ax2.annotate(f"{r['wall_seconds']:.0f}s", (r["wall_seconds"], y),
+                     textcoords="offset points", xytext=(7, -3), fontsize=7,
+                     color="#52514e")
+    ax1.set_yticks(ys, names, fontsize=8)
+    ax1.set_xlabel("(a) accuracy (%), 95% CI")
+    ax1.set_xlim(0, 85)
+    ax2.set_xscale("log")
+    ax2.set_xticks([2, 10, 60, 300])
+    ax2.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+    ax2.minorticks_off()
+    ax2.set_xlim(1.1, 900)
+    ax2.set_xlabel("(b) wall-clock seconds, log")
+    seen = {}
+    for _, r in items:
+        b = r.get("backend", "nli")
+        seen[b] = BACKEND_COLOR.get(b, CAT[5])
     handles = [matplotlib.lines.Line2D([], [], marker="o", ls="", color=c, label=b)
-               for b, c in sorted(seen_backends.items())]
-    ax.legend(handles=handles, frameon=False, fontsize=8, loc="center left",
-              bbox_to_anchor=(1.01, 0.5), title="backend", title_fontsize=8)
-    ax.grid(True, color="#e1e0d9", lw=0.6)
-    ax.set_axisbelow(True)
+               for b, c in sorted(seen.items())]
+    ax1.legend(handles=handles, frameon=False, fontsize=7.5, loc="lower right")
+    for ax in (ax1, ax2):
+        ax.grid(True, axis="x", color="#e1e0d9", lw=0.6)
+        ax.set_axisbelow(True)
     fig.savefig(out / "fig_cost.pdf")
     fig.savefig(out / "fig_cost.png")
     plt.close(fig)
