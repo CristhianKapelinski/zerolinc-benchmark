@@ -42,16 +42,16 @@ def main() -> int:
 
     plt.rcParams.update({"font.size": 8, "figure.dpi": 150})
     fig, (ax, ax2) = plt.subplots(
-        1, 2, figsize=(9, 3.6), gridspec_kw={"width_ratios": [1.5, 1]})
+        1, 2, figsize=(9, 2.2), gridspec_kw={"width_ratios": [1.5, 1]})
     for cat in sorted(CAT_COLOR, key=lambda c: -labels.count(c)):
         idx = [j for j, lab in enumerate(labels) if lab == cat]
         if not idx:
             continue
-        ax.scatter(xy[idx, 0], xy[idx, 1], s=22, color=CAT_COLOR[cat],
+        ax.scatter(xy[idx, 0], xy[idx, 1], s=14, color=CAT_COLOR[cat],
                    edgecolors="white", linewidths=0.4,
-                   label=f"{cat} ($n$={len(idx)})")
+                   label=f"{cat} ({len(idx)})")
     ax.legend(fontsize=7, frameon=False, borderpad=0.2, handletextpad=0.2,
-              loc="upper center", bbox_to_anchor=(0.5, -0.02), ncols=4)
+              loc="upper center", bbox_to_anchor=(0.5, -0.03), ncols=8, columnspacing=0.8)
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():

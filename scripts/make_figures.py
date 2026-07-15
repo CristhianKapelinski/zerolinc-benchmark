@@ -162,7 +162,7 @@ def fig_perclass(runs: list[dict], out: Path) -> None:
     rec = [per[c]["recall"] for c in labels]
     sup = [per[c]["support"] for c in labels]
     x = np.arange(len(labels))
-    fig, ax = plt.subplots(figsize=(9, 2.8))
+    fig, ax = plt.subplots(figsize=(9, 2.1))
     ax.bar(x - 0.2, f1, 0.38, color=CAT[0], label="F1")
     ax.bar(x + 0.2, rec, 0.38, color=CAT[1], label="recall")
     for xi, s in zip(x, sup):
