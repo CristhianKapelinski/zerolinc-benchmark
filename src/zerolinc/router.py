@@ -76,6 +76,8 @@ def classify_tickets(
     text_column: str = "conteudo",
     batch_size: int = 8,
     index_path: str | Path | None = None,
+    id_column: str = "incidente_id",
+    label_column: str = "categoria",
 ) -> list[ToolPrediction]:
     items = _load_texts(input_path, text_column)
 
@@ -92,7 +94,8 @@ def classify_tickets(
         mem_emb = index["embeddings"]
         item_emb = embed_texts(index["model_id"], [i.text for i in items])
     else:
-        memory = load_incidents(memory_path)
+        memory = load_incidents(memory_path, text_column=text_column,
+                                id_column=id_column, label_column=label_column)
         mem_labels = [m.label for m in memory]
         emb_all = embed_texts(EMBED_MODEL, [m.text for m in memory] + [i.text for i in items])
         mem_emb, item_emb = emb_all[: len(memory)], emb_all[len(memory):]

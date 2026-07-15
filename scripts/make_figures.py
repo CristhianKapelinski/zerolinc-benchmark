@@ -188,8 +188,8 @@ def main() -> int:
     if not runs:
         print("no model runs found", file=sys.stderr)
         return 1
-    fig_matrix(runs, out, "accuracy", "fig_grid_acc", "Accuracy (%) by model x prompt configuration")
-    fig_matrix(runs, out, "macro_f1", "fig_grid_f1", "Macro-F1 (%) by model x prompt configuration")
+    fig_matrix(runs, out, "accuracy", "fig_grid_acc", "Accuracy (%) by model x category verbalization")
+    fig_matrix(runs, out, "macro_f1", "fig_grid_f1", "Macro-F1 (%) by model x category verbalization")
     all_runs = [json.loads(p.read_text()) for p in sorted(results_dir.glob("*.json"))
                 if "baseline" not in p.name]
     fig_cost(all_runs, out)

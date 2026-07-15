@@ -62,9 +62,12 @@ def subject_view(text: str) -> str:
     return f"Assunto: {' | '.join(uniq)}. {text}"
 
 
-def load_incidents(path: str | Path, normalize: bool = True) -> list[Incident]:
+def load_incidents(path: str | Path, normalize: bool = True,
+                   text_column: str = "conteudo",
+                   id_column: str = "incidente_id",
+                   label_column: str = "categoria") -> list[Incident]:
     df = pd.read_csv(path)
-    required = {"incidente_id", "conteudo", "categoria"}
+    required = {id_column, text_column, label_column}
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"dataset at {path} is missing columns: {sorted(missing)}")
@@ -72,16 +75,16 @@ def load_incidents(path: str | Path, normalize: bool = True) -> list[Incident]:
 
     out, seen = [], set()
     for _, row in df.iterrows():
-        incident_id = str(row["incidente_id"])
+        incident_id = str(row[id_column])
         if incident_id in seen:  # exact duplicate tickets exist in the source CSV
             continue
-        label = str(row["categoria"]).strip().upper()
+        label = str(row[label_column]).strip().upper()
         if label not in CODES:
             raise ValueError(f"invalid category {label!r} for incident {incident_id}")
-        if not isinstance(row["conteudo"], str) or not row["conteudo"].strip():
+        if not isinstance(row[text_column], str) or not row[text_column].strip():
             raise ValueError(f"empty content for incident {incident_id}")
         seen.add(incident_id)
-        text = normalize_text(row["conteudo"]) if normalize else row["conteudo"]
+        text = normalize_text(row[text_column]) if normalize else row[text_column]
         out.append(Incident(incident_id=incident_id, text=text, label=label))
     return out
 

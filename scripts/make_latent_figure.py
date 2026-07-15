@@ -50,8 +50,8 @@ def main() -> int:
         ax.scatter(xy[idx, 0], xy[idx, 1], s=22, color=CAT_COLOR[cat],
                    edgecolors="white", linewidths=0.4,
                    label=f"{cat} ($n$={len(idx)})")
-    ax.legend(fontsize=7, framealpha=0.9, borderpad=0.4, handletextpad=0.2,
-              loc="best", ncols=2)
+    ax.legend(fontsize=7, frameon=False, borderpad=0.2, handletextpad=0.2,
+              loc="upper center", bbox_to_anchor=(0.5, -0.02), ncols=4)
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():
