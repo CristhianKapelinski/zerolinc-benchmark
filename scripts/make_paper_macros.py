@@ -21,7 +21,8 @@ def main() -> int:
     incs = load_incidents("data/185_incidentes_anon.csv")
     dist = Counter(i.label for i in incs)
     runs = [json.loads(p.read_text()) for p in RUNS.glob("*.json")]
-    models = [r for r in runs if not r["run_id"].startswith("baseline")]
+    models = [r for r in runs if not r["run_id"].startswith("baseline")
+              and r.get("backend") != "memory"]
     best = max(models, key=lambda r: r["metrics"]["accuracy"])
     best_f1 = max(models, key=lambda r: r["metrics"]["macro_f1"])
     majority = next(r for r in runs if r["run_id"] == "baseline__majority")

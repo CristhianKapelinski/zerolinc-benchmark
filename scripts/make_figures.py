@@ -135,7 +135,7 @@ def fig_cost(runs: list[dict], out: Path) -> None:
                      color="#52514e")
     ax1.set_yticks(ys, names, fontsize=8)
     ax1.set_xlabel("(a) accuracy (%), 95% CI")
-    ax1.set_xlim(0, 85)
+    ax1.set_xlim(0, 100)
     ax2.set_xscale("log")
     ax2.set_xticks([2, 10, 60, 300])
     ax2.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
@@ -158,7 +158,8 @@ def fig_cost(runs: list[dict], out: Path) -> None:
 
 
 def fig_perclass(runs: list[dict], out: Path) -> None:
-    best = max(runs, key=lambda r: r["metrics"]["accuracy"])
+    best = max((r for r in runs if r.get("backend") != "memory"),
+               key=lambda r: r["metrics"]["accuracy"])
     per = best["metrics"]["per_class"]
     labels = list(per)
     f1 = [per[c]["f1"] for c in labels]

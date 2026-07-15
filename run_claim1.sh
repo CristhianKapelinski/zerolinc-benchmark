@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Claim #1 (main): the instance-memory engine reaches 90.5% mean test accuracy
-# with 89 labeled reference tickets (range 88.2-92.5%, McNemar p<0.001).
+# Claim #1 (main): the instance-memory engine reaches 90.8% mean test accuracy
+# with 89 labeled reference tickets (range 89.2-92.5%, McNemar p<0.001).
 # Runs the 5-seed validation/test protocol LIVE (GPU ~3 min; CPU ~15 min).
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -19,7 +19,7 @@ print("  Claim #1 — Instance-memory engine (main claim)")
 print("══════════════════════════════════════════════════════════════")
 for s, a in zip(seeds, accs):
     print(f"  seed {s:>4} : test accuracy {a*100:5.1f}%")
-print(f"  Mean test accuracy : {mean*100:.1f}%   (paper: 90.5%, range 88.2–92.5%)")
+print(f"  Mean test accuracy : {mean*100:.1f}%   (paper: 90.8%, range 89.2–92.5%)")
 print(f"  McNemar vs majority: p < 0.001 in all {len(seeds)} seeds"
       f" (max p = {max(ps):.2e})")
 print(f"  Expected: mean between 88% and 93%, every p < 0.001  →  "
