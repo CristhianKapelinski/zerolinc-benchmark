@@ -36,11 +36,15 @@ class ToolPrediction:
     engine: str
 
 
-def _load_texts(path: str | Path, text_column: str = "conteudo") -> list[Incident]:
+def _load_texts(path: str | Path, text_column: str = "conteudo",
+                id_column: str | None = None) -> list[Incident]:
     df = pd.read_csv(path)
     if text_column not in df.columns:
         raise ValueError(f"{path} has no column {text_column!r}")
-    id_col = next((c for c in ("incidente_id", "id") if c in df.columns), None)
+    candidates = (id_column,) if id_column else ("incidente_id", "id")
+    id_col = next((c for c in candidates if c in df.columns), None)
+    if id_column and id_col is None:
+        raise ValueError(f"{path} has no column {id_column!r}")
     return [
         Incident(
             incident_id=str(row[id_col]) if id_col else str(i),
@@ -78,8 +82,10 @@ def classify_tickets(
     index_path: str | Path | None = None,
     id_column: str = "incidente_id",
     label_column: str = "categoria",
+    embed_model: str = EMBED_MODEL,
 ) -> list[ToolPrediction]:
-    items = _load_texts(input_path, text_column)
+    items = _load_texts(input_path, text_column,
+                        id_column if id_column != "incidente_id" else None)
 
     has_refs = bool(memory_path or index_path)
     if engine in ("zeroshot", "zeroshot-max") or (engine == "auto" and not has_refs):
@@ -92,12 +98,14 @@ def classify_tickets(
         index = load_index(index_path)
         mem_labels = index["labels"]
         mem_emb = index["embeddings"]
-        item_emb = embed_texts(index["model_id"], [i.text for i in items])
+        item_emb = embed_texts(index["model_id"], [i.text for i in items],
+                               batch_size=batch_size)
     else:
         memory = load_incidents(memory_path, text_column=text_column,
                                 id_column=id_column, label_column=label_column)
         mem_labels = [m.label for m in memory]
-        emb_all = embed_texts(EMBED_MODEL, [m.text for m in memory] + [i.text for i in items])
+        emb_all = embed_texts(embed_model, [m.text for m in memory]
+                              + [i.text for i in items], batch_size=batch_size)
         mem_emb, item_emb = emb_all[: len(memory)], emb_all[len(memory):]
     sims = item_emb @ mem_emb.T
 

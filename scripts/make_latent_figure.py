@@ -22,23 +22,31 @@ from zerolinc.memory_engine import embed_texts
 from zerolinc.normalizer import apply_view, load_incidents
 
 CAT_COLOR = {
-    "CAT1": "#e15759", "CAT2": "#b07aa1", "CAT3": "#f28e2b", "CAT5": "#a7c7e7",
-    "CAT7": "#76b7b2", "CAT9": "#59a14f", "CAT10": "#9c755f", "CAT12": "#1f3f77",
+    "CAT1": "#e15759", "CAT2": "#b07aa1", "CAT3": "#f28e2b", "CAT4": "#bab0ac",
+    "CAT5": "#a7c7e7", "CAT6": "#d4a6c8", "CAT7": "#76b7b2", "CAT8": "#ff9d9a",
+    "CAT9": "#59a14f", "CAT10": "#9c755f", "CAT11": "#f1ce63", "CAT12": "#1f3f77",
 }
 
 
 def main() -> int:
-    out_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("figures/subject")
-    incidents = load_incidents("data/185_incidentes_anon.csv")
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("out_dir", nargs="?", type=Path, default=Path("figures/subject"))
+    ap.add_argument("--data", default="data/185_incidentes_anon.csv")
+    ap.add_argument("--model", default="Qwen/Qwen3-Embedding-0.6B")
+    ap.add_argument("--curve", default="results/report/learning_curve.json")
+    args = ap.parse_args()
+    out_dir = args.out_dir
+    incidents = load_incidents(args.data)
     texts = [i.text for i in apply_view(incidents, "subject")]
     labels = [i.label for i in incidents]
-    emb = embed_texts("Qwen/Qwen3-Embedding-0.6B", texts)
+    emb = embed_texts(args.model, texts)
 
     xy = TSNE(n_components=2, metric="cosine", perplexity=15, random_state=42,
               init="pca").fit_transform(np.asarray(emb))
 
     import json
-    curve = json.loads(Path("results/report/learning_curve.json").read_text())
+    curve = json.loads(Path(args.curve).read_text())
 
     plt.rcParams.update({"font.size": 8, "figure.dpi": 150})
     best = max((json.loads(f.read_text()) for f in Path("results/runs").glob("*.json")
@@ -68,9 +76,10 @@ def main() -> int:
     ax2.fill_between(ns, lo, hi, color="#a7c7e7", alpha=0.45, lw=0,
                      label="min-max over 5 splits")
     ax2.plot(ns, means, "o-", color="#1f3f77", ms=4, lw=1.4, label="mean")
-    ax2.axhline(70.9, color="#f28e2b", ls="--", lw=1.1)
-    ax2.text(ns[-1], 71.6, "best zero-shot (70.9)", ha="right", fontsize=7,
-             color="#b36a10")
+    best_zs = best["metrics"]["accuracy"] * 100
+    ax2.axhline(best_zs, color="#f28e2b", ls="--", lw=1.1)
+    ax2.text(ns[-1], best_zs + 0.7, f"best zero-shot ({best_zs:.1f})", ha="right",
+             fontsize=7, color="#b36a10")
     ax2.set_xlabel("labeled reference tickets")
     ax2.set_ylabel("test accuracy (%)")
     ax2.set_ylim(60, 95)

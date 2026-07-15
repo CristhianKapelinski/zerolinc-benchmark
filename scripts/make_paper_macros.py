@@ -1,11 +1,28 @@
 """Generate the paper's % RESULTS MACROS block from the stored runs/protocol."""
 
+import argparse
 import json
-import sys
 from collections import Counter
 from pathlib import Path
 
 from zerolinc.normalizer import load_incidents
+from zerolinc.verbalizer import PROMPT_CONFIGS
+
+N_VIEWS = 4  # full, subject, deboiler, subject-deboiler
+
+
+def _n_grid_models() -> int:
+    # the 9 grid checkpoints: full-grid runs / (configs x views), from records
+    runs = [json.loads(p.read_text()) for p in RUNS.glob("*.json")]
+    grid = {r["model"] for r in runs
+            if not r["run_id"].startswith("baseline")
+            and r.get("backend") in (None, "nli", "gliclass", "embed")
+            and r.get("backend") != "memory"}
+    # checkpoints with full coverage only (excludes targeted single runs)
+    from collections import Counter as C
+    cnt = C(r["model"] for r in runs if r["model"] in grid)
+    full = len(PROMPT_CONFIGS) * N_VIEWS
+    return sum(1 for m, k in cnt.items() if k >= full)
 
 RUNS = Path("results/runs")
 REPORT = Path("results/report")
@@ -16,9 +33,14 @@ def pct(x: float, digits: int = 1) -> str:
 
 
 def main() -> int:
-    out_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(
-        "/mnt/win_ssd/paper-zerolinc/macros.tex")
-    incs = load_incidents("data/185_incidentes_anon.csv")
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("out", nargs="?", type=Path, default=Path("results/report/macros.tex"))
+    ap.add_argument("--data", default="data/185_incidentes_anon.csv")
+    args = ap.parse_args()
+    out_path = args.out
+    import pandas as pd
+    n_raw = len(pd.read_csv(args.data))
+    incs = load_incidents(args.data)
     dist = Counter(i.label for i in incs)
     runs = [json.loads(p.read_text()) for p in RUNS.glob("*.json")]
     models_all = [r for r in runs if not r["run_id"].startswith("baseline")]
@@ -51,17 +73,17 @@ def main() -> int:
 
     m = {
         "NIncidents": str(len(incs)),
-        "NRaw": "185",
+        "NRaw": str(n_raw),
         "NCatFive": str(dist["CAT5"]),
         "PctCatFive": pct(dist["CAT5"] / len(incs)),
         "NPtDominant": str(n_pt),
         "NEnDominant": str(len(incs) - n_pt),
         "NModelRuns": str(len(models_all)),
-        "NGridRuns": "288",
-        "NModels": "9",
+        "NGridRuns": str(_n_grid_models() * len(PROMPT_CONFIGS) * N_VIEWS),
+        "NModels": str(_n_grid_models()),
         "NCheckpointsTotal": str(len({r["model"] for r in models})),
-        "NConfigs": "8",
-        "NViews": "4",
+        "NConfigs": str(len(PROMPT_CONFIGS)),
+        "NViews": str(N_VIEWS),
         "MajorityAcc": pct(majority["metrics"]["accuracy"]),
         "MajorityMacroF": f"{majority['metrics']['macro_f1']:.2f}",
         "KeywordAcc": pct(keyword["metrics"]["accuracy"]),
