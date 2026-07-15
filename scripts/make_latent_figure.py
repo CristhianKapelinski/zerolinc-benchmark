@@ -41,8 +41,13 @@ def main() -> int:
     curve = json.loads(Path("results/report/learning_curve.json").read_text())
 
     plt.rcParams.update({"font.size": 8, "figure.dpi": 150})
-    fig, (ax, ax2) = plt.subplots(
-        1, 2, figsize=(9, 2.2), gridspec_kw={"width_ratios": [1.5, 1]})
+    best = max((json.loads(f.read_text()) for f in Path("results/runs").glob("*.json")
+                if "baseline" not in f.name), default=None,
+               key=lambda r: r["metrics"]["accuracy"] if r.get("backend") != "memory" else -1)
+    per = best["metrics"]["per_class"]
+
+    fig, (ax, ax2, ax3) = plt.subplots(
+        1, 3, figsize=(9.6, 2.3), gridspec_kw={"width_ratios": [1.3, 1, 1.2], "wspace": 0.25})
     for cat in sorted(CAT_COLOR, key=lambda c: -labels.count(c)):
         idx = [j for j, lab in enumerate(labels) if lab == cat]
         if not idx:
@@ -51,7 +56,7 @@ def main() -> int:
                    edgecolors="white", linewidths=0.4,
                    label=f"{cat} ({len(idx)})")
     ax.legend(fontsize=7, frameon=False, borderpad=0.2, handletextpad=0.2,
-              loc="upper center", bbox_to_anchor=(0.5, -0.03), ncols=8, columnspacing=0.8)
+              loc="upper center", bbox_to_anchor=(0.5, -0.04), ncols=4, columnspacing=0.7)
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():
@@ -71,8 +76,31 @@ def main() -> int:
     ax2.set_ylim(60, 95)
     ax2.legend(fontsize=7, loc="lower right")
     ax2.spines[["top", "right"]].set_visible(False)
+    cats = list(per)
+    xx = np.arange(len(cats))
+    f1v = [per[c]["f1"] for c in cats]
+    rcv = [per[c]["recall"] for c in cats]
+    ax3.bar(xx - 0.2, f1v, 0.38, color="#2a78d6", label="F1")
+    ax3.bar(xx + 0.2, rcv, 0.38, color="#1baf7a", label="recall")
+    for xi, v in zip(xx - 0.2, f1v):
+        ax3.text(xi, v + 0.03, ("1" if v == 1 else f"{v:.1f}".replace("0.", ".")), ha="center",
+                 va="bottom", fontsize=5.6, color="#2a78d6")
+    for xi, v in zip(xx + 0.2, rcv):
+        ax3.text(xi, v + 0.03, ("1" if v == 1 else f"{v:.1f}".replace("0.", ".")), ha="center",
+                 va="bottom", fontsize=5.6, color="#118a5f")
+    for xi, c in zip(xx, cats):
+        ax3.text(xi, 1.26, str(per[c]["support"]), ha="center", fontsize=6,
+                 color="#52514e")
+    ax3.set_xticks(xx, [c.replace("CAT", "") for c in cats], fontsize=7)
+    ax3.set_xlabel("category (top: $n$)", fontsize=8)
+    ax3.set_yticks([])
+    ax3.set_ylim(0, 1.38)
+    ax3.legend(fontsize=6.2, frameon=False, loc="center right", bbox_to_anchor=(1.0, 0.55), borderpad=0.1, handlelength=1.2)
+    ax3.spines[["top", "right", "left"]].set_visible(False)
+
     ax.set_title("(a) ticket embedding space (t-SNE)", fontsize=8, loc="left")
     ax2.set_title("(b) accuracy vs. reference-set size", fontsize=8, loc="left")
+    ax3.set_title("(c) best zero-shot, per class", fontsize=8, loc="left")
 
     fig.tight_layout()
     out_dir.mkdir(parents=True, exist_ok=True)
