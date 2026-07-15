@@ -103,11 +103,17 @@ def fig_cost(runs: list[dict], out: Path) -> None:
     """
     best = {}
     for r in runs:
-        key = (r.get("backend", "nli"), r["model"].split("/")[-1])
+        key = (r.get("backend", "nli"), r.get("method", ""), r["model"].split("/")[-1])
         if key not in best or r["metrics"]["accuracy"] > best[key]["metrics"]["accuracy"]:
             best[key] = r
     items = sorted(best.items(), key=lambda kv: kv[1]["metrics"]["accuracy"])
-    names = [("k-NN memory (Qwen3-Emb-0.6B)" if r.get("backend") == "memory" else f"{MODEL_SHORT.get(k[1], k[1])} ({r['prompt_config']})") for k, r in items]
+    def display(k, r):
+        if r.get("backend") == "memory":
+            size = "4B" if "4B" in r["model"] else "0.6B"
+            rule = "k-NN" if r.get("method", "knn") == "knn" else "centroid"
+            return f"{rule} memory (Qwen3-Emb-{size})"
+        return f"{MODEL_SHORT.get(k[2], k[2])} ({r['prompt_config']})"
+    names = [display(k, r) for k, r in items]
     ys = np.arange(len(items))
     colors = [BACKEND_COLOR.get(r.get("backend", "nli"), CAT[5]) for _, r in items]
 

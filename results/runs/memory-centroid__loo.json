@@ -1,27 +1,28 @@
 {
- "run_id": "memory-knn__loo",
+ "run_id": "memory-centroid__loo",
  "model": "memory:Qwen/Qwen3-Embedding-0.6B",
  "backend": "memory",
- "prompt_config": "k-NN (LOO)",
+ "method": "centroid",
+ "prompt_config": "centroid (LOO)",
  "text_view": "full",
- "note": "leave-one-out over the full corpus: each ticket voted by its k=3 nearest among the other 181",
+ "note": "leave-one-out over the full corpus, centroid rule",
  "n": 182,
- "wall_seconds": 27.75,
- "incidents_per_second": 6.56,
- "peak_vram_mb": 3249.1,
+ "wall_seconds": 26.71,
+ "incidents_per_second": 6.81,
+ "peak_vram_mb": 3406.9,
  "max_length": 2048,
  "metrics": {
   "n": 182,
-  "correct": 165,
-  "accuracy": 0.9066,
+  "correct": 167,
+  "accuracy": 0.9176,
   "accuracy_ci95": [
-   0.8555,
-   0.9409
+   0.8685,
+   0.9494
   ],
-  "macro_precision": 0.5227,
-  "macro_recall": 0.5902,
-  "macro_f1": 0.5509,
-  "weighted_f1": 0.896,
+  "macro_precision": 0.6631,
+  "macro_recall": 0.6527,
+  "macro_f1": 0.6428,
+  "weighted_f1": 0.9198,
   "per_class": {
    "CAT1": {
     "precision": 0.6667,
@@ -30,15 +31,15 @@
     "support": 2
    },
    "CAT2": {
-    "precision": 0.0,
-    "recall": 0.0,
-    "f1": 0.0,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.6667,
     "support": 4
    },
    "CAT3": {
-    "precision": 0.8889,
+    "precision": 0.9412,
     "recall": 0.9412,
-    "f1": 0.9143,
+    "f1": 0.9412,
     "support": 17
    },
    "CAT5": {
@@ -66,9 +67,9 @@
     "support": 1
    },
    "CAT12": {
-    "precision": 0.7778,
+    "precision": 0.8485,
     "recall": 0.9655,
-    "f1": 0.8615,
+    "f1": 0.9032,
     "support": 29
    }
   },
@@ -96,13 +97,13 @@
     ],
     [
      0,
+     2,
      0,
      0,
      0,
      0,
      0,
-     0,
-     4
+     2
     ],
     [
      0,
@@ -119,10 +120,10 @@
      0,
      1,
      113,
+     1,
      0,
      0,
-     0,
-     3
+     2
     ],
     [
      0,
@@ -157,9 +158,9 @@
     [
      0,
      0,
+     0,
+     0,
      1,
-     0,
-     0,
      0,
      0,
      28
@@ -167,13 +168,14 @@
    ]
   },
   "pred_distribution": {
-   "CAT12": 36,
+   "CAT12": 33,
    "CAT5": 114,
    "CAT1": 3,
-   "CAT3": 18,
+   "CAT2": 2,
+   "CAT3": 17,
    "CAT9": 7,
    "CAT10": 2,
-   "CAT7": 2
+   "CAT7": 4
   }
  },
  "predictions": [
@@ -320,7 +322,7 @@
   {
    "incident_id": "INC-0122",
    "true": "CAT2",
-   "pred": "CAT12"
+   "pred": "CAT2"
   },
   {
    "incident_id": "INC-0124",
@@ -330,7 +332,7 @@
   {
    "incident_id": "INC-0125",
    "true": "CAT2",
-   "pred": "CAT12"
+   "pred": "CAT2"
   },
   {
    "incident_id": "INC-0127",
@@ -625,7 +627,7 @@
   {
    "incident_id": "INC-0004",
    "true": "CAT5",
-   "pred": "CAT12"
+   "pred": "CAT7"
   },
   {
    "incident_id": "INC-0005",
@@ -635,7 +637,7 @@
   {
    "incident_id": "INC-0006",
    "true": "CAT12",
-   "pred": "CAT12"
+   "pred": "CAT7"
   },
   {
    "incident_id": "INC-0007",
@@ -805,7 +807,7 @@
   {
    "incident_id": "INC-0069",
    "true": "CAT12",
-   "pred": "CAT3"
+   "pred": "CAT12"
   },
   {
    "incident_id": "INC-0070",
@@ -1087,6 +1089,5 @@
    "true": "CAT5",
    "pred": "CAT12"
   }
- ],
- "method": "knn"
+ ]
 }

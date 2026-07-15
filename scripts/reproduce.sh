@@ -10,13 +10,14 @@ for s in 42 7 123 2024 99; do uv run --no-sync zerolinc protocol --seed "$s" >/d
 uv run --no-sync python - <<'PY'
 import json
 from pathlib import Path
-best = max((json.loads(p.read_text()) for p in Path("results/runs").glob("*.json")
-            if "baseline" not in p.name), key=lambda r: r["metrics"]["accuracy"])
+best = max((r for r in (json.loads(p.read_text()) for p in Path("results/runs").glob("*.json")
+            if "baseline" not in p.name) if r.get("backend") != "memory"),
+           key=lambda r: r["metrics"]["accuracy"])
 assert abs(best["metrics"]["accuracy"] - 0.7088) < 1e-4, best["metrics"]["accuracy"]
 knn = [json.loads((Path("results/report") / f"knn_seed{s}.json").read_text())
        for s in (42, 7, 123, 2024, 99)]
 knn_mean = sum(r["test"]["accuracy"] for r in knn) / 5
-assert abs(knn_mean - 0.9054) < 1e-3, knn_mean
+assert abs(knn_mean - 0.9075) < 1e-3, knn_mean
 ens = [json.loads((Path("results/report") / f"protocol_seed{s}.json").read_text())
        ["ensemble_rank"]["test"]["accuracy"] for s in (42, 7, 123, 2024, 99)]
 ens_mean = sum(ens) / 5

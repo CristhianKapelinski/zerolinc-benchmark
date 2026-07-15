@@ -85,7 +85,6 @@ def classify(
         max_length=max_length,
         all_scores=all_scores,
     )
-import torch
 
 
 EMBED_INSTRUCTION = (

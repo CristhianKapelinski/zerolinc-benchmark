@@ -128,10 +128,10 @@ def test_calibration_removes_label_bias(tmp_path):
     assert res2["accuracy"] == res["accuracy"]
 
 
-def test_knn_vote_and_report():
+def test_knnvote_and_report():
     import numpy as np
     from zerolinc.normalizer import Incident
-    from zerolinc.memory_engine import knn_report, _vote
+    from zerolinc.memory_engine import knn_report, vote
     # 3 template clusters: CAT5-like, CAT3-like, CAT12-like; 20 items each
     rng = np.random.default_rng(0)
     labels = ["CAT5"] * 20 + ["CAT3"] * 20 + ["CAT12"] * 20
@@ -145,7 +145,7 @@ def test_knn_vote_and_report():
     assert r["selected_view"] == "full"
     # deterministic vote tie-break
     sims_row = np.array([0.9, 0.9])
-    assert _vote(sims_row, ["CAT3", "CAT12"], [0, 1], 2) in ("CAT3", "CAT12")
+    assert vote(sims_row, ["CAT3", "CAT12"], [0, 1], 2) in ("CAT3", "CAT12")
 
 
 def test_tool_load_texts(tmp_path):

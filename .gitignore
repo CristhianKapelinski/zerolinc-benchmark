@@ -8,3 +8,4 @@ __pycache__/
 hf_cache/
 # results/runs (run of record) IS committed deliberately; report is regenerable
 results/report/
+data/185_incidentes_anon.csv

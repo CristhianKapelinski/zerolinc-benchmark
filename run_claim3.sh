@@ -6,7 +6,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 LIVE=0
-if command -v nvidia-smi >/dev/null 2>&1 && [ "${SKIP_LIVE:-0}" != "1" ]; then
+if command -v nvidia-smi >/dev/null 2>&1 && [ "${SKIP_LIVE:-0}" != "1" ] && [ -f data/185_incidentes_anon.csv ]; then
   LIVE=1
   uv run --no-sync zerolinc run --model gliclass:knowledgator/gliclass-modern-base-v3.0 --config en-event > /tmp/claim3_live.log 2>&1 || LIVE=0
 fi

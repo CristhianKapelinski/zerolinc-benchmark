@@ -21,8 +21,10 @@ def main() -> int:
     incs = load_incidents("data/185_incidentes_anon.csv")
     dist = Counter(i.label for i in incs)
     runs = [json.loads(p.read_text()) for p in RUNS.glob("*.json")]
-    models = [r for r in runs if not r["run_id"].startswith("baseline")
-              and r.get("backend") != "memory"]
+    models_all = [r for r in runs if not r["run_id"].startswith("baseline")]
+    # best-run macros describe the zero-shot grid; the memory LOO record is
+    # reported through its own MemLoo* macros
+    models = [r for r in models_all if r.get("backend") != "memory"]
     best = max(models, key=lambda r: r["metrics"]["accuracy"])
     best_f1 = max(models, key=lambda r: r["metrics"]["macro_f1"])
     majority = next(r for r in runs if r["run_id"] == "baseline__majority")
@@ -54,7 +56,7 @@ def main() -> int:
         "PctCatFive": pct(dist["CAT5"] / len(incs)),
         "NPtDominant": str(n_pt),
         "NEnDominant": str(len(incs) - n_pt),
-        "NModelRuns": str(len(models)),
+        "NModelRuns": str(len(models_all)),
         "NGridRuns": "288",
         "NModels": "9",
         "NCheckpointsTotal": str(len({r["model"] for r in models})),
@@ -140,6 +142,13 @@ def main() -> int:
         })
         if stem == "finetune":
             m["FinetuneWall"] = f"{sum(r['wall_seconds'] for r in rs) / len(rs):.0f}"
+
+    lc = REPORT / "learning_curve.json"
+    if lc.exists():
+        curve = json.loads(lc.read_text())
+        m["CurveTenAcc"] = pct(curve["10"]["mean"])
+        m["CurveThirtyAcc"] = pct(curve["30"]["mean"])
+        m["CurveFortyFiveAcc"] = pct(curve["45"]["mean"])
 
     knn4b_files = sorted((REPORT / "knn4b").glob("knn_seed*.json"))
     if knn4b_files:

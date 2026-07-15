@@ -4,6 +4,12 @@
 # Runs the 5-seed validation/test protocol LIVE (GPU ~3 min; CPU ~15 min).
 set -euo pipefail
 cd "$(dirname "$0")"
+if [ ! -f data/185_incidentes_anon.csv ]; then
+  echo "ERROR: data/185_incidentes_anon.csv not found."
+  echo "The corpus is not redistributed; see data/README.md for how to obtain"
+  echo "and place it (claim 2 and scripts/reproduce.sh run without it)."
+  exit 2
+fi
 uv run --no-sync zerolinc knn --out results/report >/dev/null 2>&1
 uv run --no-sync python - <<'PY'
 import json

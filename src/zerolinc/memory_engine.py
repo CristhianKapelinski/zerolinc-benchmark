@@ -44,7 +44,7 @@ def embed_texts(model_id: str, texts: list[str], batch_size: int = 8,
     return emb
 
 
-def _vote(sims_row, labels: list[str], candidate_idx: list[int], k: int) -> str:
+def vote(sims_row, labels: list[str], candidate_idx: list[int], k: int) -> str:
     """Similarity-weighted vote among the k most similar candidates."""
     top = sorted(candidate_idx, key=lambda j: -sims_row[j])[:k]
     weight: dict[str, float] = defaultdict(float)
@@ -75,7 +75,7 @@ def knn_report(
             correct = 0
             for j in dev_idx:
                 others = [m for m in dev_idx if m != j]
-                if _vote(sims[j], labels, others, k) == labels[j]:
+                if vote(sims[j], labels, others, k) == labels[j]:
                     correct += 1
             loo = correct / len(dev_idx)
             if best is None or loo > best["loo"]:
@@ -84,7 +84,7 @@ def knn_report(
     emb = embeddings_by_view[best["view"]]
     sims = emb @ emb.T
     y_true = [labels[j] for j in test_idx]
-    y_pred = [_vote(sims[j], labels, dev_idx, best["k"]) for j in test_idx]
+    y_pred = [vote(sims[j], labels, dev_idx, best["k"]) for j in test_idx]
     m = evaluate(y_true, y_pred)
     return {
         "seed": seed,
