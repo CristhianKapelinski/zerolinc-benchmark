@@ -68,7 +68,7 @@ def load_incidents(path: str | Path, normalize: bool = True) -> list[Incident]:
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"dataset at {path} is missing columns: {sorted(missing)}")
-    from .labels import CODES
+    from .verbalizer import CODES
 
     out, seen = [], set()
     for _, row in df.iterrows():

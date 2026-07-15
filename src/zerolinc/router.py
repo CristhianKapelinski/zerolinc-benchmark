@@ -17,9 +17,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from .data import Incident, load_incidents, normalize_text
-from .knn import _vote, embed_texts
-from .labels import PROMPT_CONFIGS
+from .normalizer import Incident, load_incidents, normalize_text
+from .memory_engine import _vote, embed_texts
+from .verbalizer import PROMPT_CONFIGS
 
 ZEROSHOT_FAST = ("gliclass:knowledgator/gliclass-modern-base-v3.0", "en-event")
 ZEROSHOT_MAX = ("nli:MoritzLaurer/deberta-v3-large-zeroshot-v2.0", "en-desc-kw")
@@ -52,7 +52,7 @@ def _load_texts(path: str | Path, text_column: str = "conteudo") -> list[Inciden
 
 
 def _zeroshot(items: list[Incident], engine: str, batch_size: int) -> list[ToolPrediction]:
-    from .backends import classify_any
+    from .zeroshot_engine import classify_any
 
     spec, config_name = ZEROSHOT_MAX if engine == "zeroshot-max" else ZEROSHOT_FAST
     config = PROMPT_CONFIGS[config_name]

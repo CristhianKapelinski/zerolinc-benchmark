@@ -10,7 +10,7 @@ from sklearn.metrics import (
     precision_recall_fscore_support,
 )
 
-from .labels import CODES
+from .verbalizer import CODES
 
 
 def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float]:

@@ -15,7 +15,7 @@ import random
 from pathlib import Path
 
 from .combine import argmax_preds
-from .labels import CODES
+from .verbalizer import CODES
 from .metrics import evaluate, mcnemar_vs
 
 

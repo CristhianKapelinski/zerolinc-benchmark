@@ -4,8 +4,8 @@ import argparse
 import sys
 from pathlib import Path
 
-from .data import apply_view, load_incidents
-from .labels import PROMPT_CONFIGS
+from .normalizer import apply_view, load_incidents
+from .verbalizer import PROMPT_CONFIGS
 from .runner import DEFAULT_MODELS, run_baselines, run_one  # noqa: F401 (V2_MODELS lazy)
 from .report import write_report
 
@@ -77,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "classify":
-        from .tool import classify_tickets, write_predictions
+        from .router import classify_tickets, write_predictions
         preds = classify_tickets(args.input, args.memory, args.engine, args.k,
                                  args.sim_threshold, args.text_column, args.batch_size)
         write_predictions(preds, args.output)
@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "knn":
-        from .knn import run_knn
+        from .memory_engine import run_knn
         reports = run_knn(args.data, args.model, tuple(args.views),
                           tuple(args.seeds), args.out)
         for r in reports:

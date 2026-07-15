@@ -16,7 +16,7 @@ import math
 from collections import defaultdict
 from pathlib import Path
 
-from .data import Incident, apply_view
+from .normalizer import Incident, apply_view
 from .metrics import evaluate, mcnemar_vs
 from .protocol import stratified_split
 
@@ -114,7 +114,7 @@ def run_knn(
     seeds: tuple[int, ...] = (42, 7, 123, 2024, 99),
     out_dir: str | Path = "results/report",
 ) -> list[dict]:
-    from .data import load_incidents
+    from .normalizer import load_incidents
 
     incidents = load_incidents(data_path)
     embeddings_by_view = {

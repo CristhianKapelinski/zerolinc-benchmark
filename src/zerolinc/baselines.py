@@ -11,7 +11,7 @@ baselines therefore see label-distribution information no zero-shot model gets.
 import re
 from collections import Counter
 
-from .labels import CATEGORIES
+from .verbalizer import CATEGORIES
 
 _KW_RE = {
     c.code: [re.compile(r"(?<!\w)" + re.escape(k) + r"(?!\w)") for k in c.keywords]

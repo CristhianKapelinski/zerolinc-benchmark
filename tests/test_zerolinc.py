@@ -4,8 +4,8 @@ These run offline (no network, no models).
 """
 
 from zerolinc.baselines import keyword_baseline, majority_baseline
-from zerolinc.data import normalize_text
-from zerolinc.labels import CATEGORIES, CODES, PROMPT_CONFIGS
+from zerolinc.normalizer import normalize_text
+from zerolinc.verbalizer import CATEGORIES, CODES, PROMPT_CONFIGS
 from zerolinc.metrics import evaluate, wilson_ci
 
 
@@ -62,7 +62,7 @@ def test_keyword_baseline_matches_and_fallback():
 
 
 def test_parse_spec():
-    from zerolinc.backends import parse_spec
+    from zerolinc.zeroshot_engine import parse_spec
     assert parse_spec("facebook/bart-large-mnli") == ("nli", "facebook/bart-large-mnli")
     assert parse_spec("nli:a/b") == ("nli", "a/b")
     assert parse_spec("gliclass:knowledgator/gliclass-x-base") == (
@@ -71,7 +71,7 @@ def test_parse_spec():
 
 
 def test_subject_view_reorders_only():
-    from zerolinc.data import subject_view
+    from zerolinc.normalizer import subject_view
     text = "Pedido: <DATE> CERT.br: Assunto: maquina comprometida\ncorpo do relato"
     out = subject_view(text)
     assert out.startswith("Assunto: maquina comprometida.")
@@ -80,7 +80,7 @@ def test_subject_view_reorders_only():
 
 
 def test_event_config_present():
-    from zerolinc.labels import PROMPT_CONFIGS, CODES
+    from zerolinc.verbalizer import PROMPT_CONFIGS, CODES
     cfg = PROMPT_CONFIGS["en-event"]
     assert cfg.template == "{}"
     assert sorted(cfg.labels.values()) == sorted(CODES)
@@ -88,7 +88,7 @@ def test_event_config_present():
 
 
 def test_deboiler_removes_corpus_templates():
-    from zerolinc.data import Incident, apply_view
+    from zerolinc.normalizer import Incident, apply_view
     boiler = "CERT.br works as a coordinating team for incidents"
     incs = [Incident(str(k), f"{boiler}\nconteudo unico {k}", "CAT5") for k in range(10)]
     out = apply_view(incs, "deboiler")
@@ -102,7 +102,7 @@ def test_deboiler_removes_corpus_templates():
 def test_calibration_removes_label_bias(tmp_path):
     import json
     from zerolinc.combine import evaluate_calibrated, evaluate_ensemble
-    from zerolinc.labels import CODES
+    from zerolinc.verbalizer import CODES
     # CAT9 has a +0.4 constant bias; true signal puts CAT5 on top for all items
     preds = []
     for k in range(10):
@@ -130,8 +130,8 @@ def test_calibration_removes_label_bias(tmp_path):
 
 def test_knn_vote_and_report():
     import numpy as np
-    from zerolinc.data import Incident
-    from zerolinc.knn import knn_report, _vote
+    from zerolinc.normalizer import Incident
+    from zerolinc.memory_engine import knn_report, _vote
     # 3 template clusters: CAT5-like, CAT3-like, CAT12-like; 20 items each
     rng = np.random.default_rng(0)
     labels = ["CAT5"] * 20 + ["CAT3"] * 20 + ["CAT12"] * 20
@@ -150,7 +150,7 @@ def test_knn_vote_and_report():
 
 def test_tool_load_texts(tmp_path):
     import pandas as pd
-    from zerolinc.tool import _load_texts
+    from zerolinc.router import _load_texts
     f = tmp_path / "in.csv"
     pd.DataFrame({"incidente_id": ["A1", "A2"],
                   "conteudo": ["texto [IP_ADDRESS_aabbccdd11] um", "texto dois"]}).to_csv(f, index=False)

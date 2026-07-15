@@ -5,7 +5,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from zerolinc.data import load_incidents
+from zerolinc.normalizer import load_incidents
 
 RUNS = Path("results/runs")
 REPORT = Path("results/report")

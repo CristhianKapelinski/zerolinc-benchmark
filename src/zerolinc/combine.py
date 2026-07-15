@@ -15,7 +15,7 @@ import json
 import math
 from pathlib import Path
 
-from .labels import CODES
+from .verbalizer import CODES
 from .metrics import evaluate
 
 _EPS = 1e-6

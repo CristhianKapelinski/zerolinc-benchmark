@@ -13,10 +13,10 @@ from pathlib import Path
 import torch
 
 from . import baselines
-from .backends import classify_any, parse_spec
+from .zeroshot_engine import classify_any, parse_spec
 from .power import PowerSampler
-from .data import Incident
-from .labels import PROMPT_CONFIGS
+from .normalizer import Incident
+from .verbalizer import PROMPT_CONFIGS
 from .metrics import evaluate
 
 DEFAULT_MODELS: tuple[str, ...] = (
