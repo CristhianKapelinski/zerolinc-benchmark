@@ -47,7 +47,7 @@ def main() -> int:
     per = best["metrics"]["per_class"]
 
     fig, (ax, ax2, ax3) = plt.subplots(
-        1, 3, figsize=(9.6, 2.3), gridspec_kw={"width_ratios": [1.3, 1, 1.2], "wspace": 0.25})
+        1, 3, figsize=(9.6, 1.95), gridspec_kw={"width_ratios": [1.3, 1, 1.2], "wspace": 0.25})
     for cat in sorted(CAT_COLOR, key=lambda c: -labels.count(c)):
         idx = [j for j, lab in enumerate(labels) if lab == cat]
         if not idx:

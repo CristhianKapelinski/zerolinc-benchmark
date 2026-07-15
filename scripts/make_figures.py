@@ -69,7 +69,7 @@ def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str)
         i = models.index(r["model"].split("/")[-1])
         j = configs.index(r["prompt_config"])
         grid[i, j] = r["metrics"][metric] * 100
-    fig, ax = plt.subplots(figsize=(9, 2.6))
+    fig, ax = plt.subplots(figsize=(9, 2.1))
     vmax = np.nanmax(grid)
     ax.imshow(grid, cmap=SEQ_CMAP, aspect="auto", vmin=0, vmax=vmax)
     ax.set_xticks(range(len(configs)), configs, fontsize=8)
@@ -118,7 +118,7 @@ def fig_cost(runs: list[dict], out: Path) -> None:
     colors = [BACKEND_COLOR.get(r.get("backend", "nli"), CAT[5]) for _, r in items]
 
     fig, (ax1, ax2) = plt.subplots(
-        1, 2, figsize=(9, 3.4), sharey=True,
+        1, 2, figsize=(9, 2.4), sharey=True,
         gridspec_kw={"width_ratios": [1.35, 1], "wspace": 0.06})
     for y, (k, r), c in zip(ys, items, colors):
         acc = r["metrics"]["accuracy"] * 100
