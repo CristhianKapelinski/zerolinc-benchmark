@@ -1,0 +1,1091 @@
+{
+ "run_id": "memory-knn__loo",
+ "model": "memory:Qwen/Qwen3-Embedding-0.6B",
+ "backend": "memory",
+ "prompt_config": "k-NN (LOO)",
+ "text_view": "full",
+ "note": "leave-one-out over the full corpus: each ticket voted by its k=3 nearest among the other 181",
+ "n": 182,
+ "wall_seconds": 27.75,
+ "incidents_per_second": 6.56,
+ "peak_vram_mb": 3249.1,
+ "max_length": 2048,
+ "metrics": {
+  "n": 182,
+  "correct": 165,
+  "accuracy": 0.9066,
+  "accuracy_ci95": [
+   0.8555,
+   0.9409
+  ],
+  "macro_precision": 0.5227,
+  "macro_recall": 0.5902,
+  "macro_f1": 0.5509,
+  "weighted_f1": 0.896,
+  "per_class": {
+   "CAT1": {
+    "precision": 0.6667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "support": 2
+   },
+   "CAT2": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 4
+   },
+   "CAT3": {
+    "precision": 0.8889,
+    "recall": 0.9412,
+    "f1": 0.9143,
+    "support": 17
+   },
+   "CAT5": {
+    "precision": 0.9912,
+    "recall": 0.9576,
+    "f1": 0.9741,
+    "support": 118
+   },
+   "CAT7": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 4
+   },
+   "CAT9": {
+    "precision": 0.8571,
+    "recall": 0.8571,
+    "f1": 0.8571,
+    "support": 7
+   },
+   "CAT10": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 1
+   },
+   "CAT12": {
+    "precision": 0.7778,
+    "recall": 0.9655,
+    "f1": 0.8615,
+    "support": 29
+   }
+  },
+  "confusion": {
+   "labels": [
+    "CAT1",
+    "CAT2",
+    "CAT3",
+    "CAT5",
+    "CAT7",
+    "CAT9",
+    "CAT10",
+    "CAT12"
+   ],
+   "matrix": [
+    [
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     4
+    ],
+    [
+     0,
+     0,
+     16,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     0,
+     1,
+     113,
+     0,
+     0,
+     0,
+     3
+    ],
+    [
+     0,
+     0,
+     0,
+     1,
+     0,
+     1,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     1,
+     6,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     28
+    ]
+   ]
+  },
+  "pred_distribution": {
+   "CAT12": 36,
+   "CAT5": 114,
+   "CAT1": 3,
+   "CAT3": 18,
+   "CAT9": 7,
+   "CAT10": 2,
+   "CAT7": 2
+  }
+ },
+ "predictions": [
+  {
+   "incident_id": "INC-0078",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0079",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0080",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0081",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0082",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0083",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0084",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0085",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0087",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0096",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0097",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0098",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0099",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0100",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0101",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0106",
+   "true": "CAT3",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0107",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0108",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0109",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0111",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0112",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0113",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0114",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0115",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0116",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0118",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0119",
+   "true": "CAT1",
+   "pred": "CAT1"
+  },
+  {
+   "incident_id": "INC-0121",
+   "true": "CAT1",
+   "pred": "CAT1"
+  },
+  {
+   "incident_id": "INC-0122",
+   "true": "CAT2",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0124",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0125",
+   "true": "CAT2",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0127",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0131",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0132",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0133",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0134",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0144",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0145",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0146",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0150",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0151",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0152",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0155",
+   "true": "CAT5",
+   "pred": "CAT1"
+  },
+  {
+   "incident_id": "INC-0157",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0158",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0160",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0161",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0162",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0163",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0164",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0166",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0167",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0171",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0172",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0175",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0008",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0010",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0012",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0015",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0016",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0019",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0027",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0028",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0029",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0030",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0031",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0032",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0033",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0034",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0035",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0036",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0038",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0039",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0040",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0042",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0043",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0044",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0050",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0051",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0057",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0058",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0064",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0066",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0068",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0075",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0077",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0059",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0002",
+   "true": "CAT5",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0003",
+   "true": "CAT7",
+   "pred": "CAT10"
+  },
+  {
+   "incident_id": "INC-0004",
+   "true": "CAT5",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0005",
+   "true": "CAT7",
+   "pred": "CAT10"
+  },
+  {
+   "incident_id": "INC-0006",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0007",
+   "true": "CAT9",
+   "pred": "CAT7"
+  },
+  {
+   "incident_id": "INC-0009",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0179",
+   "true": "CAT10",
+   "pred": "CAT7"
+  },
+  {
+   "incident_id": "INC-0011",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0013",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0014",
+   "true": "CAT9",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0017",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0018",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0020",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0021",
+   "true": "CAT5",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0022",
+   "true": "CAT2",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0023",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0024",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0025",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0026",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0037",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0041",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0045",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0046",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0047",
+   "true": "CAT2",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0048",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0049",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0052",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0053",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0054",
+   "true": "CAT7",
+   "pred": "CAT9"
+  },
+  {
+   "incident_id": "INC-0055",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0056",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0060",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0061",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0062",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0063",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0065",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0067",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0069",
+   "true": "CAT12",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0070",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0071",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0072",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0073",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0074",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0076",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0086",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0088",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0089",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0090",
+   "true": "CAT3",
+   "pred": "CAT3"
+  },
+  {
+   "incident_id": "INC-0091",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0092",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0093",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0094",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0095",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0102",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0103",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0104",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0105",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0110",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0117",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0120",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0123",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0126",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0128",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0129",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0130",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0135",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0136",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0137",
+   "true": "CAT12",
+   "pred": "CAT12"
+  },
+  {
+   "incident_id": "INC-0138",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0139",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0140",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0141",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0142",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0143",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0147",
+   "true": "CAT7",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0148",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0149",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0153",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0154",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0156",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0159",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0165",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0168",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0169",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0170",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0173",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0174",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0176",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0177",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0178",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0180",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0181",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0182",
+   "true": "CAT5",
+   "pred": "CAT5"
+  },
+  {
+   "incident_id": "INC-0001",
+   "true": "CAT5",
+   "pred": "CAT12"
+  }
+ ]
+}

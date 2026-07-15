@@ -124,6 +124,12 @@ def main() -> int:
     if knn4b_files:
         accs4b = [json.loads(p.read_text())["test"]["accuracy"] for p in knn4b_files]
         m["KnnFourBMeanAcc"] = pct(sum(accs4b) / len(accs4b))
+    mem = RUNS / "memory-knn__loo.json"
+    if mem.exists():
+        r = json.loads(mem.read_text())
+        m["MemLooAcc"] = pct(r["metrics"]["accuracy"])
+        m["MemLooWall"] = f"{r['wall_seconds']:.0f}"
+        m["MemLooCatTwelveRecall"] = f"{r['metrics']['per_class']['CAT12']['recall']:.2f}"
     gl_large = RUNS / "gliclass-large-v3.0__en-event.json"
     if gl_large.exists():
         m["GliLargeAcc"] = pct(json.loads(gl_large.read_text())["metrics"]["accuracy"])

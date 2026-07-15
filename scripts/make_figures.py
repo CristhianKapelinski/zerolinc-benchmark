@@ -69,11 +69,21 @@ def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str)
         i = models.index(r["model"].split("/")[-1])
         j = configs.index(r["prompt_config"])
         grid[i, j] = r["metrics"][metric] * 100
-    fig, ax = plt.subplots(figsize=(9, 2.6))
+    mem_file = Path("results/runs/memory-knn__loo.json")
+    mem_val = None
+    if metric == "accuracy" and mem_file.exists():
+        mem_val = json.loads(mem_file.read_text())["metrics"]["accuracy"] * 100
+        grid = np.vstack([np.full((1, len(configs)), mem_val), grid])
+        models = ["__MEM__"] + models
+    fig, ax = plt.subplots(figsize=(9, 2.9 if mem_val else 2.6))
     vmax = np.nanmax(grid)
     ax.imshow(grid, cmap=SEQ_CMAP, aspect="auto", vmin=0, vmax=vmax)
     ax.set_xticks(range(len(configs)), configs, fontsize=8)
-    ax.set_yticks(range(len(models)), [MODEL_SHORT.get(m, m) for m in models], fontsize=8)
+    ylabels = ["k-NN memory (LOO,\nno verbalization)" if m == "__MEM__" else MODEL_SHORT.get(m, m)
+               for m in models]
+    ax.set_yticks(range(len(models)), ylabels, fontsize=8)
+    if models and models[0] == "__MEM__":
+        ax.axhline(0.5, color="white", lw=3)
     best = np.unravel_index(np.nanargmax(grid), grid.shape)
     for i in range(len(models)):
         for j in range(len(configs)):
@@ -92,7 +102,7 @@ def fig_matrix(runs: list[dict], out: Path, metric: str, fname: str, title: str)
     plt.close(fig)
 
 
-BACKEND_COLOR = {"nli": CAT[0], "gliclass": CAT[1], "embed": CAT[2], "rerank": CAT[4]}
+BACKEND_COLOR = {"nli": CAT[0], "gliclass": CAT[1], "embed": CAT[2], "rerank": CAT[4], "memory": CAT[3]}
 
 
 def fig_cost(runs: list[dict], out: Path) -> None:
@@ -103,11 +113,11 @@ def fig_cost(runs: list[dict], out: Path) -> None:
     """
     best = {}
     for r in runs:
-        key = r["model"].split("/")[-1]
+        key = (r.get("backend", "nli"), r["model"].split("/")[-1])
         if key not in best or r["metrics"]["accuracy"] > best[key]["metrics"]["accuracy"]:
             best[key] = r
     items = sorted(best.items(), key=lambda kv: kv[1]["metrics"]["accuracy"])
-    names = [f"{MODEL_SHORT.get(k, k)} ({r['prompt_config']})" for k, r in items]
+    names = [("k-NN memory (Qwen3-Emb-0.6B)" if r.get("backend") == "memory" else f"{MODEL_SHORT.get(k[1], k[1])} ({r['prompt_config']})") for k, r in items]
     ys = np.arange(len(items))
     colors = [BACKEND_COLOR.get(r.get("backend", "nli"), CAT[5]) for _, r in items]
 
