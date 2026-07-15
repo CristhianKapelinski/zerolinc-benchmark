@@ -25,6 +25,10 @@ Complementary to the README (which is the single guide needed for artifact evalu
 
 Seeded, class-stratified validation/test split (89/93 tickets). Configurations are selected on the validation half only; the selected configuration is evaluated on the untouched test half with a paired McNemar test against the majority baseline. Repeated over seeds 42, 7, 123, 2024, 99. For the instance-memory engine, the validation half acts as the labeled reference set and k plus the input view are chosen by leave-one-out inside it.
 
+## Few-shot competitors of the instance-memory engine
+
+Under the same protocol seeds, the labeled dev half also feeds the standard few-shot alternatives (`results/report/{centroid,probe,setfit,finetune}_seed*.json`, implemented in `src/zerolinc/instance_baselines.py`): nearest class centroid and multinomial logistic regression over the same frozen Qwen3-Embedding-0.6B embeddings (view / L2 selected inside dev by LOO / 5-fold CV); a SetFit-style contrastive fine-tune of the same backbone followed by a logistic head (5 pair-iterations per sample; SetFit's default is 20 — tickets are ~1k tokens, far above its sentence regime); and a fully fine-tuned XLM-R-base (15 epochs, lr 2e-5, 10% linear warmup, subject view, fixed — the dev half is too small to also carve out a tuning split). An initial fine-tune attempt with mDeBERTa-v3-base collapsed to constant single-class prediction in every seed (a known instability of that checkpoint); XLM-R-base converges (training loss logged per epoch in the run records) and is the reported baseline.
+
 ## Run of record
 
 `results/runs/*.json` — one self-contained record per run: full configuration, per-ticket predictions (with 12-way score vectors where captured), metrics (accuracy + Wilson 95% CI, fixed-label macro-F1, per-class PRF, confusion matrix), and cost figures (wall-clock, throughput, peak VRAM, GPU power and integrated energy). Every number and figure in the paper regenerates from these records; `scripts/regen_metrics.py` recomputes all metrics from the stored predictions.

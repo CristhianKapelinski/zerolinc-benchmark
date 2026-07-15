@@ -121,6 +121,26 @@ def main() -> int:
             "KnnCatTwelveN": str(knns[0]["per_class"]["CAT12"]["support"]),
         })
 
+    for stem, prefix in (("centroid", "Centroid"), ("probe", "Probe"),
+                         ("finetune", "Finetune"), ("setfit", "Setfit")):
+        files = sorted(REPORT.glob(f"{stem}_seed*.json"))
+        if not files:
+            continue
+        rs = [json.loads(p.read_text()) for p in files]
+        accs = [r["test"]["accuracy"] for r in rs]
+        f1s = [r["test"]["macro_f1"] for r in rs]
+        ps = [r["mcnemar_vs_majority_on_test"]["p_value"] for r in rs]
+        m.update({
+            f"{prefix}MeanAcc": pct(sum(accs) / len(accs)),
+            f"{prefix}MinAcc": pct(min(accs)),
+            f"{prefix}MaxAcc": pct(max(accs)),
+            f"{prefix}MeanMacroF": f"{sum(f1s) / len(f1s):.2f}",
+            f"{prefix}PMin": f"{min(ps):.3f}",
+            f"{prefix}PMax": f"{max(ps):.3f}",
+        })
+        if stem == "finetune":
+            m["FinetuneWall"] = f"{sum(r['wall_seconds'] for r in rs) / len(rs):.0f}"
+
     knn4b_files = sorted((REPORT / "knn4b").glob("knn_seed*.json"))
     if knn4b_files:
         accs4b = [json.loads(p.read_text())["test"]["accuracy"] for p in knn4b_files]
