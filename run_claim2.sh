@@ -11,7 +11,9 @@ import json
 from pathlib import Path
 runs = [json.loads(p.read_text()) for p in Path("results/runs").glob("*.json")
         if "baseline" not in p.name]
-best = max(runs, key=lambda r: r["metrics"]["accuracy"])
+# the zero-shot claim excludes the instance-memory family (own claim/records)
+best = max((r for r in runs if r.get("backend") != "memory"),
+           key=lambda r: r["metrics"]["accuracy"])
 seeds = (42, 7, 123, 2024, 99)
 protos = [json.loads((Path("results/report") / f"protocol_seed{s}.json").read_text())
           for s in seeds]
