@@ -5,10 +5,11 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 if [ ! -f data/185_incidentes_anon.csv ]; then
-  echo "ERROR: data/185_incidentes_anon.csv not found."
-  echo "The corpus is not redistributed; see data/README.md for how to obtain"
-  echo "and place it (claim 2 and scripts/reproduce.sh run without it)."
-  exit 2
+  echo "Claim #1 (instance-memory, 90.8%) runs LIVE on the incident corpus,"
+  echo "which is not redistributed, so it is SKIPPED here (not an error)."
+  echo "See data/README.md to obtain and place data/185_incidentes_anon.csv."
+  echo "Claim 2, claim 3 and scripts/reproduce.sh verify the other numbers without it."
+  exit 0
 fi
 uv run --no-sync zerolinc knn --out results/report >/dev/null 2>&1
 uv run --no-sync python - <<'PY'
