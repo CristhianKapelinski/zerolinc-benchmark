@@ -73,19 +73,25 @@ def load_incidents(path: str | Path, normalize: bool = True,
         raise ValueError(f"dataset at {path} is missing columns: {sorted(missing)}")
     from .verbalizer import CODES
 
+    # The source CSV keys each ticket by its identifier in the reporting organization's
+    # tracker. That identifier is a handle into a real incident record, and results files
+    # are meant to be publishable, so it never leaves this function: every ticket gets a
+    # surrogate assigned by order of first appearance, which is stable for a given CSV and
+    # carries nothing about the ticket. Deduplication still uses the raw value.
     out, seen = [], set()
     for _, row in df.iterrows():
-        incident_id = str(row[id_column])
-        if incident_id in seen:  # exact duplicate tickets exist in the source CSV
+        raw_id = str(row[id_column])
+        if raw_id in seen:  # exact duplicate tickets exist in the source CSV
             continue
+        position = len(out) + 1
         label = str(row[label_column]).strip().upper()
         if label not in CODES:
-            raise ValueError(f"invalid category {label!r} for incident {incident_id}")
+            raise ValueError(f"invalid category {label!r} for incident #{position}")
         if not isinstance(row[text_column], str) or not row[text_column].strip():
-            raise ValueError(f"empty content for incident {incident_id}")
-        seen.add(incident_id)
+            raise ValueError(f"empty content for incident #{position}")
+        seen.add(raw_id)
         text = normalize_text(row[text_column]) if normalize else row[text_column]
-        out.append(Incident(incident_id=incident_id, text=text, label=label))
+        out.append(Incident(incident_id=f"INC-{position:04d}", text=text, label=label))
     return out
 
 

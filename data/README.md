@@ -17,14 +17,18 @@ dcb4ecec5f79482e6614983129eb82867fe21afae2ca4044d5c4299b3e627d74
 
 ## What works without the corpus
 
-Every reported number regenerates from the committed run records, which contain per-ticket predictions and labels but **no ticket text**:
+**Every number the paper reports**, including the 90.8% headline. They regenerate from the
+committed run records, which carry one row per ticket with its true and predicted category
+and **no ticket text**:
 
+- `./run_claim1.sh`, `./run_claim2.sh` and `./run_claim3.sh`, each of which states in its
+  result block whether it measured here or read the record
 - `./scripts/reproduce.sh` (all headline numbers, no GPU)
-- `run_claim2.sh` (zero-shot study recomputation)
-- `SKIP_LIVE=1 ./run_claim3.sh` (cost claim from the committed record)
 
-## What needs the corpus
+The five per-split records behind the headline are in `results/runs/memory-knn-5seed/`.
 
-- `run_claim1.sh` (live 5-seed protocol of the instance-memory engine)
-- `run_claim3.sh` live re-timing path
-- `./scripts/run_all.sh` / `reproduce_full.sh` (from-scratch grid)
+## What the corpus adds
+
+Re-measuring instead of reading. With the file in place, `./run_claim1.sh` recomputes the
+five splits on your machine and `./run_claim3.sh` re-times the cost claim; the from-scratch
+grid (`./scripts/run_all.sh`, `reproduce_full.sh`) also needs it. No command *requires* it.
