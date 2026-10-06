@@ -1,6 +1,6 @@
 # ZeroLINC Benchmark
 
-Measurement study behind [ZeroLINC](https://gitlab.com/cristhianavila.aluno/zerolinc), the training-free local classifier of security incident reports (SBSeg 2026, Salão de Ferramentas). **Artifact evaluation happens in the tool repository**; this one is the research companion: the full grid of 292 evaluation runs, the committed run of record, the labeled corpus, the selection protocol, and the scripts that regenerate every number and figure of the paper.
+Measurement study behind [ZeroLINC](https://github.com/CristhianKapelinski/zerolinc), the training-free local classifier of security incident reports (SBSeg 2026, Salão de Ferramentas). **Artifact evaluation happens in the tool repository**; this one is the research companion: the full grid of 292 evaluation runs, the committed run of record, the labeled corpus, the selection protocol, and the scripts that regenerate every number and figure of the paper.
 
 ## What is here
 
